@@ -1,0 +1,14 @@
+name = "RAPIDS"
+uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13"
+authors = ["tylerjthomas9 <tylerjthomas9@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
+PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

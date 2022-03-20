@@ -1,0 +1,36 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release-'
+    tags: '*'
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PYTHON: ""
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache artifacts
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-artifacts
+        with:
+          path: ~/.julia/artifacts 
+          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-test-${{ env.cache-name }}-
+            ${{ runner.os }}-test-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Build and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: julia --project=docs/ docs/make.jl
