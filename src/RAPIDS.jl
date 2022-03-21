@@ -6,36 +6,47 @@ A Julia interface to the RAPIDS AI ecosystem
 module RAPIDS
 
 using PythonCall
+using MLJBase
 using MLJModelInterface
+const MMI = MLJModelInterface
 
 const cudf = PythonCall.pynew()
-const cuml = PythonCall.pynew()
+const cuxfilter = PythonCall.pynew()
 const cugraph = PythonCall.pynew()
+const cuml = PythonCall.pynew()
+const cupy = PythonCall.pynew()
 const cusignal = PythonCall.pynew()
 const cuspatial = PythonCall.pynew()
-const cuxfilter = PythonCall.pynew()
 
 function __init__()
     PythonCall.pycopy!(cudf, pyimport("cudf"))
-    PythonCall.pycopy!(cuml, pyimport("cuml"))
-    PythonCall.pycopy!(cugraph, pyimport("cugraph"))
-    PythonCall.pycopy!(cusignal, pyimport("cusignal"))
-    PythonCall.pycopy!(cuspatial, pyimport("cuspatial"))
     PythonCall.pycopy!(cuxfilter, pyimport("cuxfilter"))
+    PythonCall.pycopy!(cugraph, pyimport("cugraph"))
+    PythonCall.pycopy!(cuml, pyimport("cuml"))
+    PythonCall.pycopy!(cusignal, pyimport("cusignal"))
+    PythonCall.pycopy!(cupy, pyimport("cupy"))
+    PythonCall.pycopy!(cuspatial, pyimport("cuspatial"))
 end
 
 
-include("./cuml.jl")
+include("./mlj_interface.jl")
 
-const ALL_MODELS = Union{cuKMeans, }
+export
+# RAPIDS Python API
+cudf, 
+cuxfilter,
+cugraph,
+cuml,
+cusignal,
+cupy,
+cuspatial,
 
-MLJModelInterface.metadata_pkg.(ALL_MODELS,
-    name = "RAPIDS",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",       # your package license
-    is_wrapper = true,    # does it wrap around some other package?
-)
+# PythonCall
+pycopy!,
+pyimport,
+pynew,
+
+# MLJ Interface
+cuKMeans
 
 end
