@@ -21,6 +21,7 @@ const cuspatial = PythonCall.pynew()
 const dask = PythonCall.pynew()
 const dask_cuda = PythonCall.pynew()
 const dask_cudf = PythonCall.pynew()
+const numpy = PythonCall.pynew()
 
 function __init__()
     PythonCall.pycopy!(cudf, pyimport("cudf"))
@@ -33,6 +34,7 @@ function __init__()
     PythonCall.pycopy!(dask, pyimport("dask"))
     PythonCall.pycopy!(dask_cuda, pyimport("dask_cuda"))
     PythonCall.pycopy!(dask_cudf, pyimport("dask_cudf"))
+    PythonCall.pycopy!(numpy, pyimport("numpy"))
 end
 
 
@@ -51,6 +53,7 @@ cuspatial,
 dask,
 dask_cuda,
 dask_cudf,
+numpy,
 
 # PythonCall
 pycopy!,
@@ -58,6 +61,9 @@ pyimport,
 pynew,
 
 # MLJ Interface
-cuKMeans
+cuKMeans,
+cuDBSCAN,
+cuAgglomerativeClustering,
+cuHDBSCAN
 
 end
