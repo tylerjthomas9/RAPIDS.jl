@@ -15,6 +15,9 @@ You can access the following python libraries with their standard syntax:
 - `cusignal`
 - `cuspatial`
 - `cuxfilter`
+- `dask`
+- `dask_cuda`
+- `dask_cudf`
 
 Here is an example of using `KMeans`, `cudf` via the Python API. This example is taken from the [cuml GitHub](https://github.com/rapidsai/cuml)
 
@@ -36,5 +39,15 @@ print(dbscan_float.labels_)
 
 ## MLJ Interface
 
+```
+using RAPIDS
+using MLJ
 
+x = rand(100, 5)
+
+kmeans = cuKMeans()
+mach = machine(kmeans, x)
+fit!(mach)
+preds = predict(mach, x)
+```
 

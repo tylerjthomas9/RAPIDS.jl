@@ -17,3 +17,11 @@ end
 
 
 model_init(mlj_model::cuKMeans) = cuml.KMeans(; mlj_to_kwargs(mlj_model)...)
+
+MMI.metadata_model(cuKMeans,
+    input_scitype   = Matrix,  # what input data is supported?
+    output_scitype  = Matrix,  # for an unsupervised, what output?
+    supports_weights = false,                      # does the model support sample weights?
+    descr = "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering",
+	load_path    = "RAPIDS.cuml.KMeans"
+)
