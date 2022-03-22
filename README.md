@@ -51,3 +51,6 @@ fit!(mach)
 preds = predict(mach, x)
 ```
 
+MLJ Support:
+- Unsupervised
+    - KMeans -> `cuKMeans`
