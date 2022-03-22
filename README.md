@@ -1,5 +1,3 @@
-[![CI](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/ci.yml)
-
 # RAPIDS.jl
 Julia wrapper for the [RAPIDS AI](https://rapids.ai/index.html) ecosystem. Support is limited to Linux.
 
