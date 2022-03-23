@@ -12,8 +12,8 @@ using MLJ
 
 x = rand(100, 5)
 
-kmeans = cuKMeans()
-mach = machine(kmeans, x)
+model = cuKMeans()
+mach = machine(model, x)
 fit!(mach)
 preds = predict(mach, x)
 ```
@@ -42,15 +42,15 @@ using MLJ
 
 x = rand(100, 5)
 
-dbscan = cuDBSCAN()
-mach = machine(dbscan, x)
+model = cuDBSCAN()
+mach = machine(model, x)
 fit!(mach)
 preds = mach.report.labels #DBSCAN does not have a predict method
 ```
 """
 MLJModelInterface.@mlj_model mutable struct cuDBSCAN <: MMI.Unsupervised
-    eps::Float64 = 1e-4::(_ > 0)
     handle = nothing
+    eps::Float64 = 1e-4::(_ > 0)
     min_samples::Int = 1::(_ > 0)
     metric::String = "euclidean"::(_ in ("euclidean","precomputed"))
     verbose::Bool = false
@@ -68,8 +68,8 @@ using MLJ
 
 x = rand(100, 5)
 
-agg = cuAgglomerativeClustering()
-mach = machine(agg, x)
+model = cuAgglomerativeClustering()
+mach = machine(model, x)
 fit!(mach)
 preds = mach.report.labels #AgglomerativeClustering does not have a predict method
 ```
@@ -94,8 +94,8 @@ using MLJ
 
 x = rand(100, 5)
 
-hdbscan = cuHDBSCAN()
-mach = machine(hdbscan, x)
+model = cuHDBSCAN()
+mach = machine(model, x)
 fit!(mach)
 preds = mach.report.labels #AgglomerativeClustering does not have a predict method
 ```
@@ -159,22 +159,14 @@ MMI.metadata_model(cuHDBSCAN,
 
 const CUML_CLUSTERING = Union{cuKMeans, cuDBSCAN, cuAgglomerativeClustering, cuHDBSCAN}
 
-function mlj_to_kwargs(model::CUML_CLUSTERING)
-    return Dict{Symbol, Any}(
-        name => getfield(model, name)
-        for name in fieldnames(typeof(model))
-    )
-end
-
 # fit methods
 function MMI.fit(mlj_model::cuKMeans, verbosity, X, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
-    X = MMI.matrix(X) .|> Float32
 
     # fit the model 
     # TODO: why do we have to specify numpy array?
-    model.fit(X)
+    model.fit(prepare_x(X))
     fitresult = (model, )
 
     # save result
@@ -189,10 +181,9 @@ end
 function MMI.fit(mlj_model::cuDBSCAN, verbosity, X, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
-    X = MMI.matrix(X) .|> Float32
 
     # fit the model
-    py_preds = model.fit_predict(X)
+    py_preds = model.fit_predict(prepare_x(X))
     fitresult = (model, py_preds)
 
     # save result
@@ -209,7 +200,7 @@ function MMI.fit(mlj_model::cuAgglomerativeClustering, verbosity, X, w=nothing)
     X = MMI.matrix(X) .|> Float32
 
     # fit the model
-    model.fit(numpy.array(X))
+    model.fit(prepare_x(X))
     fitresult = (model, )
 
     # save result
@@ -226,7 +217,7 @@ function MMI.fit(mlj_model::cuHDBSCAN, verbosity, X, w=nothing)
     X = MMI.matrix(X) .|> Float32
 
     # fit the model
-    model.fit(numpy.array(X))
+    model.fit(prepare_x(X))
     fitresult = (model, )
 
     # save result
@@ -242,8 +233,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::cuKMeans, fitresult, Xnew)
     model,  = fitresult
-    Xnew = MMI.matrix(Xnew) .|> Float32
-    py_preds = model.predict(Xnew)
+    py_preds = model.predict(prepare_x(Xnew))
     preds = pyconvert(Vector{Int}, py_preds) 
 
     return preds

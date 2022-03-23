@@ -62,3 +62,4 @@ MLJ Support:
     - `cuHDBSCAN`
 - Classification
 - Regression
+    - `cuLinearRegression`

@@ -64,6 +64,8 @@ pynew,
 cuKMeans,
 cuDBSCAN,
 cuAgglomerativeClustering,
-cuHDBSCAN
+cuHDBSCAN,
+
+cuLinearRegression
 
 end
