@@ -450,7 +450,8 @@ function MMI.fit(mlj_model::RandomForestRegressor, verbosity, X, y, w=nothing)
     return (fitresult, cache, report)
 end
 
-function MMI.fit(mlj_model::Union{SVR, KNeighborsRegressor}, verbosity, X, y, w=nothing)
+function MMI.fit(mlj_model::Union{SVR, LinearSVR, KNeighborsRegressor}, 
+                verbosity, X, y, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
 
