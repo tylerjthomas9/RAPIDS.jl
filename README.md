@@ -14,7 +14,6 @@ You can access the following python libraries with their standard syntax:
 - `cugraph`
 - `cusignal`
 - `cuspatial`
-- `cuxfilter`
 - `dask`
 - `dask_cuda`
 - `dask_cudf`
@@ -48,7 +47,7 @@ using MLJ
 
 x = rand(100, 5)
 
-kmeans = cuKMeans()
+kmeans = KMeans()
 mach = machine(kmeans, x)
 fit!(mach)
 preds = predict(mach, x)
@@ -56,10 +55,20 @@ preds = predict(mach, x)
 
 MLJ Support:
 - Clustering
-    - `cuKMeans`
-    - `cuDBSCAN`
-    - `cuAgglomerativeClustering`
-    - `cuHDBSCAN`
+    - `KMeans`
+    - `DBSCAN`
+    - `AgglomerativeClustering`
+    - `HDBSCAN`
 - Classification
+    - `LogisticRegression`
 - Regression
-    - `cuLinearRegression`
+    - `LinearRegression`
+    - `Ridge`
+    - `Lasso`
+    - `ElasticNet`
+    - `MBSGDRegressor`
+    - `RandomForestRegressor`
+    - `CD`
+    - `SVR`
+    - `LinearSVR`
+    - `KNeighborsRegressor`

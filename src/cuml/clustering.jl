@@ -3,7 +3,7 @@
 # Model hyperparameters
 
 """
-RAPIDS AI Docs for KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering
+RAPIDS Docs for KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering
 
 Example:
 ```
@@ -12,13 +12,13 @@ using MLJ
 
 x = rand(100, 5)
 
-model = cuKMeans()
+model = KMeans()
 mach = machine(model, x)
 fit!(mach)
 preds = predict(mach, x)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct cuKMeans <: MMI.Unsupervised
+MLJModelInterface.@mlj_model mutable struct KMeans <: MMI.Unsupervised
     handle = nothing
     n_clusters::Int64 = 8::(_ > 0)
     max_iter::Int64 = 300::(_ > 0)
@@ -32,7 +32,7 @@ MLJModelInterface.@mlj_model mutable struct cuKMeans <: MMI.Unsupervised
 end
 
 """
-RAPIDS AI Docs for DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan
+RAPIDS Docs for DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan
 
 
 Example:
@@ -42,13 +42,13 @@ using MLJ
 
 x = rand(100, 5)
 
-model = cuDBSCAN()
+model = DBSCAN()
 mach = machine(model, x)
 fit!(mach)
 preds = mach.report.labels #DBSCAN does not have a predict method
 ```
 """
-MLJModelInterface.@mlj_model mutable struct cuDBSCAN <: MMI.Unsupervised
+MLJModelInterface.@mlj_model mutable struct DBSCAN <: MMI.Unsupervised
     handle = nothing
     eps::Float64 = 1e-4::(_ > 0)
     min_samples::Int = 1::(_ > 0)
@@ -59,7 +59,7 @@ MLJModelInterface.@mlj_model mutable struct cuDBSCAN <: MMI.Unsupervised
 end
 
 """
-RAPIDS AI Docs for AgglomerativeClustering: https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
+RAPIDS Docs for AgglomerativeClustering: https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
 
 Example:
 ```
@@ -68,13 +68,13 @@ using MLJ
 
 x = rand(100, 5)
 
-model = cuAgglomerativeClustering()
+model = AgglomerativeClustering()
 mach = machine(model, x)
 fit!(mach)
 preds = mach.report.labels #AgglomerativeClustering does not have a predict method
 ```
 """
-MLJModelInterface.@mlj_model mutable struct cuAgglomerativeClustering <: MMI.Unsupervised
+MLJModelInterface.@mlj_model mutable struct AgglomerativeClustering <: MMI.Unsupervised
     handle = nothing
     verbose::Bool = false
     affinity::String = "euclidean"::(_ in ("euclidean", "l1", "l2", "manhattan", "cosine"))
@@ -85,7 +85,7 @@ MLJModelInterface.@mlj_model mutable struct cuAgglomerativeClustering <: MMI.Uns
 end
 
 """
-RAPIDS AI Docs for HDBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#hdbscan
+RAPIDS Docs for HDBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#hdbscan
 
 Example:
 ```
@@ -94,13 +94,13 @@ using MLJ
 
 x = rand(100, 5)
 
-model = cuHDBSCAN()
+model = HDBSCAN()
 mach = machine(model, x)
 fit!(mach)
 preds = mach.report.labels #AgglomerativeClustering does not have a predict method
 ```
 """
-MLJModelInterface.@mlj_model mutable struct cuHDBSCAN <: MMI.Unsupervised
+MLJModelInterface.@mlj_model mutable struct HDBSCAN <: MMI.Unsupervised
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
     verbose::Bool = false
@@ -121,46 +121,46 @@ end
 
 
 # Multiple dispatch for initializing models
-model_init(mlj_model::cuKMeans) = cuml.KMeans(; mlj_to_kwargs(mlj_model)...)
-model_init(mlj_model::cuDBSCAN) = cuml.DBSCAN(; mlj_to_kwargs(mlj_model)...)
-model_init(mlj_model::cuAgglomerativeClustering) = cuml.AgglomerativeClustering(; mlj_to_kwargs(mlj_model)...)
-model_init(mlj_model::cuHDBSCAN) = cuml.HDBSCAN(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::KMeans) = cuml.KMeans(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::DBSCAN) = cuml.DBSCAN(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::AgglomerativeClustering) = cuml.AgglomerativeClustering(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::HDBSCAN) = cuml.HDBSCAN(; mlj_to_kwargs(mlj_model)...)
 
 
 # add metadata
-MMI.metadata_model(cuKMeans,
+MMI.metadata_model(KMeans,
     input_scitype   = AbstractMatrix,  # what input data is supported?
     output_scitype  = AbstractVector,  # for an unsupervised, what output?
     supports_weights = false,                      # does the model support sample weights?
     descr = "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering",
-	load_path    = "RAPIDS.cuKMeans"
+	load_path    = "RAPIDS.KMeans"
 )
-MMI.metadata_model(cuDBSCAN,
+MMI.metadata_model(DBSCAN,
     input_scitype   = AbstractMatrix,  # what input data is supported?
     output_scitype  = AbstractVector,  # for an unsupervised, what output?
     supports_weights = false,                      # does the model support sample weights?
-    descr = "cuML's cuDBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan",
-	load_path    = "RAPIDS.cuDBSCAN"
+    descr = "cuML's DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan",
+	load_path    = "RAPIDS.DBSCAN"
 )
-MMI.metadata_model(cuAgglomerativeClustering,
+MMI.metadata_model(AgglomerativeClustering,
     input_scitype   = AbstractMatrix,  # what input data is supported?
     output_scitype  = AbstractVector,  # for an unsupervised, what output?
     supports_weights = false,                      # does the model support sample weights?
     descr = "cuML's Agglomerative Clustering: https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering",
-	load_path    = "RAPIDS.cuAgglomerativeClustering"
+	load_path    = "RAPIDS.AgglomerativeClustering"
 )
-MMI.metadata_model(cuHDBSCAN,
+MMI.metadata_model(HDBSCAN,
     input_scitype   = AbstractMatrix,  # what input data is supported?
     output_scitype  = AbstractVector,  # for an unsupervised, what output?
     supports_weights = false,                      # does the model support sample weights?
     descr = "cuML's HDBSCAN Clustering: https://docs.rapids.ai/api/cuml/stable/api.html#hdbscan",
-	load_path    = "RAPIDS.cuHDBSCAN"
+	load_path    = "RAPIDS.HDBSCAN"
 )
 
-const CUML_CLUSTERING = Union{cuKMeans, cuDBSCAN, cuAgglomerativeClustering, cuHDBSCAN}
+const CUML_CLUSTERING = Union{KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN}
 
 # fit methods
-function MMI.fit(mlj_model::cuKMeans, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::KMeans, verbosity, X, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
 
@@ -178,7 +178,7 @@ function MMI.fit(mlj_model::cuKMeans, verbosity, X, w=nothing)
     return (fitresult, cache, report)
 end
 
-function MMI.fit(mlj_model::cuDBSCAN, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::DBSCAN, verbosity, X, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
 
@@ -194,7 +194,7 @@ function MMI.fit(mlj_model::cuDBSCAN, verbosity, X, w=nothing)
     return (fitresult, cache, report)
 end
 
-function MMI.fit(mlj_model::cuAgglomerativeClustering, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::AgglomerativeClustering, verbosity, X, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
     X = MMI.matrix(X) .|> Float32
@@ -211,7 +211,7 @@ function MMI.fit(mlj_model::cuAgglomerativeClustering, verbosity, X, w=nothing)
     return (fitresult, cache, report)
 end
 
-function MMI.fit(mlj_model::cuHDBSCAN, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::HDBSCAN, verbosity, X, w=nothing)
     # initialize model, prepare data
     model = model_init(mlj_model)
     X = MMI.matrix(X) .|> Float32
@@ -231,7 +231,7 @@ end
 
 
 # predict methods
-function MMI.predict(mlj_model::cuKMeans, fitresult, Xnew)
+function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
     model,  = fitresult
     py_preds = model.predict(prepare_x(Xnew))
     preds = pyconvert(Vector{Int}, py_preds) 
@@ -239,20 +239,20 @@ function MMI.predict(mlj_model::cuKMeans, fitresult, Xnew)
     return preds
 end
     
-function MMI.predict(mlj_model::cuDBSCAN, fitresult, Xnew)
+function MMI.predict(mlj_model::DBSCAN, fitresult, Xnew)
     @error "DBSCAN does not support predictions on new observations."
 end
 
-function MMI.predict(mlj_model::cuAgglomerativeClustering, fitresult, Xnew)
+function MMI.predict(mlj_model::AgglomerativeClustering, fitresult, Xnew)
     @error "AgglomerativeClustering does not support predictions on new observations."
 end
     
-function MMI.predict(mlj_model::cuHDBSCAN, fitresult, Xnew)
+function MMI.predict(mlj_model::HDBSCAN, fitresult, Xnew)
     @error "HDBSCAN does not support predictions on new observations."
 end
 
 # Clustering metadata
-MMI.metadata_pkg.((cuKMeans, cuDBSCAN, cuAgglomerativeClustering, cuHDBSCAN),
+MMI.metadata_pkg.((KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN),
     name = "cuML Clustering Methods",
     uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
     url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo

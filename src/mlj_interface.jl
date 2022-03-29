@@ -15,6 +15,8 @@ function mlj_to_kwargs(model)
 end
 
 
+
+include("./cuml/classification.jl")
 include("./cuml/clustering.jl")
 include("./cuml/regression.jl")
 

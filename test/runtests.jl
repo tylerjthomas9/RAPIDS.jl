@@ -1,7 +1,12 @@
 using RAPIDS
+using MLJ
 using Test
 
-@testset "RAPIDS" begin
+tests = ["cuml"]
 
-
+println("Running tests:")
+for t in tests
+    fp = "$(t).jl"
+    println("* $fp ...")
+    include(fp)
 end
