@@ -1,10 +1,11 @@
-function prepare_x(x::AbstractMatrix)
+function prepare_input(x::AbstractMatrix)
     x = MMI.matrix(x) .|> Float32
     return numpy.array(x)
 end
 
-function prepare_y(y::AbstractVector)
-    return numpy.array(Float32.(y))
+function prepare_input(x::AbstractVector)
+    x = x .|> Float32 |> numpy.array
+    return numpy.array(x)
 end
 
 function mlj_to_kwargs(model)

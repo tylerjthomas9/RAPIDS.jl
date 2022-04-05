@@ -10,13 +10,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = LinearRegression()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct LinearRegression <: MMI.Probabilistic
@@ -36,13 +36,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = Ridge()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Probabilistic
@@ -64,13 +64,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = Lasso()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Probabilistic
@@ -93,13 +93,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = ElasticNet()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Probabilistic
@@ -122,13 +122,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = MBSGDRegressor()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Probabilistic
@@ -157,13 +157,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = RandomForestRegressor()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Probabilistic
@@ -195,13 +195,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = CD()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct CD <: MMI.Probabilistic
@@ -226,13 +226,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = SVR()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Probabilistic
@@ -259,13 +259,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = SVLinearSVR()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Probabilistic
@@ -295,13 +295,13 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 y = rand(100)
 
 model = KNeighborsRegressor()
-mach = machine(model, x, y)
+mach = machine(model, X, y)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct KNeighborsRegressor <: MMI.Probabilistic
@@ -335,72 +335,82 @@ model_init(mlj_model::KNeighborsRegressor) = cuml.KNeighborsRegressor(; mlj_to_k
 
 # add metadata
 MMI.metadata_model(LinearRegression,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,           
     descr = "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression",
 	load_path    = "RAPIDS.LinearRegression"
 )
 MMI.metadata_model(Ridge,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression",
 	load_path    = "RAPIDS.Ridge"
 )
 MMI.metadata_model(Lasso,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's Lasso: https://docs.rapids.ai/api/cuml/stable/api.html#lassp-regression",
 	load_path    = "RAPIDS.Lasso"
 )
 MMI.metadata_model(ElasticNet,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression",
 	load_path    = "RAPIDS.ElasticNet"
 )
 MMI.metadata_model(MBSGDRegressor,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor",
 	load_path    = "RAPIDS.MBSGDRegressor"
 )
 MMI.metadata_model(RandomForestRegressor,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's RandomForestRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest",
 	load_path    = "RAPIDS.RandomForestRegressor"
 )
 MMI.metadata_model(CD,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's Coordinate Descent: https://docs.rapids.ai/api/cuml/stable/api.html#coordinate-descent",
 	load_path    = "RAPIDS.CD"
 )
 MMI.metadata_model(SVR,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's SVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines",
 	load_path    = "RAPIDS.SVR"
 )
 MMI.metadata_model(LinearSVR,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector{Continuous},  
+    supports_weights = false,                      
     descr = "cuML's LinearSVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines",
 	load_path    = "RAPIDS.LinearSVR"
 )
 MMI.metadata_model(KNeighborsRegressor,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    target_scitype = AbstractMatrix{Continuous},
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's KNeighborsRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression",
 	load_path    = "RAPIDS.KNeighborsRegressor"
 )
@@ -424,7 +434,7 @@ function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w=nothing)
 
     # fit the model 
     # TODO: why do we have to specify numpy array?
-    model.fit(prepare_x(X), prepare_y(y))
+    model.fit(prepare_input(X), prepare_input(y))
     fitresult = (model, )
 
     # save result
@@ -441,7 +451,7 @@ function MMI.fit(mlj_model::RandomForestRegressor, verbosity, X, y, w=nothing)
 
     # fit the model 
     # TODO: why do we have to specify numpy array?
-    model.fit(prepare_x(X), prepare_y(y))
+    model.fit(prepare_input(X), prepare_input(y))
     fitresult = (model, )
 
     # save result
@@ -457,7 +467,7 @@ function MMI.fit(mlj_model::Union{SVR, LinearSVR, KNeighborsRegressor},
 
     # fit the model 
     # TODO: why do we have to specify numpy array?
-    model.fit(prepare_x(X), prepare_y(y))
+    model.fit(prepare_input(X), prepare_input(y))
     fitresult = (model, )
 
     # save result
@@ -472,7 +482,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
     model,  = fitresult
-    py_preds = model.predict(prepare_x(Xnew))
+    py_preds = model.predict(prepare_input(Xnew))
     preds = pyconvert(Array, py_preds) 
 
     return preds
