@@ -21,3 +21,8 @@ include("./cuml/classification.jl")
 include("./cuml/clustering.jl")
 include("./cuml/regression.jl")
 
+const CUML_MODELS = Union{CUML_CLASSIFICATION, 
+                            CUML_CLUSTERING, 
+                            CUML_REGRESSION}
+
+include("./cuml/serialization.jl")
