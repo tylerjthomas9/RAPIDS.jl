@@ -5,6 +5,17 @@ The goal of this library is to provide a simple method for accessing the GPU acc
 
 This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
 
+## Installation
+
+From source:
+```julia
+julia> ]add https://github.com/tylerjthomas9/RAPIDS.jl
+```
+
+```julia
+julia> using Pkg; Pkg.add(url="https://github.com/tylerjthomas9/RAPIDS.jl")
+```
+
 ## Python API
 
 You can access the following python libraries with their standard syntax:
