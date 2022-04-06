@@ -10,12 +10,12 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 
 model = KMeans()
-mach = machine(model, x)
+mach = machine(model, X)
 fit!(mach)
-preds = predict(mach, x)
+preds = predict(mach, X)
 ```
 """
 MLJModelInterface.@mlj_model mutable struct KMeans <: MMI.Unsupervised
@@ -40,10 +40,10 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 
 model = DBSCAN()
-mach = machine(model, x)
+mach = machine(model, X)
 fit!(mach)
 preds = mach.report.labels #DBSCAN does not have a predict method
 ```
@@ -66,10 +66,10 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 
 model = AgglomerativeClustering()
-mach = machine(model, x)
+mach = machine(model, X)
 fit!(mach)
 preds = mach.report.labels #AgglomerativeClustering does not have a predict method
 ```
@@ -92,10 +92,10 @@ Example:
 using RAPIDS
 using MLJ
 
-x = rand(100, 5)
+X = rand(100, 5)
 
 model = HDBSCAN()
-mach = machine(model, x)
+mach = machine(model, X)
 fit!(mach)
 preds = mach.report.labels #AgglomerativeClustering does not have a predict method
 ```
@@ -129,30 +129,30 @@ model_init(mlj_model::HDBSCAN) = cuml.HDBSCAN(; mlj_to_kwargs(mlj_model)...)
 
 # add metadata
 MMI.metadata_model(KMeans,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering",
 	load_path    = "RAPIDS.KMeans"
 )
 MMI.metadata_model(DBSCAN,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan",
 	load_path    = "RAPIDS.DBSCAN"
 )
 MMI.metadata_model(AgglomerativeClustering,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's Agglomerative Clustering: https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering",
 	load_path    = "RAPIDS.AgglomerativeClustering"
 )
 MMI.metadata_model(HDBSCAN,
-    input_scitype   = AbstractMatrix,  # what input data is supported?
-    output_scitype  = AbstractVector,  # for an unsupervised, what output?
-    supports_weights = false,                      # does the model support sample weights?
+    input_scitype   = AbstractMatrix,  
+    output_scitype  = AbstractVector,  
+    supports_weights = false,                      
     descr = "cuML's HDBSCAN Clustering: https://docs.rapids.ai/api/cuml/stable/api.html#hdbscan",
 	load_path    = "RAPIDS.HDBSCAN"
 )
@@ -166,7 +166,7 @@ function MMI.fit(mlj_model::KMeans, verbosity, X, w=nothing)
 
     # fit the model 
     # TODO: why do we have to specify numpy array?
-    model.fit(prepare_x(X))
+    model.fit(prepare_input(X))
     fitresult = (model, )
 
     # save result
@@ -183,7 +183,7 @@ function MMI.fit(mlj_model::DBSCAN, verbosity, X, w=nothing)
     model = model_init(mlj_model)
 
     # fit the model
-    py_preds = model.fit_predict(prepare_x(X))
+    py_preds = model.fit_predict(prepare_input(X))
     fitresult = (model, py_preds)
 
     # save result
@@ -200,7 +200,7 @@ function MMI.fit(mlj_model::AgglomerativeClustering, verbosity, X, w=nothing)
     X = MMI.matrix(X) .|> Float32
 
     # fit the model
-    model.fit(prepare_x(X))
+    model.fit(prepare_input(X))
     fitresult = (model, )
 
     # save result
@@ -217,7 +217,7 @@ function MMI.fit(mlj_model::HDBSCAN, verbosity, X, w=nothing)
     X = MMI.matrix(X) .|> Float32
 
     # fit the model
-    model.fit(prepare_x(X))
+    model.fit(prepare_input(X))
     fitresult = (model, )
 
     # save result
@@ -233,7 +233,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
     model,  = fitresult
-    py_preds = model.predict(prepare_x(Xnew))
+    py_preds = model.predict(prepare_input(Xnew))
     preds = pyconvert(Vector{Int}, py_preds) 
 
     return preds

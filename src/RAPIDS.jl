@@ -12,7 +12,7 @@ const MMI = MLJModelInterface
 
 
 const cudf = PythonCall.pynew()
-#const cuxfilter = PythonCall.pynew()
+#const cuxfilter = PythonCall.pynew() #TODO fix error during import
 const cugraph = PythonCall.pynew()
 const cuml = PythonCall.pynew()
 const cupy = PythonCall.pynew()
@@ -22,6 +22,7 @@ const dask = PythonCall.pynew()
 const dask_cuda = PythonCall.pynew()
 const dask_cudf = PythonCall.pynew()
 const numpy = PythonCall.pynew()
+const pickle = PythonCall.pynew()
 
 function __init__()
     PythonCall.pycopy!(cudf, pyimport("cudf"))
@@ -35,6 +36,7 @@ function __init__()
     PythonCall.pycopy!(dask_cuda, pyimport("dask_cuda"))
     PythonCall.pycopy!(dask_cudf, pyimport("dask_cudf"))
     PythonCall.pycopy!(numpy, pyimport("numpy"))
+    PythonCall.pycopy!(pickle, pyimport("pickle"))
 end
 
 
@@ -44,7 +46,7 @@ include("./mlj_interface.jl")
 export
 # RAPIDS Python API
 cudf, 
-cuxfilter,
+#cuxfilter,
 cugraph,
 cuml,
 cusignal,
@@ -60,12 +62,12 @@ pycopy!,
 pyimport,
 pynew,
 
-# MLJ Interface
+# clustering
 KMeans,
 DBSCAN,
 AgglomerativeClustering,
 HDBSCAN,
-
+# regression
 LinearRegression,
 Ridge,
 Lasso,
@@ -75,7 +77,9 @@ RandomForestRegressor,
 CD,
 SVR,
 KNeighborsRegressor,
-
-LogisticRegression
+# classification
+LogisticRegression,
+MBSGDClassifier,
+KNeighborsClassifier
 
 end
