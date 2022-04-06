@@ -3,7 +3,7 @@ Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosy
 
 The goal of this library is to provide a simple method for accessing the GPU accelerated models withing RAPIDS from Julia, and integrating the models into MLJ. This library relies on [PythonCall.jl](https://github.com/cjdoris/PythonCall.jl) and [CondaPkg.jl](https://github.com/cjdoris/CondaPkg.jl) for efficient installations of the Python dependencies. 
 
-This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`, `cuxfilter`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
+This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
 
 ## Python API
 
