@@ -92,3 +92,4 @@ MLJ Support:
 - Dimensionality Reduction / Manifold Learning
     - `PCA`
     - `IncrementalPCA`
+    - `TruncatedSVD`

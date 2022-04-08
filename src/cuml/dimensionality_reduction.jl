@@ -62,10 +62,38 @@ MLJModelInterface.@mlj_model mutable struct IncrementalPCA <: MMI.Unsupervised
 end
 
 
+"""
+RAPIDS Docs for TruncatedSVD: 
+    https://docs.rapids.ai/api/cuml/stable/api.html#truncated-svd
+
+Example:
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+
+model = TruncatedSVD(n_components=2)
+mach = machine(model, X)
+fit!(mach)
+X_trans = transform(mach, X)
+
+println(mach.fitresult.components_)
+```
+"""
+MLJModelInterface.@mlj_model mutable struct TruncatedSVD <: MMI.Unsupervised
+    handle = nothing
+    n_components = nothing
+    n_iter::Int = 15::(_ > 0)
+    random_state = nothing
+    tol::Float64 = 1e-7::(_ > 0)
+    verbose::Bool = false
+end
 
 # Multiple dispatch for initializing models
 model_init(mlj_model::PCA) = cuml.PCA(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::IncrementalPCA) = cuml.IncrementalPCA(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::TruncatedSVD) = cuml.TruncatedSVD(; mlj_to_kwargs(mlj_model)...)
 
 # add metadata
 MMI.metadata_model(PCA,
@@ -82,10 +110,18 @@ MMI.metadata_model(IncrementalPCA,
     descr = "cuML's IncrementalPCA: https://docs.rapids.ai/api/cuml/stable/api.html##incremental-pca",
 	load_path    = "RAPIDS.IncrementalPCA"
 )
+MMI.metadata_model(TruncatedSVD,
+    input_scitype   = AbstractMatrix,  
+    output_scitype  = AbstractVector,  
+    supports_weights = true,           
+    descr = "cuML's TruncatedSVD: https://docs.rapids.ai/api/cuml/stable/api.html##truncated-svd",
+	load_path    = "RAPIDS.TruncatedSVD"
+)
 
 
 
-const CUML_DIMENSIONALITY_REDUCTION = Union{PCA, IncrementalPCA}
+
+const CUML_DIMENSIONALITY_REDUCTION = Union{PCA, IncrementalPCA, TruncatedSVD}
 
 function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X, w=nothing)
     # fit model
@@ -108,7 +144,7 @@ function MMI.transform(mlj_model::CUML_DIMENSIONALITY_REDUCTION, fitresult, Xnew
     return preds
 end
 
-function MMI.inverse_transform(mlj_model::PCA, fitresult, Xnew)
+function MMI.inverse_transform(mlj_model::Union{PCA, TruncatedSVD}, fitresult, Xnew)
     model = fitresult
     py_preds = model.inverse_transform(prepare_input(Xnew))
     preds = pyconvert(Array, py_preds) 

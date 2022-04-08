@@ -155,3 +155,11 @@ end
     fit!(mach)
     X_trans = transform(mach, X)
 end
+
+@testset "TruncatedSVD" begin
+    model = TruncatedSVD(n_components=2)
+    mach = machine(model, X)
+    fit!(mach)
+    X_trans = transform(mach, X)
+    inverse_transform(mach, X)
+end

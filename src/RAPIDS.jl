@@ -82,7 +82,9 @@ LogisticRegression,
 MBSGDClassifier,
 KNeighborsClassifier,
 # dimensionality reduction
-PCA
+PCA,
+IncrementalPCA,
+TruncatedSVD
 
 
 
