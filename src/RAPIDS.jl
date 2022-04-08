@@ -80,6 +80,10 @@ KNeighborsRegressor,
 # classification
 LogisticRegression,
 MBSGDClassifier,
-KNeighborsClassifier
+KNeighborsClassifier,
+# dimensionality reduction
+PCA
+
+
 
 end

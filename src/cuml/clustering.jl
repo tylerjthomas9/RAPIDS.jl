@@ -160,81 +160,25 @@ MMI.metadata_model(HDBSCAN,
 const CUML_CLUSTERING = Union{KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN}
 
 # fit methods
-function MMI.fit(mlj_model::KMeans, verbosity, X, w=nothing)
-    # initialize model, prepare data
-    model = model_init(mlj_model)
-
-    # fit the model 
-    # TODO: why do we have to specify numpy array?
-    model.fit(prepare_input(X))
-    fitresult = (model, )
-
-    # save result
-    cache = nothing
-    report = (n_iter = pyconvert(Int64, model.n_iter_), 
-            labels = pyconvert(Vector{Int64}, model.labels_),
-            cluster_centers = pyconvert(Matrix{Float32}, model.cluster_centers_)
-    )
-    return (fitresult, cache, report)
-end
-
-function MMI.fit(mlj_model::DBSCAN, verbosity, X, w=nothing)
-    # initialize model, prepare data
-    model = model_init(mlj_model)
-
+function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)
     # fit the model
-    py_preds = model.fit_predict(prepare_input(X))
-    fitresult = (model, py_preds)
-
-    # save result
-    cache = nothing
-    report = (n_features_in = pyconvert(Int, model.n_features_in_), 
-            labels = pyconvert(Vector{Int}, model.labels_)
-    )
-    return (fitresult, cache, report)
-end
-
-function MMI.fit(mlj_model::AgglomerativeClustering, verbosity, X, w=nothing)
-    # initialize model, prepare data
     model = model_init(mlj_model)
-    X = MMI.matrix(X) .|> Float32
-
-    # fit the model
     model.fit(prepare_input(X))
-    fitresult = (model, )
+    fitresult = model
 
     # save result
     cache = nothing
-    report = (children = pyconvert(Matrix{Int}, model.children_), 
-            labels = pyconvert(Vector{Int}, model.labels_),
-    )
+    report = ()
     return (fitresult, cache, report)
 end
 
-function MMI.fit(mlj_model::HDBSCAN, verbosity, X, w=nothing)
-    # initialize model, prepare data
-    model = model_init(mlj_model)
-    X = MMI.matrix(X) .|> Float32
-
-    # fit the model
-    model.fit(prepare_input(X))
-    fitresult = (model, )
-
-    # save result
-    cache = nothing
-    report = (children = pyconvert(Matrix{Float64}, model.children_), 
-            labels = pyconvert(Vector{Int}, model.labels_),
-            cluster_persistence = pyconvert(Matrix, numpy.array(model.cluster_persistence_)),
-    )
-    return (fitresult, cache, report)
-end
 
 
 # predict methods
 function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
-    model,  = fitresult
+    model  = fitresult
     py_preds = model.predict(prepare_input(Xnew))
-    preds = pyconvert(Vector{Int}, py_preds) 
+    preds = pyconvert(Array, py_preds) 
 
     return preds
 end

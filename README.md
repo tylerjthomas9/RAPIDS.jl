@@ -65,7 +65,7 @@ mach = machine(lr, X, y)
 fit!(mach)
 preds = predict(mach, X)
 
-print(mach.report.coef)
+print(mach.fitresult.coef_)
 ```
 
 MLJ Support:
@@ -89,3 +89,6 @@ MLJ Support:
     - `SVR`
     - `LinearSVR`
     - `KNeighborsRegressor`
+- Dimensionality Reduction / Manifold Learning
+    - `PCA`
+    - `IncrementalPCA`

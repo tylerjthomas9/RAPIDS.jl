@@ -12,7 +12,6 @@ X = rand(1000, 5)
     mach = machine(model, X)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Int}
 end
 
 @testset "DBSCAN" begin
@@ -45,7 +44,6 @@ y = RAPIDS.pyconvert(Vector{Float32}, y_py.get().flatten())
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "Ridge" begin
@@ -53,7 +51,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "Lasso" begin
@@ -61,7 +58,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 
@@ -70,7 +66,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "MBSGDRegressor" begin
@@ -78,7 +73,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "RandomForestRegressor" begin
@@ -86,7 +80,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "CD" begin
@@ -94,7 +87,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "SVR" begin
@@ -102,7 +94,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "LinearSVR" begin
@@ -110,7 +101,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "KNeighborsRegressor" begin
@@ -118,7 +108,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 
@@ -133,7 +122,6 @@ y = RAPIDS.pyconvert(Vector{Float32}, y_py.get().flatten())
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "MBSGDClassifier" begin
@@ -141,7 +129,6 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
 @testset "KNeighborsClassifier" begin
@@ -149,6 +136,22 @@ end
     mach = machine(model, X, y)
     fit!(mach)
     preds = predict(mach, X)
-    @test typeof(preds) == Vector{Float32}
 end
 
+# Dimensionality reduction
+X = rand(1000, 5)
+
+@testset "PCA" begin
+    model = PCA()
+    mach = machine(model, X)
+    fit!(mach)
+    X_trans = transform(mach, X)
+    inverse_transform(mach, X)
+end
+
+@testset "IncrementalPCA" begin
+    model = IncrementalPCA()
+    mach = machine(model, X)
+    fit!(mach)
+    X_trans = transform(mach, X)
+end

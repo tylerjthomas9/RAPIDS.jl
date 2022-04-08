@@ -127,46 +127,35 @@ MMI.metadata_model(KNeighborsClassifier,
 
 const CUML_CLASSIFICATION = Union{LogisticRegression, MBSGDClassifier, KNeighborsClassifier}
 
+# fit methods
 function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)
-    # initialize model, prepare data
+    # fit the model
     model = model_init(mlj_model)
-
-    # fit the model 
-    # TODO: why do we have to specify numpy array?
     model.fit(prepare_input(X), prepare_input(y))
-    fitresult = (model, )
+    fitresult = model
 
     # save result
     cache = nothing
-    report = (coef = model.coef_, 
-            intercept = model.intercept_
-    )
-    return (fitresult, cache, report)
-end
-
-function MMI.fit(mlj_model::KNeighborsClassifier, verbosity, X, y, w=nothing)
-    # initialize model, prepare data
-    model = model_init(mlj_model)
-
-    # fit the model 
-    # TODO: why do we have to specify numpy array?
-    model.fit(prepare_input(X), prepare_input(y))
-    fitresult = (model, )
-
-    # save result
-    cache = nothing
-    #TODO: Get params in report
     report = ()
     return (fitresult, cache, report)
 end
 
-
 # predict methods
 function MMI.predict(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
-    model,  = fitresult
+    model  = fitresult
     py_preds = model.predict(prepare_input(Xnew))
     preds = pyconvert(Array, py_preds) 
 
     return preds
 end
-    
+
+
+# Classification metadata
+MMI.metadata_pkg.((LogisticRegression, MBSGDClassifier, KNeighborsClassifier),
+    name = "cuML Classification Methods",
+    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia = false,          # is it written entirely in Julia?
+    license = "MIT",        # your package license
+    is_wrapper = true,      # does it wrap around some other package?
+)

@@ -19,12 +19,14 @@ end
 
 include("./cuml/classification.jl")
 include("./cuml/clustering.jl")
+include("./cuml/dimensionality_reduction.jl")
 include("./cuml/regression.jl")
 
 const CUML_MODELS = Union{CUML_CLASSIFICATION, 
-                            CUML_CLUSTERING, 
+                            CUML_CLUSTERING,
+                            CUML_DIMENSIONALITY_REDUCTION, 
                             CUML_REGRESSION}
-include("./cuml/serialization.jl")
+include("./cuml/mlj_serialization.jl")
 
 
 MMI.clean!(model::CUML_MODELS) = ""

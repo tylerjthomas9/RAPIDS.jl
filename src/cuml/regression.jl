@@ -19,7 +19,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct LinearRegression <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct LinearRegression <: MMI.Deterministic
     handle = nothing
     algorithm::String = "eig"::(_ in ("svd", "eig", "qr", "svd-qr", "svd-jacobi"))
     fit_intercept::Bool = true
@@ -45,7 +45,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Deterministic
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
     solver::String = "eig"::(_ in ("svd", "eig", "cd"))
@@ -73,7 +73,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Deterministic
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
     fit_intercept::Bool = true
@@ -102,7 +102,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Deterministic
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
     l1_ratio::Float64 = 0.5::(_ > 0)
@@ -131,7 +131,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     handle = nothing
     loss::String = "squared_loss"::(_ in ("squared_loss", ))
     penalty::String = "none"::(_ in ("none", "l1", "l2", "elasticnet"))
@@ -166,7 +166,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Deterministic
     handle = nothing
     n_estimators::Int = 100::(_ > 0)
     split_criterion = 2
@@ -204,7 +204,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct CD <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct CD <: MMI.Deterministic
     handle = nothing
     loss::String = "squared_loss"::(_ in ("squared_loss", ))
     alpha::Float64 = 1.0::(_ > 0)
@@ -235,7 +235,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Deterministic
     handle = nothing
     C::Float64 = 1.0::(_ >= 0)
     kernel::String = "rbf"::(_ in ("linear", "poly", "rbf", "sigmoid"))
@@ -268,7 +268,7 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     handle = nothing
     penalty::String = "l2"::(_ in ("l1", "l2"))
     loss = "epsilon_insensitive"::(_ in ("epsilon_insensitive", "squared_epsilon_insensitive"))
@@ -304,16 +304,13 @@ fit!(mach)
 preds = predict(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct KNeighborsRegressor <: MMI.Probabilistic
+MLJModelInterface.@mlj_model mutable struct KNeighborsRegressor <: MMI.Deterministic
     handle = nothing
     algorithm::String = "brute"::(_ in ("brute",))
     metric::String = "euclidean"
     weights::String = "uniform"::(_ in ("uniform",))
     verbose::Bool = false
 end
-
-
-
 
 
 
@@ -336,7 +333,7 @@ model_init(mlj_model::KNeighborsRegressor) = cuml.KNeighborsRegressor(; mlj_to_k
 # add metadata
 MMI.metadata_model(LinearRegression,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,           
     descr = "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression",
@@ -344,7 +341,7 @@ MMI.metadata_model(LinearRegression,
 )
 MMI.metadata_model(Ridge,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression",
@@ -352,7 +349,7 @@ MMI.metadata_model(Ridge,
 )
 MMI.metadata_model(Lasso,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's Lasso: https://docs.rapids.ai/api/cuml/stable/api.html#lassp-regression",
@@ -360,7 +357,7 @@ MMI.metadata_model(Lasso,
 )
 MMI.metadata_model(ElasticNet,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression",
@@ -368,7 +365,7 @@ MMI.metadata_model(ElasticNet,
 )
 MMI.metadata_model(MBSGDRegressor,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor",
@@ -376,7 +373,7 @@ MMI.metadata_model(MBSGDRegressor,
 )
 MMI.metadata_model(RandomForestRegressor,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's RandomForestRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest",
@@ -384,7 +381,7 @@ MMI.metadata_model(RandomForestRegressor,
 )
 MMI.metadata_model(CD,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's Coordinate Descent: https://docs.rapids.ai/api/cuml/stable/api.html#coordinate-descent",
@@ -392,7 +389,7 @@ MMI.metadata_model(CD,
 )
 MMI.metadata_model(SVR,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's SVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines",
@@ -400,15 +397,15 @@ MMI.metadata_model(SVR,
 )
 MMI.metadata_model(LinearSVR,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
-    output_scitype  = AbstractVector{Continuous},  
+    target_scitype = AbstractVector,
+    output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's LinearSVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines",
 	load_path    = "RAPIDS.LinearSVR"
 )
 MMI.metadata_model(KNeighborsRegressor,
     input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractMatrix{Continuous},
+    target_scitype = AbstractVector,
     output_scitype  = AbstractVector,  
     supports_weights = false,                      
     descr = "cuML's KNeighborsRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression",
@@ -428,63 +425,46 @@ const CUML_REGRESSION = Union{LinearRegression,
                                 KNeighborsRegressor
                             }
 
+
+# fit methods
 function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w=nothing)
-    # initialize model, prepare data
+    # fit the model
     model = model_init(mlj_model)
-
-    # fit the model 
-    # TODO: why do we have to specify numpy array?
     model.fit(prepare_input(X), prepare_input(y))
-    fitresult = (model, )
+    fitresult = model
 
     # save result
     cache = nothing
-    report = (coef = pyconvert(Array, model.coef_), 
-            intercept = pyconvert(Float64, model.intercept_)
-    )
-    return (fitresult, cache, report)
-end
-
-function MMI.fit(mlj_model::RandomForestRegressor, verbosity, X, y, w=nothing)
-    # initialize model, prepare data
-    model = model_init(mlj_model)
-
-    # fit the model 
-    # TODO: why do we have to specify numpy array?
-    model.fit(prepare_input(X), prepare_input(y))
-    fitresult = (model, )
-
-    # save result
-    cache = nothing
-    report = (n_features_in = pyconvert(Int, model.n_features_in_))
-    return (fitresult, cache, report)
-end
-
-function MMI.fit(mlj_model::Union{SVR, LinearSVR, KNeighborsRegressor}, 
-                verbosity, X, y, w=nothing)
-    # initialize model, prepare data
-    model = model_init(mlj_model)
-
-    # fit the model 
-    # TODO: why do we have to specify numpy array?
-    model.fit(prepare_input(X), prepare_input(y))
-    fitresult = (model, )
-
-    # save result
-    cache = nothing
-    #TODO: Get params in report
     report = ()
     return (fitresult, cache, report)
 end
 
-
-
 # predict methods
 function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
-    model,  = fitresult
+    model  = fitresult
     py_preds = model.predict(prepare_input(Xnew))
     preds = pyconvert(Array, py_preds) 
 
     return preds
 end
-    
+
+
+
+# Regression metadata
+MMI.metadata_pkg.((LinearRegression, 
+                    Ridge,
+                    Lasso,
+                    ElasticNet,
+                    MBSGDRegressor,
+                    RandomForestRegressor,
+                    CD,
+                    SVR,
+                    LinearSVR,
+                    KNeighborsRegressor),
+    name = "cuML Regression Methods",
+    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia = false,          # is it written entirely in Julia?
+    license = "MIT",        # your package license
+    is_wrapper = true,      # does it wrap around some other package?
+)
