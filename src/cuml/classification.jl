@@ -4,7 +4,7 @@
 
 """
 RAPIDS Docs for Logistic Regression: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#lgoistic-regression
+    https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression
 
 Example:
 ```
