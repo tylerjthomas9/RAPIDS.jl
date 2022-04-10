@@ -89,7 +89,10 @@ MLJ Support:
     - `SVR`
     - `LinearSVR`
     - `KNeighborsRegressor`
-- Dimensionality Reduction / Manifold Learning
+- Dimensionality Reduction
     - `PCA`
     - `IncrementalPCA`
     - `TruncatedSVD`
+    - `UMAP`
+    - `TSNE`
+    - `GaussianRandomProjection`

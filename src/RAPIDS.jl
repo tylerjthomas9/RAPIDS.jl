@@ -84,7 +84,10 @@ KNeighborsClassifier,
 # dimensionality reduction
 PCA,
 IncrementalPCA,
-TruncatedSVD
+TruncatedSVD,
+UMAP,
+GaussianRandomProjection,
+TSNE
 
 
 

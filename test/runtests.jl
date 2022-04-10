@@ -163,3 +163,24 @@ end
     X_trans = transform(mach, X)
     inverse_transform(mach, X)
 end
+
+@testset "UMAP" begin
+    model = UMAP(n_components=2)
+    mach = machine(model, X)
+    fit!(mach)
+    X_trans = transform(mach, X)
+end
+
+@testset "GaussianRandomProjection" begin
+    model = GaussianRandomProjection(n_components=2)
+    mach = machine(model, X)
+    fit!(mach)
+    X_trans = transform(mach, X)
+end
+
+@testset "TSNE" begin
+    model = TSNE(n_components=2)
+    mach = machine(model, X)
+    fit!(mach)
+    X_trans = transform(mach, X)
+end
