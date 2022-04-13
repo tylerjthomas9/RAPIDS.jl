@@ -88,7 +88,10 @@ IncrementalPCA,
 TruncatedSVD,
 UMAP,
 GaussianRandomProjection,
-TSNE
+TSNE,
+# time series
+ExponentialSmoothing, 
+forecast
 
 
 
