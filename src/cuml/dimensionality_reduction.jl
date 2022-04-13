@@ -211,58 +211,32 @@ model_init(mlj_model::UMAP) = cuml.UMAP(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::GaussianRandomProjection) = cuml.GaussianRandomProjection(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::TSNE) = cuml.TSNE(; mlj_to_kwargs(mlj_model)...)
 
-# add metadata
-MMI.metadata_model(PCA,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = true,           
-    descr = "cuML's PCA: https://docs.rapids.ai/api/cuml/stable/api.html##principal-component-analysis",
-	load_path    = "RAPIDS.PCA"
-)
-MMI.metadata_model(IncrementalPCA,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractMatrix,  
-    supports_weights = true,           
-    descr = "cuML's IncrementalPCA: https://docs.rapids.ai/api/cuml/stable/api.html##incremental-pca",
-	load_path    = "RAPIDS.IncrementalPCA"
-)
-MMI.metadata_model(TruncatedSVD,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractMatrix,  
-    supports_weights = true,           
-    descr = "cuML's TruncatedSVD: https://docs.rapids.ai/api/cuml/stable/api.html##truncated-svd",
-	load_path    = "RAPIDS.TruncatedSVD"
-)
-MMI.metadata_model(UMAP,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractMatrix,  
-    supports_weights = true,           
-    descr = "cuML's UMAP: https://docs.rapids.ai/api/cuml/stable/api.html##umap",
-	load_path    = "RAPIDS.UMAP"
-)
-MMI.metadata_model(GaussianRandomProjection,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractMatrix,  
-    supports_weights = true,           
-    descr = "cuML's GaussianRandomProjection: https://docs.rapids.ai/api/cuml/stable/api.html##random-projection",
-	load_path    = "RAPIDS.GaussianRandomProjection"
-)
-MMI.metadata_model(TSNE,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractMatrix,  
-    supports_weights = true,           
-    descr = "cuML's TSNE: https://docs.rapids.ai/api/cuml/stable/api.html##tsne",
-	load_path    = "RAPIDS.TSNE"
-)
-
-
-
 const CUML_DIMENSIONALITY_REDUCTION = Union{PCA, 
                                             IncrementalPCA, 
                                             TruncatedSVD, 
                                             UMAP,
                                             GaussianRandomProjection, 
                                             TSNE}
+
+
+# add metadata
+MMI.load_path(::Type{<:PCA}) = "$PKG.PCA"
+MMI.load_path(::Type{<:IncrementalPCA}) = "$PKG.IncrementalPCA"
+MMI.load_path(::Type{<:TruncatedSVD}) = "$PKG.TruncatedSVD"
+MMI.load_path(::Type{<:UMAP}) = "$PKG.UMAP"
+MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
+MMI.load_path(::Type{<:GaussianRandomProjection}) = "$PKG.GaussianRandomProjection"
+
+MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION}) = Union{AbstractMatrix, Table(Continuous)}
+
+MMI.docstring(::Type{<:PCA}) = "cuML's PCA: https://docs.rapids.ai/api/cuml/stable/api.html#principal-component-analysis"
+MMI.docstring(::Type{<:IncrementalPCA}) = "cuML's IncrementalPCA: https://docs.rapids.ai/api/cuml/stable/api.html#incremental-pca"
+MMI.docstring(::Type{<:TruncatedSVD}) = "cuML's TruncatedSVD: https://docs.rapids.ai/api/cuml/stable/api.html#truncated-svd"
+MMI.docstring(::Type{<:UMAP}) = "cuML's UMAP: https://docs.rapids.ai/api/cuml/stable/api.html#umap"
+MMI.docstring(::Type{<:GaussianRandomProjection}) = "cuML's GaussianRandomProjection: https://docs.rapids.ai/api/cuml/stable/api.html#random-projection"
+MMI.docstring(::Type{<:TSNE}) = "cuML's TSNE: https://docs.rapids.ai/api/cuml/stable/api.html#tsne"
+
+
 
 function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X, w=nothing)
     # fit model

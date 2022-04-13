@@ -40,17 +40,14 @@ end
 # Multiple dispatch for initializing models
 model_init(X, mlj_model::ExponentialSmoothing) = cuml.ExponentialSmoothing(X; mlj_to_kwargs(mlj_model)...)
 
-# add metadata
-MMI.metadata_model(ExponentialSmoothing,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = true,           
-    descr = "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters",
-	load_path    = "RAPIDS.ExponentialSmoothing"
-)
-
-
 const CUML_TIME_SERIES = Union{ExponentialSmoothing, }
+
+
+# add metadata
+MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.ExponentialSmoothing"
+MMI.input_scitype(::Type{<:CUML_TIME_SERIES}) = Union{AbstractMatrix, Table(Continuous)}
+MMI.docstring(::Type{<:ExponentialSmoothing}) = "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
+
 
 # fit methods
 function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)

@@ -327,92 +327,6 @@ model_init(mlj_model::SVR) = cuml.svm.SVR(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::LinearSVR) = cuml.svm.LinearSVR(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::KNeighborsRegressor) = cuml.KNeighborsRegressor(; mlj_to_kwargs(mlj_model)...)
 
-
-
-
-# add metadata
-MMI.metadata_model(LinearRegression,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,           
-    descr = "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression",
-	load_path    = "RAPIDS.LinearRegression"
-)
-MMI.metadata_model(Ridge,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression",
-	load_path    = "RAPIDS.Ridge"
-)
-MMI.metadata_model(Lasso,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's Lasso: https://docs.rapids.ai/api/cuml/stable/api.html#lassp-regression",
-	load_path    = "RAPIDS.Lasso"
-)
-MMI.metadata_model(ElasticNet,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression",
-	load_path    = "RAPIDS.ElasticNet"
-)
-MMI.metadata_model(MBSGDRegressor,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor",
-	load_path    = "RAPIDS.MBSGDRegressor"
-)
-MMI.metadata_model(RandomForestRegressor,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's RandomForestRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest",
-	load_path    = "RAPIDS.RandomForestRegressor"
-)
-MMI.metadata_model(CD,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's Coordinate Descent: https://docs.rapids.ai/api/cuml/stable/api.html#coordinate-descent",
-	load_path    = "RAPIDS.CD"
-)
-MMI.metadata_model(SVR,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's SVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines",
-	load_path    = "RAPIDS.SVR"
-)
-MMI.metadata_model(LinearSVR,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's LinearSVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines",
-	load_path    = "RAPIDS.LinearSVR"
-)
-MMI.metadata_model(KNeighborsRegressor,
-    input_scitype   = AbstractMatrix,  
-    target_scitype = AbstractVector,
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's KNeighborsRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression",
-	load_path    = "RAPIDS.KNeighborsRegressor"
-)
-
-
 const CUML_REGRESSION = Union{LinearRegression, 
                                 Ridge,
                                 Lasso,
@@ -422,8 +336,33 @@ const CUML_REGRESSION = Union{LinearRegression,
                                 CD,
                                 SVR,
                                 LinearSVR,
-                                KNeighborsRegressor
-                            }
+                                KNeighborsRegressor}
+
+# add metadata
+MMI.load_path(::Type{<:LinearRegression}) = "$PKG.LinearRegression"
+MMI.load_path(::Type{<:Ridge}) = "$PKG.Ridge"
+MMI.load_path(::Type{<:Lasso}) = "$PKG.Lasso"
+MMI.load_path(::Type{<:ElasticNet}) = "$PKG.ElasticNet"
+MMI.load_path(::Type{<:MBSGDRegressor}) = "$PKG.MBSGDRegressor"
+MMI.load_path(::Type{<:RandomForestRegressor}) = "$PKG.RandomForestRegressor"
+MMI.load_path(::Type{<:CD}) = "$PKG.CD"
+MMI.load_path(::Type{<:SVR}) = "$PKG.SVR"
+MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
+MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
+
+MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix, Table(Continuous)}
+MMI.target_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractVector, Table(Continuous)} #should we use count even though we input floats?
+
+MMI.docstring(::Type{<:LinearRegression}) = "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression"
+MMI.docstring(::Type{<:Ridge}) = "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression"
+MMI.docstring(::Type{<:Lasso}) = "cuML's Lasso: https://docs.rapids.ai/api/cuml/stable/api.html#lasso-regression"
+MMI.docstring(::Type{<:ElasticNet}) = "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression"
+MMI.docstring(::Type{<:MBSGDRegressor}) = "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor"
+MMI.docstring(::Type{<:AbstractMatrix}) = "cuML's AbstractMatrix: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest"
+MMI.docstring(::Type{<:CD}) = "cuML's CD: https://docs.rapids.ai/api/cuml/stable/api.htmll#coordinate-descent"
+MMI.docstring(::Type{<:SVR}) = "cuML's SVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines"
+MMI.docstring(::Type{<:LinearSVR}) = "cuML's LinearSVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines"
+MMI.docstring(::Type{<:KNeighborsRegressor}) = "cuML's KNeighborsRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression"
 
 
 # fit methods

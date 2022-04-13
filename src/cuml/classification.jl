@@ -102,30 +102,19 @@ model_init(mlj_model::LogisticRegression) = cuml.LogisticRegression(; mlj_to_kwa
 model_init(mlj_model::MBSGDClassifier) = cuml.MBSGDClassifier(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::KNeighborsClassifier) = cuml.KNeighborsClassifier(; mlj_to_kwargs(mlj_model)...)
 
-# add metadata
-MMI.metadata_model(LogisticRegression,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = true,           
-    descr = "cuML's LogisticRegression: https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression",
-	load_path    = "RAPIDS.LogisticRegression"
-)
-MMI.metadata_model(MBSGDClassifier,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's MBSGDClassifier: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-classifier",
-	load_path    = "RAPIDS.MBSGDClassifier"
-)
-MMI.metadata_model(KNeighborsClassifier,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's KNeighborsClassifier: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-classification",
-	load_path    = "RAPIDS.KNeighborsClassifier"
-)
-
 const CUML_CLASSIFICATION = Union{LogisticRegression, MBSGDClassifier, KNeighborsClassifier}
+
+# add metadata
+MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.LogisticRegression"
+MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.MBSGDClassifier"
+MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
+
+MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractMatrix, Table(Continuous)}
+MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractVector, Table(Continuous)} #should we use count even though we input floats?
+
+MMI.docstring(::Type{<:LogisticRegression}) = "cuML's LogisticRegression: https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression"
+MMI.docstring(::Type{<:MBSGDClassifier}) = "cuML's MBSGDClassifier: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-classifier"
+MMI.docstring(::Type{<:KNeighborsClassifier}) = "cuML's KNeighborsClassifier: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-classification"
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)

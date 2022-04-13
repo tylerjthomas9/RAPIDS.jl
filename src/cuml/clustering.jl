@@ -126,38 +126,21 @@ model_init(mlj_model::DBSCAN) = cuml.DBSCAN(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::AgglomerativeClustering) = cuml.AgglomerativeClustering(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::HDBSCAN) = cuml.HDBSCAN(; mlj_to_kwargs(mlj_model)...)
 
+const CUML_CLUSTERING = Union{KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN}
 
 # add metadata
-MMI.metadata_model(KMeans,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering",
-	load_path    = "RAPIDS.KMeans"
-)
-MMI.metadata_model(DBSCAN,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan",
-	load_path    = "RAPIDS.DBSCAN"
-)
-MMI.metadata_model(AgglomerativeClustering,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's Agglomerative Clustering: https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering",
-	load_path    = "RAPIDS.AgglomerativeClustering"
-)
-MMI.metadata_model(HDBSCAN,
-    input_scitype   = AbstractMatrix,  
-    output_scitype  = AbstractVector,  
-    supports_weights = false,                      
-    descr = "cuML's HDBSCAN Clustering: https://docs.rapids.ai/api/cuml/stable/api.html#hdbscan",
-	load_path    = "RAPIDS.HDBSCAN"
-)
+MMI.load_path(::Type{<:KMeans}) = "$PKG.KMeans"
+MMI.load_path(::Type{<:DBSCAN}) = "$PKG.DBSCAN"
+MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.AgglomerativeClustering"
+MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
 
-const CUML_CLUSTERING = Union{KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN}
+MMI.input_scitype(::Type{<:CUML_CLUSTERING}) = Union{AbstractMatrix, Table(Continuous)}
+
+MMI.docstring(::Type{<:KMeans}) = "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering"
+MMI.docstring(::Type{<:DBSCAN}) = "cuML's DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan"
+MMI.docstring(::Type{<:AgglomerativeClustering}) = "cuML's AgglomerativeClustering: https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering"
+MMI.docstring(::Type{<:HDBSCAN}) = "cuML's HDBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#hdbscan"
+
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)

@@ -9,6 +9,7 @@ using PythonCall
 using MLJBase
 using MLJModelInterface
 const MMI = MLJModelInterface
+const PKG = "RAPIDS"
 
 
 const cudf = PythonCall.pynew()
