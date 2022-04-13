@@ -21,11 +21,13 @@ include("./cuml/classification.jl")
 include("./cuml/clustering.jl")
 include("./cuml/dimensionality_reduction.jl")
 include("./cuml/regression.jl")
+include("./cuml/time_series.jl")
 
 const CUML_MODELS = Union{CUML_CLASSIFICATION, 
                             CUML_CLUSTERING,
                             CUML_DIMENSIONALITY_REDUCTION, 
-                            CUML_REGRESSION}
+                            CUML_REGRESSION,
+                            CUML_TIME_SERIES}
 include("./cuml/mlj_serialization.jl")
 
 

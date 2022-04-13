@@ -96,3 +96,5 @@ MLJ Support:
     - `UMAP`
     - `TSNE`
     - `GaussianRandomProjection`
+- Time Series
+    - `ExponentialSmoothing`

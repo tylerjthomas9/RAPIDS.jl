@@ -184,3 +184,17 @@ end
     fit!(mach)
     X_trans = transform(mach, X)
 end
+
+# Time Series
+X = [1, 2, 3, 4, 5, 6,
+    7, 8, 9, 10, 11, 12,
+    2, 3, 4, 5, 6, 7,
+    8, 9, 10, 11, 12, 13,
+    3, 4, 5, 6, 7, 8, 9,
+    10, 11, 12, 13, 14] 
+@testset "ExponentialSmoothing" begin
+    model = ExponentialSmoothing()
+    mach = machine(model, X)
+    fit!(mach)
+    forecast(mach, 4)
+end
