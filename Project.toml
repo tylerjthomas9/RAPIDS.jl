@@ -12,6 +12,7 @@ MLJModelInterface = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 
 [compat]
+CUDA = "3.9"
 CondaPkg = "0.2"
 MLJ = "0.17, 0.18"
 MLJBase = "0.19, 0.20"
