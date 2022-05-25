@@ -351,7 +351,7 @@ MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
 MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
 
 MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix, Table(Continuous)}
-MMI.target_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractVector, Table(Continuous)} #should we use count even though we input floats?
+MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:Continuous}
 
 MMI.docstring(::Type{<:LinearRegression}) = "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression"
 MMI.docstring(::Type{<:Ridge}) = "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression"

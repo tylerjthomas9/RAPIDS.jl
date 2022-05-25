@@ -110,7 +110,7 @@ MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.MBSGDClassifier"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
 
 MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractMatrix, Table(Continuous)}
-MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractVector, Table(Continuous)} #should we use count even though we input floats?
+MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
 MMI.docstring(::Type{<:LogisticRegression}) = "cuML's LogisticRegression: https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression"
 MMI.docstring(::Type{<:MBSGDClassifier}) = "cuML's MBSGDClassifier: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-classifier"
