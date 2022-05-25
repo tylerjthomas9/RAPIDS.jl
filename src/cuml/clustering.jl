@@ -135,6 +135,7 @@ MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.AgglomerativeClustering
 MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
 
 MMI.input_scitype(::Type{<:CUML_CLUSTERING}) = Union{AbstractMatrix, Table(Continuous)}
+MMI.target_scitype(::Type{<:KMeans}) = AbstractVector{<:Finite}
 
 MMI.docstring(::Type{<:KMeans}) = "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering"
 MMI.docstring(::Type{<:DBSCAN}) = "cuML's DBSCAN: https://docs.rapids.ai/api/cuml/stable/api.html#dbscan"
