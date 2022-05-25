@@ -224,8 +224,8 @@ MMI.load_path(::Type{<:PCA}) = "$PKG.PCA"
 MMI.load_path(::Type{<:IncrementalPCA}) = "$PKG.IncrementalPCA"
 MMI.load_path(::Type{<:TruncatedSVD}) = "$PKG.TruncatedSVD"
 MMI.load_path(::Type{<:UMAP}) = "$PKG.UMAP"
-MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
 MMI.load_path(::Type{<:GaussianRandomProjection}) = "$PKG.GaussianRandomProjection"
+MMI.load_path(::Type{<:TSNE}) = "$PKG.TSNE"
 
 MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION}) = Union{AbstractMatrix, Table(Continuous)}
 
