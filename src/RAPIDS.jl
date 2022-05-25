@@ -19,6 +19,7 @@ if !CUDA.functional()
     VERSION
     
 else
+    @info "CUDA GPU Detected"
     using PythonCall
     const cudf = PythonCall.pynew()
     #const cuxfilter = PythonCall.pynew() #TODO fix error during import
