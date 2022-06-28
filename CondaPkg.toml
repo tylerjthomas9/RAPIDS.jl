@@ -1,6 +1,6 @@
 channels = ["rapidsai", "nvidia", "conda-forge"]
 
 [deps]
-cudatoolkit = "11.5"
-rapids = "22.04"
+cudatoolkit = "11.6"
+rapids = "22.06"
 python = "3.9"
