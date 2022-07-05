@@ -3,10 +3,51 @@
 # Model hyperparameters
 
 """
-RAPIDS Docs for Logistic Regression: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression
+$(MMI.doc_header(LogisticRegression))
 
-Example:
+`LogisticRegression`  is a wrapper for the RAPIDS Logistic Regression.
+
+
+# Training data
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+where
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+- `y`: is the target, which can be any `AbstractVector` whose element
+    scitype is `<:OrderedFactor` or `<:Multiclass`; check the scitype
+    with `scitype(y)`
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+- `penalty="l2"`:           Normalization/penalty function ("none", "l1", "l2", "elasticnet").
+- `tol=1e-4':               Tolerance for stopping criteria. 
+- `C=1.0`:                  Inverse of regularization strength.
+- `fit_intercept=true`      If True, the model tries to correct for the global mean of y. 
+                            If False, the model expects that you have centered the data.
+- `class_weight="balanced"` Dictionary or `"balanced"`.
+- `max_iter=1000`           Maximum number of iterations taken for the solvers to converge.
+- `linesearch_max_iter=50`  Max number of linesearch iterations per outer iteration used in 
+                            the lbfgs and owl QN solvers.
+- `solver="qn"`             Algorithm to use in the optimization problem. Currently only `qn` 
+                            is supported, which automatically selects either `L-BFGS `or `OWL-QN`
+- `l1_ratio=nothing`        The Elastic-Net mixing parameter. 
+- `verbose=false`           Sets logging level.
+
+
+# Operations
+- `predict(mach, Xnew)`: return predictions of the target given
+  features `Xnew` having the same scitype as `X` above. Predictions
+  are class assignments. 
+- `predict_proba(mach, Xnew)`: return predictions of the target given
+features `Xnew` having the same scitype as `X` above. Predictions
+are probabilistic, but uncalibrated.
+
+# Fitted parameters
+
+# Report
+
+# Examples
 ```
 using RAPIDS
 using MLJ
@@ -29,9 +70,9 @@ MLJModelInterface.@mlj_model mutable struct LogisticRegression <: MMI.Probabilis
     class_weight = nothing
     max_iter::Int = 1000::(_ > 0)
     linesearch_max_iter::Int = 50::(_ > 0)
-    verbose::Bool = false
-    l1_ratio = nothing
     solver::String = "qn"::(_ in ("qn", "lbfgs", "owl"))
+    l1_ratio = nothing
+    verbose::Bool = false
 end
 
 """
