@@ -20,7 +20,7 @@ function persistent(model)
     model_file, io = mktemp()
     close(io)
 
-    pickle.dump(model, @py open(model_file, "wb") )
+    pickle.dump(model, @py open(model_file, "wb"))
     XGBoost.save(booster, xgb_file)
     persistent_booster = read(xgb_file)
     rm(xgb_file)
@@ -41,7 +41,7 @@ function booster(persistent)
     model_file, io = mktemp()
     write(io, persistent)
     close(io)
-    model = pickle.load( @py open(model_file, "rb") ) 
+    model = pickle.load(@py open(model_file, "rb"))
     rm(model_file)
 
     return model

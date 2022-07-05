@@ -133,7 +133,7 @@ preds = predict(mach, X)
 """
 MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     handle = nothing
-    loss::String = "squared_loss"::(_ in ("squared_loss", ))
+    loss::String = "squared_loss"::(_ in ("squared_loss",))
     penalty::String = "none"::(_ in ("none", "l1", "l2", "elasticnet"))
     alpha::Float64 = 0.0001::(_ >= 0)
     fit_intercept::Bool = true
@@ -144,7 +144,8 @@ MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     shuffle::Bool = true
     eta0::Float64 = 1e-3::(_ > 0)
     power_t::Float64 = 0.5::(_ > 0)
-    learning_rate::String = "constant"::(_ in ("adaptive", "constant", "invscaling", "optimal"))
+    learning_rate::String =
+        "constant"::(_ in ("adaptive", "constant", "invscaling", "optimal"))
     n_iter_no_change::Int = 5::(_ > 0)
     verbose::Bool = false
 end
@@ -206,7 +207,7 @@ preds = predict(mach, X)
 """
 MLJModelInterface.@mlj_model mutable struct CD <: MMI.Deterministic
     handle = nothing
-    loss::String = "squared_loss"::(_ in ("squared_loss", ))
+    loss::String = "squared_loss"::(_ in ("squared_loss",))
     alpha::Float64 = 1.0::(_ > 0)
     l1_ratio::Float64 = 0.5::(_ > 0)
     fit_intercept::Bool = true
@@ -271,7 +272,8 @@ preds = predict(mach, X)
 MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     handle = nothing
     penalty::String = "l2"::(_ in ("l1", "l2"))
-    loss = "epsilon_insensitive"::(_ in ("epsilon_insensitive", "squared_epsilon_insensitive"))
+    loss =
+        "epsilon_insensitive"::(_ in ("epsilon_insensitive", "squared_epsilon_insensitive"))
     fit_intercept::Bool = true
     penalized_intercept::Bool = true
     max_iter::Int = 1000::(_ > 0)
@@ -316,27 +318,32 @@ end
 
 
 # Multiple dispatch for initializing models
-model_init(mlj_model::LinearRegression) = cuml.LinearRegression(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::LinearRegression) =
+    cuml.LinearRegression(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::Ridge) = cuml.Ridge(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::Lasso) = cuml.Lasso(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::ElasticNet) = cuml.ElasticNet(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::MBSGDRegressor) = cuml.MBSGDRegressor(; mlj_to_kwargs(mlj_model)...)
-model_init(mlj_model::RandomForestRegressor) = cuml.RandomForestRegressor(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::RandomForestRegressor) =
+    cuml.RandomForestRegressor(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::CD) = cuml.CD(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::SVR) = cuml.svm.SVR(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::LinearSVR) = cuml.svm.LinearSVR(; mlj_to_kwargs(mlj_model)...)
-model_init(mlj_model::KNeighborsRegressor) = cuml.KNeighborsRegressor(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::KNeighborsRegressor) =
+    cuml.KNeighborsRegressor(; mlj_to_kwargs(mlj_model)...)
 
-const CUML_REGRESSION = Union{LinearRegression, 
-                                Ridge,
-                                Lasso,
-                                ElasticNet,
-                                MBSGDRegressor,
-                                RandomForestRegressor,
-                                CD,
-                                SVR,
-                                LinearSVR,
-                                KNeighborsRegressor}
+const CUML_REGRESSION = Union{
+    LinearRegression,
+    Ridge,
+    Lasso,
+    ElasticNet,
+    MBSGDRegressor,
+    RandomForestRegressor,
+    CD,
+    SVR,
+    LinearSVR,
+    KNeighborsRegressor,
+}
 
 # add metadata
 MMI.load_path(::Type{<:LinearRegression}) = "$PKG.LinearRegression"
@@ -350,23 +357,33 @@ MMI.load_path(::Type{<:SVR}) = "$PKG.SVR"
 MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
 MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
 
-MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix, Table(Continuous)}
+MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix,Table(Continuous)}
 MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:Continuous}
 
-MMI.docstring(::Type{<:LinearRegression}) = "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression"
-MMI.docstring(::Type{<:Ridge}) = "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression"
-MMI.docstring(::Type{<:Lasso}) = "cuML's Lasso: https://docs.rapids.ai/api/cuml/stable/api.html#lasso-regression"
-MMI.docstring(::Type{<:ElasticNet}) = "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression"
-MMI.docstring(::Type{<:MBSGDRegressor}) = "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor"
-MMI.docstring(::Type{<:AbstractMatrix}) = "cuML's AbstractMatrix: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest"
-MMI.docstring(::Type{<:CD}) = "cuML's CD: https://docs.rapids.ai/api/cuml/stable/api.htmll#coordinate-descent"
-MMI.docstring(::Type{<:SVR}) = "cuML's SVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines"
-MMI.docstring(::Type{<:LinearSVR}) = "cuML's LinearSVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines"
-MMI.docstring(::Type{<:KNeighborsRegressor}) = "cuML's KNeighborsRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression"
+MMI.docstring(::Type{<:LinearRegression}) =
+    "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression"
+MMI.docstring(::Type{<:Ridge}) =
+    "cuML's Ridge: https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression"
+MMI.docstring(::Type{<:Lasso}) =
+    "cuML's Lasso: https://docs.rapids.ai/api/cuml/stable/api.html#lasso-regression"
+MMI.docstring(::Type{<:ElasticNet}) =
+    "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression"
+MMI.docstring(::Type{<:MBSGDRegressor}) =
+    "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor"
+MMI.docstring(::Type{<:AbstractMatrix}) =
+    "cuML's AbstractMatrix: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest"
+MMI.docstring(::Type{<:CD}) =
+    "cuML's CD: https://docs.rapids.ai/api/cuml/stable/api.htmll#coordinate-descent"
+MMI.docstring(::Type{<:SVR}) =
+    "cuML's SVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines"
+MMI.docstring(::Type{<:LinearSVR}) =
+    "cuML's LinearSVR: https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines"
+MMI.docstring(::Type{<:KNeighborsRegressor}) =
+    "cuML's KNeighborsRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression"
 
 
 # fit methods
-function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w=nothing)
+function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w = nothing)
     # fit the model
     model = model_init(mlj_model)
     model.fit(prepare_input(X), prepare_input(y))
@@ -380,9 +397,9 @@ end
 
 # predict methods
 function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
-    model  = fitresult
+    model = fitresult
     py_preds = model.predict(prepare_input(Xnew))
-    preds = pyconvert(Array, py_preds) 
+    preds = pyconvert(Array, py_preds)
 
     return preds
 end
@@ -390,19 +407,22 @@ end
 
 
 # Regression metadata
-MMI.metadata_pkg.((LinearRegression, 
-                    Ridge,
-                    Lasso,
-                    ElasticNet,
-                    MBSGDRegressor,
-                    RandomForestRegressor,
-                    CD,
-                    SVR,
-                    LinearSVR,
-                    KNeighborsRegressor),
+MMI.metadata_pkg.(
+    (
+        LinearRegression,
+        Ridge,
+        Lasso,
+        ElasticNet,
+        MBSGDRegressor,
+        RandomForestRegressor,
+        CD,
+        SVR,
+        LinearSVR,
+        KNeighborsRegressor,
+    ),
     name = "cuML Regression Methods",
     uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
     julia = false,          # is it written entirely in Julia?
     license = "MIT",        # your package license
     is_wrapper = true,      # does it wrap around some other package?

@@ -14,10 +14,9 @@ const PKG = "RAPIDS"
 
 if !CUDA.functional()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
-    const VERSION = VersionNumber(0,1,0) # fake version number for automerge
-    export
-    VERSION
-    
+    const VERSION = VersionNumber(0, 1, 0) # fake version number for automerge
+    export VERSION
+
 else
     @info "CUDA GPU Detected"
     using PythonCall
@@ -54,53 +53,53 @@ else
 
 
     export
-    # RAPIDS Python API
-    cudf, 
-    #cuxfilter,
-    cugraph,
-    cuml,
-    cusignal,
-    cupy,
-    cuspatial,
-    dask,
-    dask_cuda,
-    dask_cudf,
-    numpy,
+        # RAPIDS Python API
+        cudf,
+        #cuxfilter,
+        cugraph,
+        cuml,
+        cusignal,
+        cupy,
+        cuspatial,
+        dask,
+        dask_cuda,
+        dask_cudf,
+        numpy,
 
-    # PythonCall
-    pycopy!,
-    pyimport,
-    pynew,
+        # PythonCall
+        pycopy!,
+        pyimport,
+        pynew,
 
-    # clustering
-    KMeans,
-    DBSCAN,
-    AgglomerativeClustering,
-    HDBSCAN,
-    # regression
-    LinearRegression,
-    Ridge,
-    Lasso,
-    ElasticNet,
-    MBSGDRegressor,
-    RandomForestRegressor,
-    CD,
-    SVR,
-    KNeighborsRegressor,
-    # classification
-    LogisticRegression,
-    MBSGDClassifier,
-    KNeighborsClassifier,
-    # dimensionality reduction
-    PCA,
-    IncrementalPCA,
-    TruncatedSVD,
-    UMAP,
-    GaussianRandomProjection,
-    TSNE,
-    # time series
-    ExponentialSmoothing, 
-    forecast
+        # clustering
+        KMeans,
+        DBSCAN,
+        AgglomerativeClustering,
+        HDBSCAN,
+        # regression
+        LinearRegression,
+        Ridge,
+        Lasso,
+        ElasticNet,
+        MBSGDRegressor,
+        RandomForestRegressor,
+        CD,
+        SVR,
+        KNeighborsRegressor,
+        # classification
+        LogisticRegression,
+        MBSGDClassifier,
+        KNeighborsClassifier,
+        # dimensionality reduction
+        PCA,
+        IncrementalPCA,
+        TruncatedSVD,
+        UMAP,
+        GaussianRandomProjection,
+        TSNE,
+        # time series
+        ExponentialSmoothing,
+        forecast
 end
 
 

@@ -187,8 +187,8 @@ MLJModelInterface.@mlj_model mutable struct TSNE <: MMI.Unsupervised
     n_iter::Int = 1000::(_ > 0)
     n_iter_without_progress::Int = 300::(_ > 0)
     min_grad_norm::Float64 = 1e-7::(_ > 0)
-    metric::String = "euclidean"::(_ in ("euclidean", ))
-    init::String = "random"::(_ in ("random", ))
+    metric::String = "euclidean"::(_ in ("euclidean",))
+    init::String = "random"::(_ in ("random",))
     method::String = "fft"::(_ in ("barnes_hut", "exact", "fft"))
     angle::Float64 = 0.5::(_ >= 0 && _ <= 1)
     learning_rate_method = "adaptive"
@@ -208,15 +208,12 @@ model_init(mlj_model::PCA) = cuml.PCA(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::IncrementalPCA) = cuml.IncrementalPCA(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::TruncatedSVD) = cuml.TruncatedSVD(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::UMAP) = cuml.UMAP(; mlj_to_kwargs(mlj_model)...)
-model_init(mlj_model::GaussianRandomProjection) = cuml.GaussianRandomProjection(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::GaussianRandomProjection) =
+    cuml.GaussianRandomProjection(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::TSNE) = cuml.TSNE(; mlj_to_kwargs(mlj_model)...)
 
-const CUML_DIMENSIONALITY_REDUCTION = Union{PCA, 
-                                            IncrementalPCA, 
-                                            TruncatedSVD, 
-                                            UMAP,
-                                            GaussianRandomProjection, 
-                                            TSNE}
+const CUML_DIMENSIONALITY_REDUCTION =
+    Union{PCA,IncrementalPCA,TruncatedSVD,UMAP,GaussianRandomProjection,TSNE}
 
 
 # add metadata
@@ -227,18 +224,25 @@ MMI.load_path(::Type{<:UMAP}) = "$PKG.UMAP"
 MMI.load_path(::Type{<:GaussianRandomProjection}) = "$PKG.GaussianRandomProjection"
 MMI.load_path(::Type{<:TSNE}) = "$PKG.TSNE"
 
-MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION}) = Union{AbstractMatrix, Table(Continuous)}
+MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION}) =
+    Union{AbstractMatrix,Table(Continuous)}
 
-MMI.docstring(::Type{<:PCA}) = "cuML's PCA: https://docs.rapids.ai/api/cuml/stable/api.html#principal-component-analysis"
-MMI.docstring(::Type{<:IncrementalPCA}) = "cuML's IncrementalPCA: https://docs.rapids.ai/api/cuml/stable/api.html#incremental-pca"
-MMI.docstring(::Type{<:TruncatedSVD}) = "cuML's TruncatedSVD: https://docs.rapids.ai/api/cuml/stable/api.html#truncated-svd"
-MMI.docstring(::Type{<:UMAP}) = "cuML's UMAP: https://docs.rapids.ai/api/cuml/stable/api.html#umap"
-MMI.docstring(::Type{<:GaussianRandomProjection}) = "cuML's GaussianRandomProjection: https://docs.rapids.ai/api/cuml/stable/api.html#random-projection"
-MMI.docstring(::Type{<:TSNE}) = "cuML's TSNE: https://docs.rapids.ai/api/cuml/stable/api.html#tsne"
+MMI.docstring(::Type{<:PCA}) =
+    "cuML's PCA: https://docs.rapids.ai/api/cuml/stable/api.html#principal-component-analysis"
+MMI.docstring(::Type{<:IncrementalPCA}) =
+    "cuML's IncrementalPCA: https://docs.rapids.ai/api/cuml/stable/api.html#incremental-pca"
+MMI.docstring(::Type{<:TruncatedSVD}) =
+    "cuML's TruncatedSVD: https://docs.rapids.ai/api/cuml/stable/api.html#truncated-svd"
+MMI.docstring(::Type{<:UMAP}) =
+    "cuML's UMAP: https://docs.rapids.ai/api/cuml/stable/api.html#umap"
+MMI.docstring(::Type{<:GaussianRandomProjection}) =
+    "cuML's GaussianRandomProjection: https://docs.rapids.ai/api/cuml/stable/api.html#random-projection"
+MMI.docstring(::Type{<:TSNE}) =
+    "cuML's TSNE: https://docs.rapids.ai/api/cuml/stable/api.html#tsne"
 
 
 
-function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X, w = nothing)
     # fit model
     model = model_init(mlj_model)
     model.fit(prepare_input(X))
@@ -251,13 +255,14 @@ function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X, w=nothi
 end
 
 # transform methods
-function MMI.transform(mlj_model::Union{PCA, IncrementalPCA, 
-                                        UMAP, TruncatedSVD, 
-                                        GaussianRandomProjection}, 
-                        fitresult, Xnew)
-    model  = fitresult
+function MMI.transform(
+    mlj_model::Union{PCA,IncrementalPCA,UMAP,TruncatedSVD,GaussianRandomProjection},
+    fitresult,
+    Xnew,
+)
+    model = fitresult
     py_preds = model.transform(prepare_input(Xnew))
-    preds = pyconvert(Array, py_preds) 
+    preds = pyconvert(Array, py_preds)
 
     return preds
 end
@@ -265,26 +270,27 @@ end
 # todo figure out how to handle TSNE's lack of transform
 # right now we have to refit the model when transforming
 function MMI.transform(mlj_model::TSNE, fitresult, Xnew)
-    model  = fitresult
+    model = fitresult
     py_preds = model.fit_transform(prepare_input(Xnew))
-    preds = pyconvert(Array, py_preds) 
+    preds = pyconvert(Array, py_preds)
 
     return preds
 end
 
-function MMI.inverse_transform(mlj_model::Union{PCA, TruncatedSVD}, fitresult, Xnew)
+function MMI.inverse_transform(mlj_model::Union{PCA,TruncatedSVD}, fitresult, Xnew)
     model = fitresult
     py_preds = model.inverse_transform(prepare_input(Xnew))
-    preds = pyconvert(Array, py_preds) 
+    preds = pyconvert(Array, py_preds)
 
     return preds
 end
 
 # Clustering metadata
-MMI.metadata_pkg.((PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjection, TSNE),
+MMI.metadata_pkg.(
+    (PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjection, TSNE),
     name = "cuML Dimensionality Reduction and Manifold Learning Methods",
     uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
     julia = false,          # is it written entirely in Julia?
     license = "MIT",        # your package license
     is_wrapper = true,      # does it wrap around some other package?

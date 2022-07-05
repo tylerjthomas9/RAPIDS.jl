@@ -38,19 +38,21 @@ end
 
 
 # Multiple dispatch for initializing models
-model_init(X, mlj_model::ExponentialSmoothing) = cuml.ExponentialSmoothing(X; mlj_to_kwargs(mlj_model)...)
+model_init(X, mlj_model::ExponentialSmoothing) =
+    cuml.ExponentialSmoothing(X; mlj_to_kwargs(mlj_model)...)
 
-const CUML_TIME_SERIES = Union{ExponentialSmoothing, }
+const CUML_TIME_SERIES = Union{ExponentialSmoothing}
 
 
 # add metadata
 MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.ExponentialSmoothing"
-MMI.input_scitype(::Type{<:CUML_TIME_SERIES}) = Union{AbstractMatrix, Table(Continuous)}
-MMI.docstring(::Type{<:ExponentialSmoothing}) = "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
+MMI.input_scitype(::Type{<:CUML_TIME_SERIES}) = Union{AbstractMatrix,Table(Continuous)}
+MMI.docstring(::Type{<:ExponentialSmoothing}) =
+    "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
 
 
 # fit methods
-function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w = nothing)
     # fit the model
     model = model_init(prepare_input(X), mlj_model)
     model.fit()
@@ -63,13 +65,15 @@ function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)
 end
 # predict methods
 # TODO: Figure out how to handle forecast with MMI
-forecast(mach, steps) = pyconvert(Vector{Float32}, mach.fitresult.forecast(steps).to_numpy())
+forecast(mach, steps) =
+    pyconvert(Vector{Float32}, mach.fitresult.forecast(steps).to_numpy())
 
 # Classification metadata
-MMI.metadata_pkg.((ExponentialSmoothing),
+MMI.metadata_pkg.(
+    (ExponentialSmoothing),
     name = "cuML Time Series Methods",
     uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url  = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
     julia = false,          # is it written entirely in Julia?
     license = "MIT",        # your package license
     is_wrapper = true,      # does it wrap around some other package?
