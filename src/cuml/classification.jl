@@ -1,66 +1,6 @@
 
 
-# Model hyperparameters
-
-"""
-$(MMI.doc_header(LogisticRegression))
-
-`LogisticRegression`  is a wrapper for the RAPIDS Logistic Regression.
-
-
-# Training data
-In MLJ or MLJBase, bind an instance `model` to data with
-    mach = machine(model, X, y)
-where
-- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
-    each have one of the following element scitypes: `Continuous`
-- `y`: is the target, which can be any `AbstractVector` whose element
-    scitype is `<:OrderedFactor` or `<:Multiclass`; check the scitype
-    with `scitype(y)`
-Train the machine using `fit!(mach, rows=...)`.
-
-# Hyper-parameters
-- `penalty="l2"`:           Normalization/penalty function ("none", "l1", "l2", "elasticnet").
-- `tol=1e-4':               Tolerance for stopping criteria. 
-- `C=1.0`:                  Inverse of regularization strength.
-- `fit_intercept=true`      If True, the model tries to correct for the global mean of y. 
-                            If False, the model expects that you have centered the data.
-- `class_weight="balanced"` Dictionary or `"balanced"`.
-- `max_iter=1000`           Maximum number of iterations taken for the solvers to converge.
-- `linesearch_max_iter=50`  Max number of linesearch iterations per outer iteration used in 
-                            the lbfgs and owl QN solvers.
-- `solver="qn"`             Algorithm to use in the optimization problem. Currently only `qn` 
-                            is supported, which automatically selects either `L-BFGS `or `OWL-QN`
-- `l1_ratio=nothing`        The Elastic-Net mixing parameter. 
-- `verbose=false`           Sets logging level.
-
-
-# Operations
-- `predict(mach, Xnew)`: return predictions of the target given
-  features `Xnew` having the same scitype as `X` above. Predictions
-  are class assignments. 
-- `predict_proba(mach, Xnew)`: return predictions of the target given
-features `Xnew` having the same scitype as `X` above. Predictions
-are probabilistic, but uncalibrated.
-
-# Fitted parameters
-
-# Report
-
-# Examples
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = [repeat([0], 50)..., repeat([1], 50)...]
-
-model = LogisticRegression()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
+# Model Structs
 MLJModelInterface.@mlj_model mutable struct LogisticRegression <: MMI.Probabilistic
     handle = nothing
     penalty::String = "l2"::(_ in ("none", "l1", "l2", "elasticnet"))
@@ -75,24 +15,6 @@ MLJModelInterface.@mlj_model mutable struct LogisticRegression <: MMI.Probabilis
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for the MBSGD Classifier: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-classifier
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = [repeat([0], 50)..., repeat([1], 50)...]
-
-model = MBSGDClassifier()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
     handle = nothing
     loss::String = "squared_loss"::(_ in ("hinge", "log", "squared_loss"))
@@ -153,7 +75,7 @@ MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.LogisticRegression"
 MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.MBSGDClassifier"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
 
-MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractMatrix,Table(Continuous)}
+MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractMatrix, Table(Continuous)}
 MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
 MMI.docstring(::Type{<:LogisticRegression}) =
@@ -165,14 +87,26 @@ MMI.docstring(::Type{<:KNeighborsClassifier}) =
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w = nothing)
+    schema = Tables.schema(X)
+    X_numpy = prepare_input(X)
+    y_numpy  = prepare_input(y)
+
+    if schema === nothing
+        features = [Symbol("x$j") for j in 1:size(X, 2)]
+    else
+        features = schema.names |> collect
+    end
+
     # fit the model
     model = model_init(mlj_model)
-    model.fit(prepare_input(X), prepare_input(y))
+    model.fit(X_numpy, y_numpy)
     fitresult = model
 
     # save result
     cache = nothing
-    report = ()
+    classes_seen = filter(in(unique(y)), MMI.classes(y[1]))
+    report = (classes_seen=classes_seen,
+                features=features)
     return (fitresult, cache, report)
 end
 
@@ -180,8 +114,8 @@ end
 function MMI.predict(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
     model = fitresult
     py_preds = model.predict(prepare_input(Xnew))
-    preds = pyconvert(Array, py_preds)
-
+    preds = pyconvert(Array, py_preds) |> MMI.categorical
+ 
     return preds
 end
 
@@ -196,3 +130,156 @@ MMI.metadata_pkg.(
     license = "MIT",        # your package license
     is_wrapper = true,      # does it wrap around some other package?
 )
+
+# docstrings
+# TODO: add Table/DataFrame examples
+
+"""
+$(MMI.doc_header(LogisticRegression))
+
+`LogisticRegression`  is a wrapper for the RAPIDS Logistic Regression.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+- `y`: is the target, which can be any `AbstractVector` whose element
+    scitype is `<:OrderedFactor` or `<:Multiclass`; check the scitype
+    with `scitype(y)`
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+- `penalty="l2"`:           Normalization/penalty function ("none", "l1", "l2", "elasticnet").
+    - `none`: the L-BFGS solver will be used
+    - `l1`: The L1 penalty is best when there are only a few useful features (sparse), and you
+            want to zero out non-important features. The L-BFGS solver will be used.
+    - `l2`: The L2 penalty is best when you have a lot of important features, especially if they
+            are correlated.The L-BFGS solver will be used.
+    - `elasticnet`: A combination of the L1 and L2 penalties. The OWL-QN solver will be used if
+                    `l1_ratio>0`, otherwise the L-BFGS solver will be used.
+- `tol=1e-4':               Tolerance for stopping criteria. 
+- `C=1.0`:                  Inverse of regularization strength.
+- `fit_intercept=true`      If True, the model tries to correct for the global mean of y. 
+                            If False, the model expects that you have centered the data.
+- `class_weight="balanced"` Dictionary or `"balanced"`.
+- `max_iter=1000`           Maximum number of iterations taken for the solvers to converge.
+- `linesearch_max_iter=50`  Max number of linesearch iterations per outer iteration used in 
+                            the lbfgs and owl QN solvers.
+- `solver="qn"`             Algorithm to use in the optimization problem. Currently only `qn` 
+                            is supported, which automatically selects either `L-BFGS `or `OWL-QN`
+- `l1_ratio=nothing`        The Elastic-Net mixing parameter. 
+- `verbose=false`           Sets logging level.
+
+
+# Operations
+
+- `predict(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are class assignments. 
+
+- `predict_proba(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are probabilistic, but uncalibrated.
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+- `classes_seen`: list of target classes actually observed in training
+
+- `features`: the names of the features encountered in training, in an
+  order consistent with the output of `print_tree` (see below)
+
+# Examples
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+y = [repeat([0], 50)..., repeat([1], 50)...]
+
+model = LogisticRegression()
+mach = machine(model, X, y)
+fit!(mach)
+preds = predict(mach, X)
+```
+"""
+LogisticRegression
+
+
+
+"""
+$(MMI.doc_header(MBSGDClassifier))
+
+`MBSGDClassifier`  is a wrapper for the RAPIDS Mini Batch SGD Classifier.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+- `y`: is the target, which can be any `AbstractVector` whose element
+    scitype is `<:OrderedFactor` or `<:Multiclass`; check the scitype
+    with `scitype(y)`
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+- 
+
+
+# Operations
+
+- `predict(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are class assignments. 
+
+- `predict_proba(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are probabilistic, but uncalibrated.
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+- `classes_seen`: list of target classes actually observed in training
+
+- `features`: the names of the features encountered in training, in an
+  order consistent with the output of `print_tree` (see below)
+
+# Examples
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+y = [repeat([0], 50)..., repeat([1], 50)...]
+
+model = MBSGDClassifier()
+mach = machine(model, X, y)
+fit!(mach)
+preds = predict(mach, X)
+```
+"""
+MBSGDClassifier

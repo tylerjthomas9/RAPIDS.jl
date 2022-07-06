@@ -138,7 +138,7 @@ MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
 
 MMI.input_scitype(::Type{<:CUML_CLUSTERING}) = Union{AbstractMatrix,Table(Continuous)}
 MMI.target_scitype(::Type{<:KMeans}) = AbstractVector{<:Finite}
-MMI.output_scitype(::type{<:KMeans}) = AbstractVector{<:Finite}
+MMI.output_scitype(::Type{<:KMeans}) = AbstractVector{<:Finite}
 
 MMI.docstring(::Type{<:KMeans}) =
     "cuML's KMeans: https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering"
@@ -152,14 +152,23 @@ MMI.docstring(::Type{<:HDBSCAN}) =
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w = nothing)
+    schema = Tables.schema(X)
+    X_numpy = prepare_input(X)
+
+    if schema === nothing
+        features = [Symbol("x$j") for j in 1:size(X, 2)]
+    else
+        features = schema.names |> collect
+    end
+
     # fit the model
     model = model_init(mlj_model)
-    model.fit(prepare_input(X))
+    model.fit(X_numpy)
     fitresult = model
 
     # save result
     cache = nothing
-    report = ()
+    report = (features=features)
     return (fitresult, cache, report)
 end
 
@@ -169,7 +178,7 @@ end
 function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
     model = fitresult
     py_preds = model.predict(prepare_input(Xnew))
-    preds = pyconvert(Array, py_preds)
+    preds = pyconvert(Array, py_preds) |> MMI.categorical
 
     return preds
 end
