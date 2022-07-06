@@ -1,5 +1,4 @@
 
-
 # Model Structs
 MLJModelInterface.@mlj_model mutable struct LogisticRegression <: MMI.Probabilistic
     handle = nothing
@@ -34,24 +33,6 @@ MLJModelInterface.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for the Nearest Neighbors Classifier: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-classification
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = [repeat([0], 50)..., repeat([1], 50)...]
-
-model = KNeighborsClassifier()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct KNeighborsClassifier <: MMI.Probabilistic
     handle = nothing
     algorithm::String = "brute"::(_ in ("brute",))
@@ -155,7 +136,7 @@ where
 Train the machine using `fit!(mach, rows=...)`.
 
 # Hyper-parameters
-- `penalty="l2"`:           Normalization/penalty function ("none", "l1", "l2", "elasticnet").
+- `penalty="l2"`: Normalization/penalty function ("none", "l1", "l2", "elasticnet").
     - `none`: the L-BFGS solver will be used
     - `l1`: The L1 penalty is best when there are only a few useful features (sparse), and you
             want to zero out non-important features. The L-BFGS solver will be used.
@@ -163,18 +144,18 @@ Train the machine using `fit!(mach, rows=...)`.
             are correlated.The L-BFGS solver will be used.
     - `elasticnet`: A combination of the L1 and L2 penalties. The OWL-QN solver will be used if
                     `l1_ratio>0`, otherwise the L-BFGS solver will be used.
-- `tol=1e-4':               Tolerance for stopping criteria. 
-- `C=1.0`:                  Inverse of regularization strength.
-- `fit_intercept=true`      If True, the model tries to correct for the global mean of y. 
-                            If False, the model expects that you have centered the data.
-- `class_weight="balanced"` Dictionary or `"balanced"`.
-- `max_iter=1000`           Maximum number of iterations taken for the solvers to converge.
-- `linesearch_max_iter=50`  Max number of linesearch iterations per outer iteration used in 
+- `tol=1e-4': Tolerance for stopping criteria. 
+- `C=1.0`: Inverse of regularization strength.
+- `fit_intercept=true`: If True, the model tries to correct for the global mean of y. 
+                        If False, the model expects that you have centered the data.
+- `class_weight="balanced"`: Dictionary or `"balanced"`.
+- `max_iter=1000`: Maximum number of iterations taken for the solvers to converge.
+- `linesearch_max_iter=50`: Max number of linesearch iterations per outer iteration used in 
                             the lbfgs and owl QN solvers.
-- `solver="qn"`             Algorithm to use in the optimization problem. Currently only `qn` 
-                            is supported, which automatically selects either `L-BFGS `or `OWL-QN`
-- `l1_ratio=nothing`        The Elastic-Net mixing parameter. 
-- `verbose=false`           Sets logging level.
+- `solver="qn"`: Algorithm to use in the optimization problem. Currently only `qn` is
+                 supported, which automatically selects either `L-BFGS `or `OWL-QN`
+- `l1_ratio=nothing`: The Elastic-Net mixing parameter. 
+- `verbose=false`: Sets logging level.
 
 
 # Operations
@@ -186,6 +167,7 @@ Train the machine using `fit!(mach, rows=...)`.
 - `predict_proba(mach, Xnew)`: return predictions of the target given
     features `Xnew` having the same scitype as `X` above. Predictions
     are probabilistic, but uncalibrated.
+
 # Fitted parameters
 
 The fields of `fitted_params(mach)` are:
@@ -240,7 +222,38 @@ where
 Train the machine using `fit!(mach, rows=...)`.
 
 # Hyper-parameters
-- 
+
+- `loss="squared_loss"`: Loss function ("hinge", "log", "squared_loss").
+    - `hinge`: Linear SVM
+    - `log`: Logistic regression
+    - `squared_loss`: Linear regression
+- `penalty="none"`: Normalization/penalty function ("none", "l1", "l2", "elasticnet").
+    - `none`: the L-BFGS solver will be used
+    - `l1`: The L1 penalty is best when there are only a few useful features (sparse), and you
+            want to zero out non-important features. The L-BFGS solver will be used.
+    - `l2`: The L2 penalty is best when you have a lot of important features, especially if they
+            are correlated.The L-BFGS solver will be used.
+    - `elasticnet`: A combination of the L1 and L2 penalties. The OWL-QN solver will be used if
+                    `l1_ratio>0`, otherwise the L-BFGS solver will be used.
+- `alpha=1e-4`: The constant value which decides the degree of regularization.
+- `l1_ratio=nothing`: The Elastic-Net mixing parameter. 
+- `batch_size`: The number of samples in each batch.
+- `fit_intercept=true`: If True, the model tries to correct for the global mean of y. 
+                        If False, the model expects that you have centered the data.
+- `epochs=1000`: The number of times the model should iterate through the entire dataset during training.
+- `tol=1e-3': The training process will stop if current_loss > previous_loss - tol.
+- `shuffle=true`: If true, shuffles the training data after each epoch.
+- `eta0=1e-3`: The initial learning rate.
+- `power_t=0.5`: The exponent used for calculating the invscaling learning rate.
+- `learning_rate="constant`: Method for modifying the learning rate during training
+                            ("adaptive", "constant", "invscaling", "optimal")
+    - `optimal`: not supported
+    - `constant`: constant learning rate
+    - `adaptive`: changes the learning rate if the training loss or the validation accuracy does 
+                   not improve for n_iter_no_change epochs. The old learning rate is generally divided by 5.
+    - `invscaling`: `eta = eta0 / pow(t, power_t)`
+- `n_iter_no_change=5`: the number of epochs to train without any imporvement in the model
+- `verbose=false`: Sets logging level.
 
 
 # Operations
@@ -283,3 +296,74 @@ preds = predict(mach, X)
 ```
 """
 MBSGDClassifier
+
+
+"""
+$(MMI.doc_header(KNeighborsClassifier))
+
+`KNeighborsClassifier`  is a wrapper for the RAPIDS K-Nearest Neighbors Classifier.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+- `y`: is the target, which can be any `AbstractVector` whose element
+    scitype is `<:OrderedFactor` or `<:Multiclass`; check the scitype
+    with `scitype(y)`
+
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+
+- `n_neighbors=5`: Default number of neighbors to query.
+- `algorithm="brute"`: Only one algorithm is currently supported.
+- `metric="euclidean"`: Distance metric to use.
+- `weights="uniform"`: Sample weights to use. Currently, only the uniform strategy is supported.
+- `verbose=false`: Sets logging level.
+
+# Operations
+
+- `predict(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are class assignments. 
+
+- `predict_proba(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are probabilistic, but uncalibrated.
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+- `classes_seen`: list of target classes actually observed in training
+
+- `features`: the names of the features encountered in training, in an
+  order consistent with the output of `print_tree` (see below)
+
+# Examples
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+y = [repeat([0], 50)..., repeat([1], 50)...]
+
+model = KNeighborsClassifier()
+mach = machine(model, X, y)
+fit!(mach)
+preds = predict(mach, X)
+```
+"""
+KNeighborsClassifier
