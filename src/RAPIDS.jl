@@ -6,7 +6,6 @@ A Julia interface to the RAPIDS AI ecosystem
 module RAPIDS
 
 using CUDA
-using MLJBase
 using MLJModelInterface
 
 const MMI = MLJModelInterface

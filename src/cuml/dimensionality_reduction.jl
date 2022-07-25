@@ -225,7 +225,7 @@ MMI.load_path(::Type{<:GaussianRandomProjection}) = "$PKG.GaussianRandomProjecti
 MMI.load_path(::Type{<:TSNE}) = "$PKG.TSNE"
 
 MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION}) =
-    Union{AbstractMatrix,Table(Continuous)}
+    Union{AbstractMatrix{<:Continuous},Table(Continuous)}
 
 MMI.docstring(::Type{<:PCA}) =
     "cuML's PCA: https://docs.rapids.ai/api/cuml/stable/api.html#principal-component-analysis"

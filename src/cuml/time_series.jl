@@ -46,7 +46,7 @@ const CUML_TIME_SERIES = Union{ExponentialSmoothing}
 
 # add metadata
 MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.ExponentialSmoothing"
-MMI.input_scitype(::Type{<:CUML_TIME_SERIES}) = Union{AbstractMatrix,Table(Continuous)}
+MMI.input_scitype(::Type{<:CUML_TIME_SERIES}) = Union{AbstractMatrix{<:Continuous},Table(Continuous)}
 MMI.docstring(::Type{<:ExponentialSmoothing}) =
     "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
 

@@ -357,7 +357,7 @@ MMI.load_path(::Type{<:SVR}) = "$PKG.SVR"
 MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
 MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
 
-MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix,Table(Continuous)}
+MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix{<:Continuous},Table(Continuous)}
 MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:Continuous}
 
 MMI.docstring(::Type{<:LinearRegression}) =
@@ -370,8 +370,8 @@ MMI.docstring(::Type{<:ElasticNet}) =
     "cuML's ElasticNet: https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression"
 MMI.docstring(::Type{<:MBSGDRegressor}) =
     "cuML's MBSGDRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor"
-MMI.docstring(::Type{<:AbstractMatrix}) =
-    "cuML's AbstractMatrix: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest"
+MMI.docstring(::Type{<:RandomForestRegressor}) =
+    "cuML's RandomForestRegressor: https://docs.rapids.ai/api/cuml/stable/api.html#random-forest"
 MMI.docstring(::Type{<:CD}) =
     "cuML's CD: https://docs.rapids.ai/api/cuml/stable/api.htmll#coordinate-descent"
 MMI.docstring(::Type{<:SVR}) =
