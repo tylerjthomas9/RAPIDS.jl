@@ -1,9 +1,9 @@
-function prepare_input(x::AbstractMatrix{<:Continuous})
+function prepare_input(x::AbstractMatrix{<:Real})
     x = MMI.matrix(x) .|> Float32
     return numpy.array(x)
 end
 
-function prepare_input(x::AbstractVector{<:Continuous})
+function RAPIDS.prepare_input(x::AbstractVector{<:Real})
     x = x .|> Float32 |> numpy.array
     return numpy.array(x)
 end

@@ -56,7 +56,8 @@ MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.LogisticRegression"
 MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.MBSGDClassifier"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
 
-MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractMatrix{<:Continuous}, Table(Continuous)}
+
+MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Tuple{Union{Table{<:AbstractVector{<:Continuous}}, AbstractMatrix{<:Continuous}}, AbstractVector{<:Finite}}
 MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
 MMI.docstring(::Type{<:LogisticRegression}) =
@@ -85,7 +86,8 @@ function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w = nothing)
 
     # save result
     cache = nothing
-    classes_seen = filter(in(unique(y)), MMI.classes(y[1]))
+    y_cat = y |> MMI.categorical
+    classes_seen = filter(in(unique(y_cat)), MMI.classes(y_cat))
     report = (classes_seen=classes_seen,
                 features=features)
     return (fitresult, cache, report)

@@ -1,6 +1,6 @@
-using RAPIDS
-using MLJ
 using CUDA
+using RAPIDS
+using MLJBase
 using Test
 
 if CUDA.functional()
