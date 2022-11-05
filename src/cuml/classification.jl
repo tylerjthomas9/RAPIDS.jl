@@ -218,9 +218,8 @@ where
 - `X`: any table or array of input features (eg, a `DataFrame`) whose columns
     each have one of the following element scitypes: `Continuous`
 
-- `y`: is the target, which can be any `AbstractVector` whose element
-    scitype is `<:OrderedFactor` or `<:Multiclass`; check the scitype
-    with `scitype(y)`
+- `y`: is an `AbstractVector` finite target.
+
 Train the machine using `fit!(mach, rows=...)`.
 
 # Hyper-parameters

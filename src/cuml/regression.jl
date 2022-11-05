@@ -255,3 +255,212 @@ MMI.metadata_pkg.(
     license = "MIT",        # your package license
     is_wrapper = true,      # does it wrap around some other package?
 )
+
+# docstrings
+
+"""
+$(MMI.doc_header(LinearRegression))
+
+`LinearRegression`  is a wrapper for the RAPIDS Linear Regression.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+- `y`: is an `AbstractVector` continuous target.
+
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+- `algorithm="eig"`: 
+    - `eig`: use an eigendecomposition of the covariance matrix.
+    - `qr`: use QR decomposition algorithm and solve `Rx = Q^T y`
+    - `svd`: alias for svd-jacobi.
+    - `svd-qr`: compute SVD decomposition using QR algorithm.
+    - `svd-jacobi`: compute SVD decomposition using Jacobi iterations.
+- `fit_intercept=true`: If true, the model tries to correct for the global mean of y. 
+                        If false, the model expects that you have centered the data.
+- `normalize=true`: This parameter is ignored when fit_intercept is set to false.
+                    If true, the predictors in X will be normalized by dividing by the column-wise standard deviation. 
+                    If false, no scaling will be done. 
+- `verbose=false`: Sets logging level.
+
+
+# Operations
+
+- `predict(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are class assignments. 
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+- `features`: the names of the features encountered in training, in an
+  order consistent with the output of `print_tree` (see below)
+
+# Examples
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+y = rand(100)
+
+model = LinearRegression()
+mach = machine(model, X, y)
+fit!(mach)
+preds = predict(mach, X)
+```
+"""
+LinearRegression
+
+
+"""
+$(MMI.doc_header(RIDGE))
+
+`LinearRegression`  is a wrapper for the RAPIDS RIDGE Regression.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+- `y`: is an `AbstractVector` continuous target.
+
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+- `alpha=1.0`: Regularization strength - must be a positive float. Larger values specify stronger regularization.
+- `solver="eig"`: 
+    - `cd`: use coordinate descent. Very fast and is suitable for large problems.
+    - `eig`: use an eigendecomposition of the covariance matrix.
+    - `svd`: alias for svd-jacobi. Slower, but guaranteed to be stable.
+- `fit_intercept=true`: If true, the model tries to correct for the global mean of y. 
+                        If false, the model expects that you have centered the data.
+- `normalize=true`: This parameter is ignored when fit_intercept is set to false.
+                    If true, the predictors in X will be normalized by dividing by the column-wise standard deviation. 
+                    If false, no scaling will be done. 
+- `verbose=false`: Sets logging level.
+
+
+# Operations
+
+- `predict(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are class assignments. 
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+- `features`: the names of the features encountered in training, in an
+  order consistent with the output of `print_tree` (see below)
+
+# Examples
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+y = rand(100)
+
+model = RIDGE()
+mach = machine(model, X, y)
+fit!(mach)
+preds = predict(mach, X)
+```
+"""
+RIDGE
+
+
+"""
+$(MMI.doc_header(LASSO))
+
+`LinearRegression`  is a wrapper for the RAPIDS LASSO Regression.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X, y)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+- `y`: is an `AbstractVector` continuous target.
+
+Train the machine using `fit!(mach, rows=...)`.
+
+# Hyper-parameters
+- `alpha=1.0`: Constant that multiplies the L1 term. alpha = 0 is equivalent to an ordinary least square.
+- `tol=1e-4': Tolerance for stopping criteria. 
+- `max_iter=1000`: Maximum number of iterations taken for the solvers to converge.
+- `solver="cd"`: 
+    - `cd`: Coordinate descent.
+    - `qn`: quasi-newton. You may find the alternative ‘qn’ algorithm is faster when the number of features is sufficiently large, but the sample size is small.
+- `fit_intercept=true`: If true, the model tries to correct for the global mean of y. 
+                        If false, the model expects that you have centered the data.
+- `normalize=true`: This parameter is ignored when fit_intercept is set to false.
+                    If true, the predictors in X will be normalized by dividing by the column-wise standard deviation. 
+                    If false, no scaling will be done. 
+- `selection="cyclic"`: 
+    - `cyclic`: loop over features to update coefficients.
+    - `random`: a random coefficient is updated every iteration.
+    a random coefficient is updated every iteration rather than looping over features sequentially by default.
+- `verbose=false`: Sets logging level.
+
+
+# Operations
+
+- `predict(mach, Xnew)`: return predictions of the target given
+    features `Xnew` having the same scitype as `X` above. Predictions
+    are class assignments. 
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+- `features`: the names of the features encountered in training, in an
+  order consistent with the output of `print_tree` (see below)
+
+# Examples
+```
+using RAPIDS
+using MLJ
+
+X = rand(100, 5)
+y = rand(100)
+
+model = LASSO()
+mach = machine(model, X, y)
+fit!(mach)
+preds = predict(mach, X)
+```
+"""
+LASSO
+
