@@ -3,6 +3,7 @@ const make_regression = cuml.datasets.regression.make_regression
 
 
 # Clustering
+@testset "cuML Clustering" begin
 X = rand(1000, 5)
 @testset "KMeans" begin
     model = KMeans()
@@ -29,70 +30,74 @@ end
     fit!(mach)
 end
 
+end
 
-# # Regression
-# X_py, y_py = make_regression(n_samples=200, n_features=12,
-#                                n_informative=7, bias=-4.2, noise=0.3)
-# X = RAPIDS.pyconvert(Matrix{Float32}, X_py.get())
-# y = RAPIDS.pyconvert(Vector{Float32}, y_py.get().flatten())
+# Regression
+@testset "cuML Regression" begin
 
-# @testset "LinearRegression" begin
-#     model = LinearRegression()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+X_py, y_py = make_regression(n_samples=200, n_features=5,
+                               n_informative=5, bias=0.0, noise=0.3)
+X = RAPIDS.pyconvert(Matrix{Float32}, X_py.get())
+y = RAPIDS.pyconvert(Vector{Float32}, y_py.get().flatten())
 
-# @testset "Ridge" begin
-#     model = Ridge()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "LinearRegression" begin
+    model = LinearRegression()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
-# @testset "Lasso" begin
-#     model = Lasso()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "Ridge" begin
+    model = Ridge()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
+
+@testset "Lasso" begin
+    model = Lasso()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
 
-# @testset "ElasticNet" begin
-#     model = ElasticNet()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "ElasticNet" begin
+    model = ElasticNet()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
-# @testset "MBSGDRegressor" begin
-#     model = MBSGDRegressor()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "MBSGDRegressor" begin
+    model = MBSGDRegressor()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
-# @testset "RandomForestRegressor" begin
-#     model = RandomForestRegressor()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "RandomForestRegressor" begin
+    model = RandomForestRegressor()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
-# @testset "CD" begin
-#     model = CD()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "CD" begin
+    model = CD()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
-# @testset "SVR" begin
-#     model = SVR()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "SVR" begin
+    model = SVR()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
+#TODO: Figure out why LinearSVR fails
 # @testset "LinearSVR" begin
 #     model = LinearSVR()
 #     mach = machine(model, X, y)
@@ -100,15 +105,18 @@ end
 #     preds = predict(mach, X)
 # end
 
-# @testset "KNeighborsRegressor" begin
-#     model = KNeighborsRegressor()
-#     mach = machine(model, X, y)
-#     fit!(mach)
-#     preds = predict(mach, X)
-# end
+@testset "KNeighborsRegressor" begin
+    model = KNeighborsRegressor()
+    mach = machine(model, X, y)
+    fit!(mach)
+    preds = predict(mach, X)
+end
 
+end
 
 # Classification
+@testset "cuML Classification" begin
+
 X_py, y_py = make_classification(n_samples=200, n_features=4,
                            n_informative=2, n_classes=2)
 X = RAPIDS.pyconvert(Matrix{Float32}, X_py.get())
@@ -135,7 +143,9 @@ end
     preds = predict(mach, X)
 end
 
+end
 # # Dimensionality reduction
+@testset "cuML Dimensionality Reduction" begin
 # X = rand(1000, 5)
 
 # @testset "PCA" begin
@@ -195,3 +205,4 @@ end
 #     fit!(mach)
 #     forecast(mach, 4)
 # end
+end

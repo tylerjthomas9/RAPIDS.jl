@@ -57,7 +57,7 @@ MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.MBSGDClassifier"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
 
 
-MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Tuple{Union{Table{<:AbstractVector{<:Continuous}}, AbstractMatrix{<:Continuous}}, AbstractVector{<:Finite}}
+MMI.input_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{Table(Continuous), AbstractMatrix{<:Continuous}}
 MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
 MMI.docstring(::Type{<:LogisticRegression}) =

@@ -1,24 +1,7 @@
 
 # Model hyperparameters
 
-"""
-RAPIDS Docs for Linear Regression: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression
 
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = LinearRegression()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct LinearRegression <: MMI.Deterministic
     handle = nothing
     algorithm::String = "eig"::(_ in ("svd", "eig", "qr", "svd-qr", "svd-jacobi"))
@@ -27,24 +10,6 @@ MLJModelInterface.@mlj_model mutable struct LinearRegression <: MMI.Deterministi
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for Ridge Regression: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#ridge-regression
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = Ridge()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Deterministic
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
@@ -54,25 +19,6 @@ MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Deterministic
     verbose::Bool = false
 end
 
-
-"""
-RAPIDS Docs for Lasso Regression: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#lasso-regression
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = Lasso()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Deterministic
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
@@ -84,24 +30,6 @@ MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Deterministic
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for ElasticNet: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#elasticnet-regression
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = ElasticNet()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Deterministic
     handle = nothing
     alpha::Float64 = 1.0::(_ > 0)
@@ -114,23 +42,6 @@ MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Deterministic
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for MBSGDRegressor: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#mini-batch-sgd-regressor
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = MBSGDRegressor()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     handle = nothing
     loss::String = "squared_loss"::(_ in ("squared_loss",))
@@ -150,23 +61,6 @@ MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for RandomForestRegressor: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#random-forest
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = RandomForestRegressor()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Deterministic
     handle = nothing
     n_estimators::Int = 100::(_ > 0)
@@ -187,24 +81,6 @@ MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Determi
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for Coordinate Descent: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#coordinate-descent
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = CD()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct CD <: MMI.Deterministic
     handle = nothing
     loss::String = "squared_loss"::(_ in ("squared_loss",))
@@ -217,25 +93,6 @@ MLJModelInterface.@mlj_model mutable struct CD <: MMI.Deterministic
     verbose::Bool = false
 end
 
-
-"""
-RAPIDS Docs for SVR: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = SVR()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Deterministic
     handle = nothing
     C::Float64 = 1.0::(_ >= 0)
@@ -251,24 +108,6 @@ MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Deterministic
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for LinearSVR: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#support-vector-machines
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = SVLinearSVR()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     handle = nothing
     penalty::String = "l2"::(_ in ("l1", "l2"))
@@ -287,25 +126,6 @@ MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     verbose::Bool = false
 end
 
-
-"""
-RAPIDS Docs for Nearest Neighbors Regression: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#nearest-neighbors-regression
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-y = rand(100)
-
-model = KNeighborsRegressor()
-mach = machine(model, X, y)
-fit!(mach)
-preds = predict(mach, X)
-```
-"""
 MLJModelInterface.@mlj_model mutable struct KNeighborsRegressor <: MMI.Deterministic
     handle = nothing
     algorithm::String = "brute"::(_ in ("brute",))
@@ -357,7 +177,7 @@ MMI.load_path(::Type{<:SVR}) = "$PKG.SVR"
 MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
 MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
 
-MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{AbstractMatrix{<:Continuous},Table(Continuous)}
+MMI.input_scitype(::Type{<:CUML_REGRESSION}) = Union{Table(Continuous), AbstractMatrix{<:Continuous}}
 MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:Continuous}
 
 MMI.docstring(::Type{<:LinearRegression}) =
@@ -384,14 +204,24 @@ MMI.docstring(::Type{<:KNeighborsRegressor}) =
 
 # fit methods
 function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w = nothing)
+    schema = Tables.schema(X)
+    X_numpy = prepare_input(X)
+    y_numpy  = prepare_input(y)
+
+    if schema === nothing
+        features = [Symbol("x$j") for j in 1:size(X, 2)]
+    else
+        features = schema.names |> collect
+    end
+
     # fit the model
     model = model_init(mlj_model)
-    model.fit(prepare_input(X), prepare_input(y))
+    model.fit(X_numpy, y_numpy)
     fitresult = model
 
     # save result
     cache = nothing
-    report = ()
+    report = (features=features)
     return (fitresult, cache, report)
 end
 
@@ -403,8 +233,6 @@ function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
 
     return preds
 end
-
-
 
 # Regression metadata
 MMI.metadata_pkg.(
