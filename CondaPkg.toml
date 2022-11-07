@@ -3,4 +3,4 @@ channels = ["rapidsai", "nvidia", "conda-forge"]
 [deps]
 cudatoolkit = ""
 rapids = "=22.10"
-python = "=3.9"
+python = ">=3.8,<=3.9"
