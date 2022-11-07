@@ -46,62 +46,63 @@ else
         PythonCall.pycopy!(dask_cuda, pyimport("dask_cuda"))
         PythonCall.pycopy!(dask_cudf, pyimport("dask_cudf"))
         PythonCall.pycopy!(numpy, pyimport("numpy"))
-        PythonCall.pycopy!(pickle, pyimport("pickle"))
+        return PythonCall.pycopy!(pickle, pyimport("pickle"))
     end
-
 
     include("./mlj_interface.jl")
 
-
     export
-        # RAPIDS Python API
-        cudf,
-        #cuxfilter,
-        cugraph,
-        cuml,
-        cusignal,
-        cupy,
-        cuspatial,
-        dask,
-        dask_cuda,
-        dask_cudf,
-        numpy,
+    # RAPIDS Python API
+          cudf,
+    #cuxfilter,
+          cugraph,
+          cuml,
+          cusignal,
+          cupy,
+          cuspatial,
+          dask,
+          dask_cuda,
+          dask_cudf,
+          numpy,
 
-        # PythonCall
-        pycopy!,
-        pyimport,
-        pynew,
+    # PythonCall
+          pycopy!,
+          pyimport,
+          pynew,
 
-        # clustering
-        KMeans,
-        DBSCAN,
-        AgglomerativeClustering,
-        HDBSCAN,
-        # regression
-        LinearRegression,
-        Ridge,
-        Lasso,
-        ElasticNet,
-        MBSGDRegressor,
-        RandomForestRegressor,
-        CD,
-        SVR,
-        KNeighborsRegressor,
-        # classification
-        LogisticRegression,
-        MBSGDClassifier,
-        KNeighborsClassifier,
-        # dimensionality reduction
-        PCA,
-        IncrementalPCA,
-        TruncatedSVD,
-        UMAP,
-        GaussianRandomProjection,
-        TSNE,
-        # time series
-        ExponentialSmoothing,
-        forecast
+    # clustering
+          KMeans,
+          DBSCAN,
+          AgglomerativeClustering,
+          HDBSCAN,
+    # regression
+          LinearRegression,
+          Ridge,
+          Lasso,
+          ElasticNet,
+          MBSGDRegressor,
+          RandomForestRegressor,
+          CD,
+          SVR,
+          LinearSVR,
+          KNeighborsRegressor,
+    # classification
+          LogisticRegression,
+          MBSGDClassifier,
+          RandomForestClassifier,
+          SVC,
+          LinearSVC,
+          KNeighborsClassifier,
+    # dimensionality reduction
+          PCA,
+          IncrementalPCA,
+          TruncatedSVD,
+          UMAP,
+          GaussianRandomProjection,
+          TSNE,
+    # time series
+          ExponentialSmoothing,
+          forecast
 end
-
 
 end

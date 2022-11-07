@@ -1,5 +1,7 @@
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
+
+
 # RAPIDS.jl
 Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosystem. Support is limited to Linux and NVIDIA GPUs (Pascal or more recent) with at least 6 TFLOPS.
 
@@ -79,6 +81,9 @@ MLJ Support:
 - Classification
     - `LogisticRegression`
     - `MBSGDClassifier`
+    - `RandomForestClassifier`
+    - `SVC`
+    - `LinearSVC`
     - `KNeighborsClassifier`
 - Regression
     - `LinearRegression`

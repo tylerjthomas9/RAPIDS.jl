@@ -27,9 +27,6 @@ function persistent(model)
     return persistent_booster
 end
 
-
-
-
 """
     booster(persistent)
 Private method.
@@ -37,7 +34,6 @@ Return the XGBoost.jl model which has `persistent` as its persistent
 (Julia-serializable) representation. See [`persistent`](@ref) method.
 """
 function booster(persistent)
-
     model_file, io = mktemp()
     write(io, persistent)
     close(io)
@@ -46,7 +42,6 @@ function booster(persistent)
 
     return model
 end
-
 
 MMI.save(::CUML_MODELS, fitresult; kwargs...) = persistent(fitresult)
 
