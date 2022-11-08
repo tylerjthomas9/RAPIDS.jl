@@ -1,4 +1,4 @@
-function prepare_input(x::AbstractMatrix{<:Real})
+function prepare_input(x)
     x = Float32.(MMI.matrix(x))
     return numpy.array(x)
 end

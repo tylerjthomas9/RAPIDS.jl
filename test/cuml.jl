@@ -15,18 +15,21 @@ const make_regression = cuml.datasets.regression.make_regression
         model = DBSCAN()
         mach = machine(model, X)
         fit!(mach)
+        preds = mach.fitresult.labels_
     end
 
     @testset "AgglomerativeClustering" begin
         model = AgglomerativeClustering()
         mach = machine(model, X)
         fit!(mach)
+        preds = mach.fitresult.labels_
     end
 
     @testset "HDBSCAN" begin
         model = HDBSCAN()
         mach = machine(model, X)
         fit!(mach)
+        preds = mach.fitresult.labels_
     end
 end
 
@@ -160,8 +163,8 @@ end
         preds = predict(mach, X)
     end
 end
-# # Dimensionality reduction
-@testset "cuML Dimensionality Reduction" begin
+
+# @testset "cuML Dimensionality Reduction" begin
     # X = rand(1000, 5)
 
     # @testset "PCA" begin
@@ -207,18 +210,27 @@ end
     #     fit!(mach)
     #     X_trans = transform(mach, X)
     # end
+# end
 
-    # # Time Series
-    # X = [1, 2, 3, 4, 5, 6,
-    #     7, 8, 9, 10, 11, 12,
-    #     2, 3, 4, 5, 6, 7,
-    #     8, 9, 10, 11, 12, 13,
-    #     3, 4, 5, 6, 7, 8, 9,
-    #     10, 11, 12, 13, 14] 
-    # @testset "ExponentialSmoothing" begin
-    #     model = ExponentialSmoothing()
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     forecast(mach, 4)
-    # end
+@testset "Time Series" begin
+    X = [1, 2, 3, 4, 5, 6,
+    7, 8, 9, 10, 11, 12,
+    2, 3, 4, 5, 6, 7,
+    8, 9, 10, 11, 12, 13,
+    3, 4, 5, 6, 7, 8, 9,
+    10, 11, 12, 13, 14] 
+    @testset "ExponentialSmoothing" begin
+        model = ExponentialSmoothing()
+        mach = machine(model, X)
+        fit!(mach)
+        forecast(mach, 4)
+    end
+    @testset "ARIMA" begin
+        model = ARIMA()
+        mach = machine(model, X)
+        fit!(mach)
+        forecast(mach, 4)
+    end
 end
+
+

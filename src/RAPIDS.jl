@@ -102,6 +102,7 @@ else
           TSNE,
     # time series
           ExponentialSmoothing,
+          ARIMA,
           forecast
 end
 

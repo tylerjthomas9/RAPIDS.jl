@@ -1,16 +1,14 @@
 
 # Model hyperparameters
 
-MLJModelInterface.@mlj_model mutable struct LinearRegression <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct LinearRegression <: MMI.Deterministic
     algorithm::String = "eig"::(_ in ("svd", "eig", "qr", "svd-qr", "svd-jacobi"))
     fit_intercept::Bool = true
     normalize::Bool = false
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct Ridge <: MMI.Deterministic
     alpha::Float64 = 1.0::(_ > 0)
     solver::String = "eig"::(_ in ("svd", "eig", "cd"))
     fit_intercept::Bool = true
@@ -18,8 +16,7 @@ MLJModelInterface.@mlj_model mutable struct Ridge <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct Lasso <: MMI.Deterministic
     alpha::Float64 = 1.0::(_ > 0)
     fit_intercept::Bool = true
     normalize::Bool = false
@@ -29,8 +26,7 @@ MLJModelInterface.@mlj_model mutable struct Lasso <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct ElasticNet <: MMI.Deterministic
     alpha::Float64 = 1.0::(_ > 0)
     l1_ratio::Float64 = 0.5::(_ > 0)
     fit_intercept::Bool = true
@@ -42,8 +38,7 @@ MLJModelInterface.@mlj_model mutable struct ElasticNet <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     loss::String = "squared_loss"::(_ in ("squared_loss",))
     penalty::String = "none"::(_ in ("none", "l1", "l2", "elasticnet"))
     alpha::Float64 = 0.0001::(_ >= 0)
@@ -61,8 +56,7 @@ MLJModelInterface.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct RandomForestRegressor <: MMI.Deterministic
     n_estimators::Int = 100::(_ > 0)
     split_criterion::Union{Int,String} = 2
     bootstrap::Bool = true
@@ -81,8 +75,7 @@ MLJModelInterface.@mlj_model mutable struct RandomForestRegressor <: MMI.Determi
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct CD <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct CD <: MMI.Deterministic
     loss::String = "squared_loss"::(_ in ("squared_loss",))
     alpha::Float64 = 0.0001::(_ > 0)
     l1_ratio::Float64 = 0.15::(_ > 0)
@@ -94,8 +87,7 @@ MLJModelInterface.@mlj_model mutable struct CD <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct SVR <: MMI.Deterministic
     C::Float64 = 1.0::(_ > 0)
     kernel::String = "rbf"::(_ in ("linear", "poly", "rbf", "sigmoid"))
     degree::Int = 3::(_ > 0)
@@ -109,8 +101,7 @@ MLJModelInterface.@mlj_model mutable struct SVR <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     penalty::String = "l2"::(_ in ("l1", "l2"))
     loss = "epsilon_insensitive"::(_ in
                                    ("epsilon_insensitive", "squared_epsilon_insensitive"))
@@ -127,8 +118,7 @@ MLJModelInterface.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct KNeighborsRegressor <: MMI.Deterministic
-    handle = nothing
+MMI.@mlj_model mutable struct KNeighborsRegressor <: MMI.Deterministic
     n_neighbors::Int = 5::(_ > 0)
     algorithm::String = "auto"::(_ in ("auto", "brute", "rbc", "ivfflat", "ivfpq", "ivfsq"))
     metric::String = "euclidean"
@@ -307,8 +297,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -374,8 +363,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -446,8 +434,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -520,8 +507,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -595,8 +581,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -687,7 +672,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
+- `features`: the names of the features encountered in training., in an
   order consistent with the output of `print_tree` (see below)
 
 # Examples
@@ -751,8 +736,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -819,8 +803,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -889,8 +872,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -949,8 +931,7 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```

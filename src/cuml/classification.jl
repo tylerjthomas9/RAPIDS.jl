@@ -1,7 +1,6 @@
 
 # Model Structs
-MLJModelInterface.@mlj_model mutable struct LogisticRegression <: MMI.Probabilistic
-    handle = nothing
+MMI.@mlj_model mutable struct LogisticRegression <: MMI.Probabilistic
     penalty::String = "l2"::(_ in ("none", "l1", "l2", "elasticnet"))
     tol::Float64 = 1e-4::(_ > 0)
     C::Float64 = 1.0::(_ > 0)
@@ -14,8 +13,7 @@ MLJModelInterface.@mlj_model mutable struct LogisticRegression <: MMI.Probabilis
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
-    handle = nothing
+MMI.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
     loss::String = "squared_loss"::(_ in ("hinge", "log", "squared_loss"))
     penalty::String = "none"::(_ in ("none", "l1", "l2", "elasticnet"))
     alpha::Float64 = 0.0001::(_ >= 0)
@@ -33,8 +31,7 @@ MLJModelInterface.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct RandomForestClassifier <: MMI.Probabilistic
-    handle = nothing
+MMI.@mlj_model mutable struct RandomForestClassifier <: MMI.Probabilistic
     n_estimators::Int = 100::(_ > 0)
     split_criterion::Union{Int,String} = 0
     bootstrap::Bool = true
@@ -52,8 +49,7 @@ MLJModelInterface.@mlj_model mutable struct RandomForestClassifier <: MMI.Probab
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct SVC <: MMI.Probabilistic
-    handle = nothing
+MMI.@mlj_model mutable struct SVC <: MMI.Probabilistic
     C::Float64 = 1.0::(_ > 0)
     kernel::String = "rbf"::(_ in ("linear", "poly", "rbf", "sigmoid"))
     degree::Int = 3::(_ > 0)
@@ -70,8 +66,7 @@ MLJModelInterface.@mlj_model mutable struct SVC <: MMI.Probabilistic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct LinearSVC <: MMI.Probabilistic
-    handle = nothing
+MMI.@mlj_model mutable struct LinearSVC <: MMI.Probabilistic
     penalty::String = "l2"::(_ in ("l1", "l2"))
     loss = "squared_hinge"::(_ in ("squared_hinge", "hinge"))
     fit_intercept::Bool = true
@@ -88,8 +83,7 @@ MLJModelInterface.@mlj_model mutable struct LinearSVC <: MMI.Probabilistic
     verbose::Bool = false
 end
 
-MLJModelInterface.@mlj_model mutable struct KNeighborsClassifier <: MMI.Probabilistic
-    handle = nothing
+MMI.@mlj_model mutable struct KNeighborsClassifier <: MMI.Probabilistic
     algorithm::String = "brute"::(_ in ("brute",))
     metric::String = "euclidean"
     weights::String = "uniform"::(_ in ("uniform",))
@@ -253,8 +247,7 @@ The fields of `report(mach)` are:
 
 - `classes_seen`: list of target classes actually observed in training
 
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -348,8 +341,7 @@ The fields of `report(mach)` are:
 
 - `classes_seen`: list of target classes actually observed in training
 
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -433,8 +425,10 @@ The fields of `fitted_params(mach)` are:
 # Report
 
 The fields of `report(mach)` are:
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+
+- `classes_seen`: list of target classes actually observed in training
+
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -516,8 +510,7 @@ The fields of `report(mach)` are:
 
 - `classes_seen`: list of target classes actually observed in training
 
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -599,8 +592,7 @@ The fields of `report(mach)` are:
 
 - `classes_seen`: list of target classes actually observed in training
 
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```
@@ -669,8 +661,7 @@ The fields of `report(mach)` are:
 
 - `classes_seen`: list of target classes actually observed in training
 
-- `features`: the names of the features encountered in training, in an
-  order consistent with the output of `print_tree` (see below)
+- `features`: the names of the features encountered in training.
 
 # Examples
 ```

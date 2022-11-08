@@ -21,8 +21,7 @@ inverse_transform(mach, X)
 println(mach.fitresult.components_)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct PCA <: MMI.Unsupervised
-    handle = nothing
+MMI.@mlj_model mutable struct PCA <: MMI.Unsupervised
     copy::Bool = false # we are passing a numpy array, so modifying the data does not matter
     iterated_power::Int = 15::(_ > 0)
     n_components = nothing
@@ -51,8 +50,7 @@ X_trans = transform(mach, X)
 println(mach.fitresult.components_)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct IncrementalPCA <: MMI.Unsupervised
-    handle = nothing
+MMI.@mlj_model mutable struct IncrementalPCA <: MMI.Unsupervised
     copy::Bool = false # we are passing a numpy array, so modifying the data does not matter
     whiten::Bool = false
     n_components = nothing
@@ -79,8 +77,7 @@ X_trans = transform(mach, X)
 println(mach.fitresult.components_)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct TruncatedSVD <: MMI.Unsupervised
-    handle = nothing
+MMI.@mlj_model mutable struct TruncatedSVD <: MMI.Unsupervised
     n_components = nothing
     n_iter::Int = 15::(_ > 0)
     random_state = nothing
@@ -107,8 +104,7 @@ X_trans = transform(mach, X)
 println(mach.fitresult.embedding_)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct UMAP <: MMI.Unsupervised
-    handle = nothing
+MMI.@mlj_model mutable struct UMAP <: MMI.Unsupervised
     n_components = nothing
     n_epochs::Int = 15::(_ > 0)
     learning_rate::Float64 = 1.0::(_ > 0)
@@ -146,8 +142,7 @@ fit!(mach)
 X_trans = transform(mach, X)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct GaussianRandomProjection <: MMI.Unsupervised
-    handle = nothing
+MMI.@mlj_model mutable struct GaussianRandomProjection <: MMI.Unsupervised
     n_components = nothing
     eps::Float64 = 0.1::(_ > 0)
     random_state = nothing
@@ -173,8 +168,7 @@ X_trans = transform(mach, X)
 println(mach.fitresult.kl_divergence_)
 ```
 """
-MLJModelInterface.@mlj_model mutable struct TSNE <: MMI.Unsupervised
-    handle = nothing
+MMI.@mlj_model mutable struct TSNE <: MMI.Unsupervised
     n_components::Int = 2::(_ > 0)
     perplexity::Float64 = 30.0::(_ > 0)
     early_exaggeration::Float64 = 12.0::(_ > 0)

@@ -105,3 +105,4 @@ MLJ Support:
     - `GaussianRandomProjection`
 - Time Series
     - `ExponentialSmoothing`
+    - `ARIMA`
