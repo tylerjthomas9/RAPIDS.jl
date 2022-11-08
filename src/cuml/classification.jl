@@ -184,7 +184,7 @@ MMI.metadata_pkg.((LogisticRegression, MBSGDClassifier, RandomForestClassifier,
 """
 $(MMI.doc_header(LogisticRegression))
 
-`LogisticRegression`  is a wrapper for the RAPIDS Logistic Regression.
+`LogisticRegression` is a wrapper for the RAPIDS Logistic Regression.
 
 # Training data
 
@@ -252,7 +252,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
@@ -268,7 +268,7 @@ LogisticRegression
 """
 $(MMI.doc_header(MBSGDClassifier))
 
-`MBSGDClassifier`  is a wrapper for the RAPIDS Mini Batch SGD Classifier.
+`MBSGDClassifier` is a wrapper for the RAPIDS Mini Batch SGD Classifier.
 
 # Training data
 
@@ -346,7 +346,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
@@ -433,7 +433,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
@@ -449,7 +449,7 @@ RandomForestClassifier
 """
 $(MMI.doc_header(SVC))
 
-`SVC`  is a wrapper for the RAPIDS SVC.
+`SVC` is a wrapper for the RAPIDS SVC.
 
 # Training data
 
@@ -515,7 +515,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
@@ -531,7 +531,7 @@ SVC
 """
 $(MMI.doc_header(LinearSVC))
 
-`LinearSVC`  is a wrapper for the RAPIDS LinearSVC.
+`LinearSVC` is a wrapper for the RAPIDS LinearSVC.
 
 # Training data
 
@@ -597,7 +597,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
@@ -613,7 +613,7 @@ LinearSVC
 """
 $(MMI.doc_header(KNeighborsClassifier))
 
-`KNeighborsClassifier`  is a wrapper for the RAPIDS K-Nearest Neighbors Classifier.
+`KNeighborsClassifier` is a wrapper for the RAPIDS K-Nearest Neighbors Classifier.
 
 # Training data
 
@@ -666,7 +666,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]

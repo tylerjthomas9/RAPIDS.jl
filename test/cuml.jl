@@ -164,61 +164,61 @@ end
     end
 end
 
-# @testset "cuML Dimensionality Reduction" begin
-    # X = rand(1000, 5)
+@testset "cuML Dimensionality Reduction" begin
+    X = rand(1000, 5)
 
-    # @testset "PCA" begin
-    #     model = PCA()
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     X_trans = transform(mach, X)
-    #     inverse_transform(mach, X)
-    # end
+    @testset "PCA" begin
+        model = PCA()
+        mach = machine(model, X)
+        fit!(mach)
+        X_trans = transform(mach, X)
+        inverse_transform(mach, X)
+    end
 
-    # @testset "IncrementalPCA" begin
-    #     model = IncrementalPCA()
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     X_trans = transform(mach, X)
-    # end
+    @testset "IncrementalPCA" begin
+        model = IncrementalPCA()
+        mach = machine(model, X)
+        fit!(mach)
+        X_trans = transform(mach, X)
+    end
 
-    # @testset "TruncatedSVD" begin
-    #     model = TruncatedSVD(n_components=2)
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     X_trans = transform(mach, X)
-    #     inverse_transform(mach, X)
-    # end
+    @testset "TruncatedSVD" begin
+        model = TruncatedSVD(; n_components=2)
+        mach = machine(model, X)
+        fit!(mach)
+        X_trans = transform(mach, X)
+        inverse_transform(mach, X)
+    end
 
-    # @testset "UMAP" begin
-    #     model = UMAP(n_components=2)
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     X_trans = transform(mach, X)
-    # end
+    @testset "UMAP" begin
+        model = UMAP(; n_components=2)
+        mach = machine(model, X)
+        fit!(mach)
+        X_trans = transform(mach, X)
+    end
 
-    # @testset "GaussianRandomProjection" begin
-    #     model = GaussianRandomProjection(n_components=2)
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     X_trans = transform(mach, X)
-    # end
+    @testset "GaussianRandomProjection" begin
+        model = GaussianRandomProjection(; n_components=2)
+        mach = machine(model, X)
+        fit!(mach)
+        X_trans = transform(mach, X)
+    end
 
-    # @testset "TSNE" begin
-    #     model = TSNE(n_components=2)
-    #     mach = machine(model, X)
-    #     fit!(mach)
-    #     X_trans = transform(mach, X)
-    # end
-# end
+    @testset "TSNE" begin
+        model = TSNE(; n_components=2)
+        mach = machine(model, X)
+        fit!(mach)
+        X_trans = transform(mach, X)
+    end
+end
 
 @testset "Time Series" begin
     X = [1, 2, 3, 4, 5, 6,
-    7, 8, 9, 10, 11, 12,
-    2, 3, 4, 5, 6, 7,
-    8, 9, 10, 11, 12, 13,
-    3, 4, 5, 6, 7, 8, 9,
-    10, 11, 12, 13, 14] 
+         7, 8, 9, 10, 11, 12,
+         2, 3, 4, 5, 6, 7,
+         8, 9, 10, 11, 12, 13,
+         3, 4, 5, 6, 7, 8, 9,
+         10, 11, 12, 13, 14]
     @testset "ExponentialSmoothing" begin
         model = ExponentialSmoothing()
         mach = machine(model, X)
@@ -232,5 +232,3 @@ end
         forecast(mach, 4)
     end
 end
-
-

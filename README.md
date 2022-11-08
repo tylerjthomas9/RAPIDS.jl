@@ -55,7 +55,7 @@ print(lr.coef_)
 A MLJ interface is also available for supported models. The model hyperparameters are the same as described in the [cuML docs](https://docs.rapids.ai/api/cuml/stable/api.html). The only difference is that the models will always input/output numpy arrays, which will be converted back to Julia arrays (`output_type="input"`). 
 
 ```julia
-using MLJ
+using MLJBase
 using RAPIDS
 const make_classification = cuml.datasets.classification.make_classification
 

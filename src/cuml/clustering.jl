@@ -14,16 +14,14 @@ MMI.@mlj_model mutable struct KMeans <: MMI.Unsupervised
     max_samples_per_batch::Int64 = 32768::(_ > 0)
 end
 
-
 MMI.@mlj_model mutable struct DBSCAN <: MMI.Unsupervised
     eps::Float64 = 1e-4::(_ > 0)
     min_samples::Int = 1::(_ > 0)
     metric::String = "euclidean"::(_ in ("euclidean", "precomputed"))
     verbose::Bool = false
-    max_mbytes_per_batch::Union{Nothing, Int} = nothing
+    max_mbytes_per_batch::Union{Nothing,Int} = nothing
     calc_core_sample_indices::Bool = true
 end
-
 
 MMI.@mlj_model mutable struct AgglomerativeClustering <: MMI.Unsupervised
     verbose::Bool = false
@@ -34,12 +32,11 @@ MMI.@mlj_model mutable struct AgglomerativeClustering <: MMI.Unsupervised
     connectivity::String = "knn"::(_ in ("knn", "pairwise"))
 end
 
-
 MMI.@mlj_model mutable struct HDBSCAN <: MMI.Unsupervised
     alpha::Float64 = 1.0::(_ > 0)
     verbose::Bool = false
     min_cluster_size::Int = 5::(_ > 0)
-    min_samples::Union{Nothing, Int} = nothing
+    min_samples::Union{Nothing,Int} = nothing
     cluster_selection_epsilon::Float64 = 0.0::(_ >= 0)
     max_cluster_size::Int = 0::(_ >= 0)
     # TODO: Why are we getting an affinity error when specifying this parameter
@@ -97,9 +94,9 @@ function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)
 
     # save result
     cache = nothing
-    labels = pyconvert(Vector, fitresult.labels_) |> MMI.categorical
-    report = (features = _feature_names(X),
-            labels = labels)
+    labels = MMI.categorical(pyconvert(Vector, fitresult.labels_))
+    report = (features=_feature_names(X),
+              labels=labels)
     return (fitresult, cache, report)
 end
 
@@ -132,8 +129,6 @@ MMI.metadata_pkg.((KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN),
                   julia=false,          # is it written entirely in Julia?
                   license="MIT",        # your package license
                   is_wrapper=true)
-
-
 
 """
 $(MMI.doc_header(KMeans))
@@ -189,7 +184,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 
@@ -246,7 +241,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 
@@ -280,7 +275,7 @@ where
 - `n_neighbors=15`: The number of neighbors to compute when `connectivity = “knn”`
 - `connectivity="knn"`:
     - `knn` will sparsify the fully-connected connectivity matrix to save memory and enable much larger inputs.
-    - `pairwise`  will compute the entire fully-connected graph of pairwise distances between each set of points.
+    - `pairwise` will compute the entire fully-connected graph of pairwise distances between each set of points.
 - `verbose=false`: Sets logging level.
 
 
@@ -304,7 +299,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 
@@ -364,7 +359,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 

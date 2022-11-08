@@ -1,82 +1,24 @@
 
 # Model hyperparameters
-
-"""
-RAPIDS Docs for PCA: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#principal-component-analysis
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-
-model = PCA(n_components=2)
-mach = machine(model, X)
-fit!(mach)
-X_trans = transform(mach, X)
-inverse_transform(mach, X)
-
-println(mach.fitresult.components_)
-```
-"""
 MMI.@mlj_model mutable struct PCA <: MMI.Unsupervised
     copy::Bool = false # we are passing a numpy array, so modifying the data does not matter
     iterated_power::Int = 15::(_ > 0)
-    n_components = nothing
-    random_state = nothing
+    n_components::Union{Nothing, Int} = nothing
+    random_state::Union{Nothing, Int} = nothing
     svd_solver::String = "full"::(_ in ("auto", "full", "jacobi"))
     tol::Float64 = 1e-7::(_ > 0)
+    whiten::Bool = false
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for IncrementalPCA: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#incremental-pca
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-
-model = IncrementalPCA(n_components=2)
-mach = machine(model, X)
-fit!(mach)
-X_trans = transform(mach, X)
-
-println(mach.fitresult.components_)
-```
-"""
 MMI.@mlj_model mutable struct IncrementalPCA <: MMI.Unsupervised
     copy::Bool = false # we are passing a numpy array, so modifying the data does not matter
     whiten::Bool = false
-    n_components = nothing
-    batch_size = nothing
+    n_components::Union{Nothing, Int} = nothing
+    batch_size::Union{Nothing, Int} = nothing
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for TruncatedSVD: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#truncated-svd
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-
-model = TruncatedSVD(n_components=2)
-mach = machine(model, X)
-fit!(mach)
-X_trans = transform(mach, X)
-
-println(mach.fitresult.components_)
-```
-"""
 MMI.@mlj_model mutable struct TruncatedSVD <: MMI.Unsupervised
     n_components = nothing
     n_iter::Int = 15::(_ > 0)
@@ -85,28 +27,10 @@ MMI.@mlj_model mutable struct TruncatedSVD <: MMI.Unsupervised
     verbose::Bool = false
 end
 
-"""
-RAPIDS Docs for UMAP: 
-    https://docs.rapids.ai/api/cuml/stable/api.html#umap
-
-Example:
-```
-using RAPIDS
-using MLJ
-
-X = rand(100, 5)
-
-model = UMAP(n_components=2)
-mach = machine(model, X)
-fit!(mach)
-X_trans = transform(mach, X)
-
-println(mach.fitresult.embedding_)
-```
-"""
 MMI.@mlj_model mutable struct UMAP <: MMI.Unsupervised
-    n_components = nothing
-    n_epochs::Int = 15::(_ > 0)
+    n_neighbors::Int = 15
+    n_components::Int = 2
+    n_epoch::Union{Nothing, Int = nothing::(_ > 0)
     learning_rate::Float64 = 1.0::(_ > 0)
     init::String = "spectral"::(_ in ("random", "spectral"))
     min_dist::Float64 = 0.1::(_ > 0)
@@ -116,12 +40,11 @@ MMI.@mlj_model mutable struct UMAP <: MMI.Unsupervised
     repulsion_strength::Float64 = 1.0::(_ >= 0)
     negative_sample_rate::Int = 5::(_ >= 0)
     transform_queue_size::Float64 = 4.0::(_ >= 0)
-    a = nothing
-    b = nothing
+    a::Union{Nothing, Float64} = nothing
+    b::Union{Nothing, Float64} = nothing
     hash_input::Bool = false
-    random_state = nothing
-    #optim_batch_size = nothing # TODO: This is in the cuML docs, but not an actual argument
-    callback = nothing
+    random_state::Union{Nothing, Int} = nothing
+    callback::Union{Nothing, Py} = nothing
     verbose::Bool = false
 end
 
@@ -132,7 +55,7 @@ RAPIDS Docs for GaussianRandomProjection:
 Example:
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 
@@ -156,7 +79,7 @@ RAPIDS Docs for TSNE:
 Example:
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 
@@ -193,7 +116,7 @@ MMI.@mlj_model mutable struct TSNE <: MMI.Unsupervised
 end
 
 # Multiple dispatch for initializing models
-model_init(mlj_model::PCA) = cuml.PCA(; mlj_to_kwargs(mlj_model)...)
+model_init(mlj_model::PCA) = cuml.decomposition.PCA(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::IncrementalPCA) = cuml.IncrementalPCA(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::TruncatedSVD) = cuml.TruncatedSVD(; mlj_to_kwargs(mlj_model)...)
 model_init(mlj_model::UMAP) = cuml.UMAP(; mlj_to_kwargs(mlj_model)...)
@@ -236,7 +159,7 @@ function MMI.docstring(::Type{<:TSNE})
     return "cuML's TSNE: https://docs.rapids.ai/api/cuml/stable/api.html#tsne"
 end
 
-function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X)
     # fit model
     model = model_init(mlj_model)
     model.fit(prepare_input(X))
@@ -286,3 +209,263 @@ MMI.metadata_pkg.((PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjec
                   julia=false,          # is it written entirely in Julia?
                   license="MIT",        # your package license
                   is_wrapper=true)
+
+
+                  
+"""
+$(MMI.doc_header(PCA))
+
+`PCA` is a wrapper for the RAPIDS PCA.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+# Hyper-parameters
+
+- `copy=false`: If True, then copies data then removes mean from data.
+- `iterated_power=15`: Used in Jacobi solver. The more iterations, the more accurate, but slower.
+- `n_components=nothing`: The number of top K singular vectors / values you want.
+- `random_state=nothing`: Seed for the random number generator.
+- `svd_solver="full`: 
+    - `full`: eigendecomposition of the covariance matrix then discards components.
+    - `jacobi`: much faster as it iteratively corrects, but is less accurate.
+- `tol=1e-7`: Convergence tolerance for `jacobi`. 
+- `whiten=false`: If True, de-correlates the components.
+- `verbose=false`: Sets logging level.
+
+
+# Operations
+
+- `tansform(mach, Xnew)`
+
+- `inverse_transform(mach, Xtrans)`
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+
+# Examples
+```
+using RAPIDS
+using MLJBase
+
+X = rand(100, 5)
+
+model = PCA(n_components=2)
+mach = machine(model, X)
+fit!(mach)
+X_trans = transform(mach, X)
+inverse_transform(mach, X)
+
+println(mach.fitresult.components_)
+```
+"""
+PCA
+
+"""
+$(MMI.doc_header(IncrementalPCA))
+
+`IncrementalPCA` is a wrapper for the RAPIDS IncrementalPCA.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+# Hyper-parameters
+
+- `copy=false`: If True, then copies data then removes mean from data.
+- `n_components=nothing`: The number of top K singular vectors / values you want.
+- `tol=1e-7`: Convergence tolerance for `jacobi`. 
+- `whiten=false`: If True, de-correlates the components.
+- `batch_size=nothing`: The number of samples to use for each batch. Only used when calling `fit`.
+- `verbose=false`: Sets logging level.
+
+
+# Operations
+
+- `tansform(mach, Xnew)`
+
+- `inverse_transform(mach, Xtrans)`
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+
+# Examples
+```
+using RAPIDS
+using MLJBase
+
+X = rand(100, 5)
+
+model = IncrementalPCA(n_components=2)
+mach = machine(model, X)
+fit!(mach)
+X_trans = transform(mach, X)
+inverse_transform(mach, X)
+
+println(mach.fitresult.components_)
+```
+"""
+IncrementalPCA
+
+"""
+$(MMI.doc_header(TruncatedSVD))
+
+`TruncatedSVD` is a wrapper for the RAPIDS TruncatedSVD.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+# Hyper-parameters
+
+- `n_components=nothing`: The number of top K singular vectors / values you want.
+- `n_iter=15`: The number of top K singular vectors / values you want.
+- `random_state=nothing`: Seed for the random number generator.
+- `tol=1e-7`: Convergence tolerance for `jacobi`.
+- `verbose=false`: Sets logging level.
+
+
+# Operations
+
+- `tansform(mach, Xnew)`
+
+- `inverse_transform(mach, Xtrans)`
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+
+# Examples
+```
+using RAPIDS
+using MLJBase
+
+X = rand(100, 5)
+
+model = TruncatedSVD(n_components=2)
+mach = machine(model, X)
+fit!(mach)
+X_trans = transform(mach, X)
+inverse_transform(mach, X_trans)
+
+println(mach.fitresult.components_)
+```
+"""
+TruncatedSVD
+
+
+
+"""
+$(MMI.doc_header(UMAP))
+
+`UMAP` is a wrapper for the RAPIDS UMAP.
+
+# Training data
+
+In MLJ or MLJBase, bind an instance `model` to data with
+    mach = machine(model, X)
+
+where
+
+- `X`: any table or array of input features (eg, a `DataFrame`) whose columns
+    each have one of the following element scitypes: `Continuous`
+
+# Hyper-parameters
+
+- `n_neighbors=15`
+- `n_components=2`
+- `n_epoch=nothing`
+- `n_epoch=nothing`
+- `learning_rate=1.0`
+- `init="spectral"`
+- `min_dist=0.1`
+- `spread=1.0`
+- `set_op_mix_ratio=1.0`
+- `local_connectivity=1`
+- `repulsion_strength=1.0`
+- `negative_sample_rate=5`
+- `transform_queue_size=4.0`
+- `a=nothing`
+- `b=nothing`
+- `hash_input=false`
+- `random_state=nothing`
+- `callback=nothing`
+- `verbose=false`
+
+
+# Operations
+
+- `tansform(mach, Xnew)`
+
+# Fitted parameters
+
+The fields of `fitted_params(mach)` are:
+
+- `model`: the trained model object created by the RAPIDS.jl package
+
+# Report
+
+The fields of `report(mach)` are:
+
+
+# Examples
+```
+using RAPIDS
+using MLJBase
+
+X = rand(100, 5)
+
+model = UMAP(n_components=2)
+mach = machine(model, X)
+fit!(mach)
+X_trans = transform(mach, X)
+
+println(mach.fitresult.embedding_)
+```
+"""
+UMAP
+
+GaussianRandomProjection
+TSNE

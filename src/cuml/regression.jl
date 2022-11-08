@@ -251,7 +251,7 @@ MMI.metadata_pkg.((LinearRegression,
 """
 $(MMI.doc_header(LinearRegression))
 
-`LinearRegression`  is a wrapper for the RAPIDS Linear Regression.
+`LinearRegression` is a wrapper for the RAPIDS Linear Regression.
 
 # Training data
 
@@ -302,7 +302,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -318,7 +318,7 @@ LinearRegression
 """
 $(MMI.doc_header(Ridge))
 
-`Ridge`  is a wrapper for the RAPIDS Ridge Regression.
+`Ridge` is a wrapper for the RAPIDS Ridge Regression.
 
 # Training data
 
@@ -368,7 +368,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -384,7 +384,7 @@ Ridge
 """
 $(MMI.doc_header(Lasso))
 
-`Lasso`  is a wrapper for the RAPIDS Lasso Regression.
+`Lasso` is a wrapper for the RAPIDS Lasso Regression.
 
 # Training data
 
@@ -439,7 +439,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -455,7 +455,7 @@ Lasso
 """
 $(MMI.doc_header(ElasticNet))
 
-`ElasticNet`  is a wrapper for the RAPIDS ElasticNet Regression.
+`ElasticNet` is a wrapper for the RAPIDS ElasticNet Regression.
 
 # Training data
 
@@ -512,7 +512,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -586,7 +586,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -678,7 +678,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -741,7 +741,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -808,7 +808,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -877,7 +877,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)
@@ -936,7 +936,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = rand(100)

@@ -26,7 +26,7 @@ function model_init(X, mlj_model::ExponentialSmoothing)
 end
 model_init(X, mlj_model::ARIMA) = cuml.tsa.ARIMA(X; mlj_to_kwargs(mlj_model)...)
 
-const CUML_TIME_SERIES = Union{ExponentialSmoothing, ARIMA}
+const CUML_TIME_SERIES = Union{ExponentialSmoothing,ARIMA}
 
 # add metadata
 MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.ExponentialSmoothing"
@@ -41,7 +41,6 @@ end
 function MMI.docstring(::Type{<:ARIMA})
     return "cuML's ARIMA: https://docs.rapids.ai/api/cuml/nightly/api.html#cuml.tsa.ARIMA"
 end
-
 
 # fit methods
 function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)
@@ -77,11 +76,10 @@ MMI.metadata_pkg.((ExponentialSmoothing, ARIMA),
                   license="MIT",        # your package license
                   is_wrapper=true)
 
-
 """
 $(MMI.doc_header(ExponentialSmoothing))
 
-`ExponentialSmoothing`  is a wrapper for the RAPIDS HoltWinters time series analysis model.
+`ExponentialSmoothing` is a wrapper for the RAPIDS HoltWinters time series analysis model.
 
 # Training data
 
@@ -118,7 +116,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
@@ -131,11 +129,10 @@ preds = forecast(mach, 4)
 """
 ExponentialSmoothing
 
-
 """
 $(MMI.doc_header(ARIMA))
 
-`ARIMA`  is a wrapper for the RAPIDS batched ARIMA model for in- and out-of-sample time-series prediction, with support for seasonality (SARIMA).
+`ARIMA` is a wrapper for the RAPIDS batched ARIMA model for in- and out-of-sample time-series prediction, with support for seasonality (SARIMA).
 
 # Training data
 
@@ -176,7 +173,7 @@ The fields of `report(mach)` are:
 # Examples
 ```
 using RAPIDS
-using MLJ
+using MLJBase
 
 X = rand(100, 5)
 y = [repeat([0], 50)..., repeat([1], 50)...]
