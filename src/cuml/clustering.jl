@@ -99,7 +99,7 @@ function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)
     cache = nothing
     labels = pyconvert(Vector, fitresult.labels_) |> MMI.categorical
     report = (features = _feature_names(X),
-            lablels = labels)
+            labels = labels)
     return (fitresult, cache, report)
 end
 

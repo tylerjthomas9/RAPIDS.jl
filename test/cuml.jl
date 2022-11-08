@@ -15,21 +15,21 @@ const make_regression = cuml.datasets.regression.make_regression
         model = DBSCAN()
         mach = machine(model, X)
         fit!(mach)
-        preds = mach.fitresult.labels_
+        preds = mach.report.labels
     end
 
     @testset "AgglomerativeClustering" begin
         model = AgglomerativeClustering()
         mach = machine(model, X)
         fit!(mach)
-        preds = mach.fitresult.labels_
+        preds = mach.report.labels
     end
 
     @testset "HDBSCAN" begin
         model = HDBSCAN()
         mach = machine(model, X)
         fit!(mach)
-        preds = mach.fitresult.labels_
+        preds = mach.report.labels
     end
 end
 
