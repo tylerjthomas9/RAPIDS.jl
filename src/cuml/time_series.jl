@@ -43,7 +43,7 @@ function MMI.docstring(::Type{<:ARIMA})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)
+function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w = nothing)
     # fit the model
     model = model_init(prepare_input(X), mlj_model)
     model.fit()
@@ -68,13 +68,15 @@ function forecast(mach, steps)
 end
 
 # Classification metadata
-MMI.metadata_pkg.((ExponentialSmoothing, ARIMA),
-                  name="cuML Time Series Methods",
-                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-                  julia=false,          # is it written entirely in Julia?
-                  license="MIT",        # your package license
-                  is_wrapper=true)
+MMI.metadata_pkg.(
+    (ExponentialSmoothing, ARIMA),
+    name = "cuML Time Series Methods",
+    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia = false,          # is it written entirely in Julia?
+    license = "MIT",        # your package license
+    is_wrapper = true,
+)
 
 """
 $(MMI.doc_header(ExponentialSmoothing))

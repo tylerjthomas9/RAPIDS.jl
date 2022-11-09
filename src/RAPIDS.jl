@@ -12,17 +12,27 @@ using Tables
 
 const MMI = MLJModelInterface
 const PKG = "RAPIDS"
+const VERSION = VersionNumber(0, 2, 0)
 
 if !CUDA.functional()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
-    const VERSION = VersionNumber(0, 1, 0) # fake version number for automerge
-    export VERSION
-
+    const cudf = nothing
+    const cuxfilter = nothing
+    const cugraph = nothing
+    const cuml = nothing
+    const cupy = nothing
+    const cusignal = nothing
+    const cuspatial = nothing
+    const dask = nothing
+    const dask_cuda = nothing
+    const dask_cudf = nothing
+    const numpy = nothing
+    const pickle = nothing
 else
     @info "CUDA GPU Detected"
     using PythonCall
     const cudf = PythonCall.pynew()
-    const cuxfilter = PythonCall.pynew() #TODO fix error during import
+    const cuxfilter = PythonCall.pynew()
     const cugraph = PythonCall.pynew()
     const cuml = PythonCall.pynew()
     const cupy = PythonCall.pynew()
@@ -33,7 +43,6 @@ else
     const dask_cudf = PythonCall.pynew()
     const numpy = PythonCall.pynew()
     const pickle = PythonCall.pynew()
-
     function __init__()
         PythonCall.pycopy!(cudf, pyimport("cudf"))
         PythonCall.pycopy!(cuxfilter, pyimport("cuxfilter"))
@@ -48,62 +57,62 @@ else
         PythonCall.pycopy!(numpy, pyimport("numpy"))
         return PythonCall.pycopy!(pickle, pyimport("pickle"))
     end
+end
+include("./mlj_interface.jl")
 
-    include("./mlj_interface.jl")
-
-    export
+export VERSION,
     # RAPIDS Python API
-          cudf,
+    cudf,
     #cuxfilter,
-          cugraph,
-          cuml,
-          cusignal,
-          cupy,
-          cuspatial,
-          dask,
-          dask_cuda,
-          dask_cudf,
-          numpy,
+    cugraph,
+    cuml,
+    cusignal,
+    cupy,
+    cuspatial,
+    dask,
+    dask_cuda,
+    dask_cudf,
+    numpy,
 
     # PythonCall
-          pycopy!,
-          pyimport,
-          pynew,
+    pycopy!,
+    pyimport,
+    pynew,
 
     # clustering
-          KMeans,
-          DBSCAN,
-          AgglomerativeClustering,
-          HDBSCAN,
+    KMeans,
+    DBSCAN,
+    AgglomerativeClustering,
+    HDBSCAN,
     # regression
-          LinearRegression,
-          Ridge,
-          Lasso,
-          ElasticNet,
-          MBSGDRegressor,
-          RandomForestRegressor,
-          CD,
-          SVR,
-          LinearSVR,
-          KNeighborsRegressor,
+    LinearRegression,
+    Ridge,
+    Lasso,
+    ElasticNet,
+    MBSGDRegressor,
+    RandomForestRegressor,
+    CD,
+    SVR,
+    LinearSVR,
+    KNeighborsRegressor,
     # classification
-          LogisticRegression,
-          MBSGDClassifier,
-          RandomForestClassifier,
-          SVC,
-          LinearSVC,
-          KNeighborsClassifier,
+    LogisticRegression,
+    MBSGDClassifier,
+    RandomForestClassifier,
+    SVC,
+    LinearSVC,
+    KNeighborsClassifier,
     # dimensionality reduction
-          PCA,
-          IncrementalPCA,
-          TruncatedSVD,
-          UMAP,
-          GaussianRandomProjection,
-          TSNE,
+    PCA,
+    IncrementalPCA,
+    TruncatedSVD,
+    UMAP,
+    GaussianRandomProjection,
+    SparseRandomProjection,
+    TSNE,
     # time series
-          ExponentialSmoothing,
-          ARIMA,
-          forecast
-end
+    ExponentialSmoothing,
+    ARIMA,
+    forecast
 
 end

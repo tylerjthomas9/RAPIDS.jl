@@ -50,8 +50,8 @@ MMI.@mlj_model mutable struct MBSGDRegressor <: MMI.Deterministic
     shuffle::Bool = true
     eta0::Float64 = 1e-3::(_ > 0)
     power_t::Float64 = 0.5::(_ > 0)
-    learning_rate::String = "constant"::(_ in
-                                         ("adaptive", "constant", "invscaling", "optimal"))
+    learning_rate::String =
+        "constant"::(_ in ("adaptive", "constant", "invscaling", "optimal"))
     n_iter_no_change::Int = 5::(_ > 0)
     verbose::Bool = false
 end
@@ -103,8 +103,8 @@ end
 
 MMI.@mlj_model mutable struct LinearSVR <: MMI.Deterministic
     penalty::String = "l2"::(_ in ("l1", "l2"))
-    loss = "epsilon_insensitive"::(_ in
-                                   ("epsilon_insensitive", "squared_epsilon_insensitive"))
+    loss =
+        "epsilon_insensitive"::(_ in ("epsilon_insensitive", "squared_epsilon_insensitive"))
     fit_intercept::Bool = true
     penalized_intercept::Bool = true
     max_iter::Int = 1000::(_ > 0)
@@ -144,16 +144,18 @@ function model_init(mlj_model::KNeighborsRegressor)
     return cuml.KNeighborsRegressor(; mlj_to_kwargs(mlj_model)...)
 end
 
-const CUML_REGRESSION = Union{LinearRegression,
-                              Ridge,
-                              Lasso,
-                              ElasticNet,
-                              MBSGDRegressor,
-                              RandomForestRegressor,
-                              CD,
-                              SVR,
-                              LinearSVR,
-                              KNeighborsRegressor}
+const CUML_REGRESSION = Union{
+    LinearRegression,
+    Ridge,
+    Lasso,
+    ElasticNet,
+    MBSGDRegressor,
+    RandomForestRegressor,
+    CD,
+    SVR,
+    LinearSVR,
+    KNeighborsRegressor,
+}
 
 # add metadata
 MMI.load_path(::Type{<:LinearRegression}) = "$PKG.LinearRegression"
@@ -204,7 +206,7 @@ function MMI.docstring(::Type{<:KNeighborsRegressor})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w=nothing)
+function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w = nothing)
     X_numpy = prepare_input(X)
     y_numpy = prepare_input(y)
 
@@ -229,22 +231,26 @@ function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
 end
 
 # Regression metadata
-MMI.metadata_pkg.((LinearRegression,
-                   Ridge,
-                   Lasso,
-                   ElasticNet,
-                   MBSGDRegressor,
-                   RandomForestRegressor,
-                   CD,
-                   SVR,
-                   LinearSVR,
-                   KNeighborsRegressor),
-                  name="cuML Regression Methods",
-                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-                  julia=false,          # is it written entirely in Julia?
-                  license="MIT",        # your package license
-                  is_wrapper=true)
+MMI.metadata_pkg.(
+    (
+        LinearRegression,
+        Ridge,
+        Lasso,
+        ElasticNet,
+        MBSGDRegressor,
+        RandomForestRegressor,
+        CD,
+        SVR,
+        LinearSVR,
+        KNeighborsRegressor,
+    ),
+    name = "cuML Regression Methods",
+    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia = false,          # is it written entirely in Julia?
+    license = "MIT",        # your package license
+    is_wrapper = true,
+)
 
 # docstrings
 

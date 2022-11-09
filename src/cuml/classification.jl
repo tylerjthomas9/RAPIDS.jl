@@ -25,8 +25,8 @@ MMI.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
     shuffle::Bool = true
     eta0::Float64 = 0.001::(_ > 0)
     power_t::Float64 = 0.5::(_ > 0)
-    learning_rate::String = "constant"::(_ in
-                                         ("adaptive", "constant", "invscaling", "optimal"))
+    learning_rate::String =
+        "constant"::(_ in ("adaptive", "constant", "invscaling", "optimal"))
     n_iter_no_change::Int = 5::(_ > 0)
     verbose::Bool = false
 end
@@ -104,9 +104,14 @@ function model_init(mlj_model::KNeighborsClassifier)
     return cuml.KNeighborsClassifier(; mlj_to_kwargs(mlj_model)...)
 end
 
-const CUML_CLASSIFICATION = Union{LogisticRegression,MBSGDClassifier,
-                                  RandomForestClassifier,SVC,
-                                  LinearSVC,KNeighborsClassifier}
+const CUML_CLASSIFICATION = Union{
+    LogisticRegression,
+    MBSGDClassifier,
+    RandomForestClassifier,
+    SVC,
+    LinearSVC,
+    KNeighborsClassifier,
+}
 
 # add metadata
 MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.LogisticRegression"
@@ -141,7 +146,7 @@ function MMI.docstring(::Type{<:KNeighborsClassifier})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)
+function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w = nothing)
     X_numpy = prepare_input(X)
     y_numpy = prepare_input(y)
 
@@ -154,8 +159,7 @@ function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)
     cache = nothing
     y_cat = MMI.categorical(y)
     classes_seen = filter(in(unique(y_cat)), MMI.classes(y_cat))
-    report = (classes_seen=classes_seen,
-              features=_feature_names(X))
+    report = (classes_seen = classes_seen, features = _feature_names(X))
     return (fitresult, cache, report)
 end
 
@@ -169,14 +173,22 @@ function MMI.predict(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
 end
 
 # Classification metadata
-MMI.metadata_pkg.((LogisticRegression, MBSGDClassifier, RandomForestClassifier,
-                   SVC, LinearSVC, KNeighborsClassifier),
-                  name="cuML Classification Methods",
-                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-                  julia=false,          # is it written entirely in Julia?
-                  license="MIT",        # your package license
-                  is_wrapper=true)
+MMI.metadata_pkg.(
+    (
+        LogisticRegression,
+        MBSGDClassifier,
+        RandomForestClassifier,
+        SVC,
+        LinearSVC,
+        KNeighborsClassifier,
+    ),
+    name = "cuML Classification Methods",
+    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia = false,          # is it written entirely in Julia?
+    license = "MIT",        # your package license
+    is_wrapper = true,
+)
 
 # docstrings
 # TODO: add Table/DataFrame examples
