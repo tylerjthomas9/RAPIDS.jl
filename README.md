@@ -1,4 +1,8 @@
+[![Dev](https://img.shields.io/badge/docs-stable-blue.svg)](https://docs.juliahub.com/RAPIDS/)
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+[![CI](https://github.com/tylerjthomas9/ScrapeSEC.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/CI.yml)
+ [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
+
 
 :warning: RAPIDS.jl is only supported on Julia 1.9 nightly builds. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. This issue will hopefully be resolved in the near future when the upgrades are backported to older Julia versions.
 
@@ -39,6 +43,7 @@ You can access the following python libraries with their standard syntax:
 - `cugraph`
 - `cusignal`
 - `cuspatial`
+- `cuxfilter`
 - `dask`
 - `dask_cuda`
 - `dask_cudf`

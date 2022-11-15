@@ -27,12 +27,12 @@ end
 if !CUDA.functional()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
     const cudf = nothing
-    const cuxfilter = nothing
     const cugraph = nothing
     const cuml = nothing
     const cupy = nothing
     const cusignal = nothing
     const cuspatial = nothing
+    const cuxfilter = nothing
     const dask = nothing
     const dask_cuda = nothing
     const dask_cudf = nothing
@@ -44,12 +44,12 @@ else
     @info "CUDA GPU Detected"
     using PythonCall
     const cudf = PythonCall.pynew()
-    const cuxfilter = PythonCall.pynew()
     const cugraph = PythonCall.pynew()
     const cuml = PythonCall.pynew()
     const cupy = PythonCall.pynew()
     const cusignal = PythonCall.pynew()
     const cuspatial = PythonCall.pynew()
+    const cuxfilter = PythonCall.pynew()
     const dask = PythonCall.pynew()
     const dask_cuda = PythonCall.pynew()
     const dask_cudf = PythonCall.pynew()
@@ -76,12 +76,12 @@ include("./mlj_interface.jl")
 export VERSION,
     # RAPIDS Python API
     cudf,
-    cuxfilter,
     cugraph,
     cuml,
     cusignal,
     cupy,
     cuspatial,
+    cuxfilter,
     dask,
     dask_cuda,
     dask_cudf,
