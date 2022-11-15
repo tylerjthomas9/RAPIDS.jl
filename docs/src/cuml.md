@@ -1,10 +1,4 @@
 # MLJ API
-```@meta
-CurrentModule = RAPIDS
-```
-
-```@index
-```
 
 # MLJ Example - Classification
 
