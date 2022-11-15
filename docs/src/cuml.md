@@ -33,10 +33,10 @@ preds = predict(mach, X)
 
 ## Clustering
 ```@docs
-    - `KMeans`
-    - `DBSCAN`
-    - `AgglomerativeClustering`
-    - `HDBSCAN`
+KMeans
+DBSCAN
+AgglomerativeClustering
+HDBSCAN
 ```
 
 ## Classification
@@ -51,30 +51,30 @@ KNeighborsClassifier
 
 ## Regression
 ```@docs
-    - `LinearRegression`
-    - `Ridge`
-    - `Lasso`
-    - `ElasticNet`
-    - `MBSGDRegressor`
-    - `RandomForestRegressor`
-    - `CD`
-    - `SVR`
-    - `LinearSVR`
-    - `KNeighborsRegressor`
+LinearRegression
+Ridge
+Lasso
+ElasticNet
+MBSGDRegressor
+RandomForestRegressor
+CD
+SVR
+LinearSVR
+KNeighborsRegressor
 ```
 
 ## Dimensionality Reduction
 ```@docs
-    - `PCA`
-    - `IncrementalPCA`
-    - `TruncatedSVD`
-    - `UMAP`
-    - `TSNE`
-    - `GaussianRandomProjection`
+PCA
+IncrementalPCA
+TruncatedSVD
+UMAP
+TSNE
+GaussianRandomProjection
 ```
 
 ## Time Series
 ```@docs
-    - `ExponentialSmoothing`
-    - `ARIMA`
+ExponentialSmoothing
+ARIMA
 ```
