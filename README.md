@@ -11,6 +11,16 @@ This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph
 
 ## Installation
 
+From the Julia General Registry:
+```julia
+julia> ]  # enters the pkg interface
+pkg> add RAPIDS
+```
+
+```julia
+julia> using Pkg; Pkg.add("RAPIDS")
+```
+
 From source:
 ```julia
 julia> ]add https://github.com/tylerjthomas9/RAPIDS.jl

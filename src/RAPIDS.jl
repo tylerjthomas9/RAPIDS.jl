@@ -26,6 +26,20 @@ end
 
 if !CUDA.functional()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
+    const cudf = nothing
+    const cuxfilter = nothing
+    const cugraph = nothing
+    const cuml = nothing
+    const cupy = nothing
+    const cusignal = nothing
+    const cuspatial = nothing
+    const dask = nothing
+    const dask_cuda = nothing
+    const dask_cudf = nothing
+    const numpy = nothing
+    const pickle = nothing
+    abstract type Py end
+    macro py(x...) end
 else
     @info "CUDA GPU Detected"
     using PythonCall
@@ -55,63 +69,63 @@ else
         PythonCall.pycopy!(numpy, pyimport("numpy"))
         return PythonCall.pycopy!(pickle, pyimport("pickle"))
     end
-
-    include("./mlj_interface.jl")
-
-    export VERSION,
-        # RAPIDS Python API
-        cudf,
-        cuxfilter,
-        cugraph,
-        cuml,
-        cusignal,
-        cupy,
-        cuspatial,
-        dask,
-        dask_cuda,
-        dask_cudf,
-        numpy,
-
-        # PythonCall
-        pycopy!,
-        pyimport,
-        pynew,
-
-        # clustering
-        KMeans,
-        DBSCAN,
-        AgglomerativeClustering,
-        HDBSCAN,
-        # regression
-        LinearRegression,
-        Ridge,
-        Lasso,
-        ElasticNet,
-        MBSGDRegressor,
-        RandomForestRegressor,
-        CD,
-        SVR,
-        LinearSVR,
-        KNeighborsRegressor,
-        # classification
-        LogisticRegression,
-        MBSGDClassifier,
-        RandomForestClassifier,
-        SVC,
-        LinearSVC,
-        KNeighborsClassifier,
-        # dimensionality reduction
-        PCA,
-        IncrementalPCA,
-        TruncatedSVD,
-        UMAP,
-        GaussianRandomProjection,
-        SparseRandomProjection,
-        TSNE,
-        # time series
-        ExponentialSmoothing,
-        ARIMA,
-        forecast
 end
+
+include("./mlj_interface.jl")
+
+export VERSION,
+    # RAPIDS Python API
+    cudf,
+    cuxfilter,
+    cugraph,
+    cuml,
+    cusignal,
+    cupy,
+    cuspatial,
+    dask,
+    dask_cuda,
+    dask_cudf,
+    numpy,
+
+    # PythonCall
+    pycopy!,
+    pyimport,
+    pynew,
+
+    # clustering
+    KMeans,
+    DBSCAN,
+    AgglomerativeClustering,
+    HDBSCAN,
+    # regression
+    LinearRegression,
+    Ridge,
+    Lasso,
+    ElasticNet,
+    MBSGDRegressor,
+    RandomForestRegressor,
+    CD,
+    SVR,
+    LinearSVR,
+    KNeighborsRegressor,
+    # classification
+    LogisticRegression,
+    MBSGDClassifier,
+    RandomForestClassifier,
+    SVC,
+    LinearSVC,
+    KNeighborsClassifier,
+    # dimensionality reduction
+    PCA,
+    IncrementalPCA,
+    TruncatedSVD,
+    UMAP,
+    GaussianRandomProjection,
+    SparseRandomProjection,
+    TSNE,
+    # time series
+    ExponentialSmoothing,
+    ARIMA,
+    forecast
 
 end
