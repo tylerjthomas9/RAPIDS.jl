@@ -1,6 +1,6 @@
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
-
+:warning: RAPIDS.jl is only supported on Julia 1.9 nightly builds. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. This issue will hopefully be resolved in the near future when the upgrades are backported to older Julia versions.
 
 # RAPIDS.jl
 Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosystem. Support is limited to Linux and NVIDIA GPUs (Pascal or more recent) with at least 6 TFLOPS.
