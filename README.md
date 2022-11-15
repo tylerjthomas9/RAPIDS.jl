@@ -1,4 +1,4 @@
-[![Dev](https://img.shields.io/badge/docs-stable-blue.svg)](https://docs.juliahub.com/RAPIDS/)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://tylerjthomas9.github.io/RAPIDS.jl/)
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 [![CI](https://github.com/tylerjthomas9/ScrapeSEC.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/CI.yml)
  [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
