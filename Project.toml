@@ -1,27 +1,26 @@
 name = "RAPIDS"
 uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13"
 authors = ["tylerjthomas9 <tylerjthomas9@gmail.com>"]
-version = "0.1.1"
+version = "0.2.0"
 
 [deps]
 CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
-MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
 MLJBase = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
 MLJModelInterface = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
+Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
 
 [compat]
 CUDA = "3.9"
 CondaPkg = "0.2"
-MLJ = "0.17, 0.18"
-MLJBase = "0.19, 0.20"
-MLJModelInterface = "1"
-PythonCall = "0.8"
+PythonCall = "=0.8"
 julia = "1.6"
 
 [extras]
+MLJBase = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
+MLJTestIntegration = "697918b4-fdc1-4f9e-8ff9-929724cee270"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "MLJBase", "MLJTestIntegration"]

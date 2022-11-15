@@ -1,3 +1,11 @@
+[![Dev](https://img.shields.io/badge/docs-stable-blue.svg)](https://docs.juliahub.com/RAPIDS/)
+[![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+[![CI](https://github.com/tylerjthomas9/ScrapeSEC.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/CI.yml)
+ [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
+
+
+:warning: RAPIDS.jl is only supported on Julia 1.9 nightly builds. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. This issue will hopefully be resolved in the near future when the upgrades are backported to older Julia versions.
+
 # RAPIDS.jl
 Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosystem. Support is limited to Linux and NVIDIA GPUs (Pascal or more recent) with at least 6 TFLOPS.
 
@@ -6,6 +14,16 @@ The goal of this library is to provide a simple method for accessing the GPU acc
 This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
 
 ## Installation
+
+From the Julia General Registry:
+```julia
+julia> ]  # enters the pkg interface
+pkg> add RAPIDS
+```
+
+```julia
+julia> using Pkg; Pkg.add("RAPIDS")
+```
 
 From source:
 ```julia
@@ -25,6 +43,7 @@ You can access the following python libraries with their standard syntax:
 - `cugraph`
 - `cusignal`
 - `cuspatial`
+- `cuxfilter`
 - `dask`
 - `dask_cuda`
 - `dask_cudf`
@@ -51,7 +70,7 @@ print(lr.coef_)
 A MLJ interface is also available for supported models. The model hyperparameters are the same as described in the [cuML docs](https://docs.rapids.ai/api/cuml/stable/api.html). The only difference is that the models will always input/output numpy arrays, which will be converted back to Julia arrays (`output_type="input"`). 
 
 ```julia
-using MLJ
+using MLJBase
 using RAPIDS
 const make_classification = cuml.datasets.classification.make_classification
 
@@ -77,6 +96,9 @@ MLJ Support:
 - Classification
     - `LogisticRegression`
     - `MBSGDClassifier`
+    - `RandomForestClassifier`
+    - `SVC`
+    - `LinearSVC`
     - `KNeighborsClassifier`
 - Regression
     - `LinearRegression`
@@ -98,3 +120,4 @@ MLJ Support:
     - `GaussianRandomProjection`
 - Time Series
     - `ExponentialSmoothing`
+    - `ARIMA`
