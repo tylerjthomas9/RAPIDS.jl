@@ -74,6 +74,14 @@ end
 include("./mlj_interface.jl")
 
 export VERSION,
+    # PythonCall
+    pycopy!,
+    pyimport,
+    pynew,
+    
+    # helper functions
+    to_numpy,
+
     # RAPIDS Python API
     cudf,
     cugraph,
@@ -86,11 +94,6 @@ export VERSION,
     dask_cuda,
     dask_cudf,
     numpy,
-
-    # PythonCall
-    pycopy!,
-    pyimport,
-    pynew,
 
     # clustering
     KMeans,

@@ -1,11 +1,24 @@
-function prepare_input(x)
-    x = Float32.(MMI.matrix(x))
+
+"""
+    to_numpy(x; dtype::DataType=Float32)
+
+Convert a array or table in julia to a numpy array
+
+Parameters
+----------
+- x: Array or table
+
+Returns
+-------
+- numpy array
+"""
+function to_numpy(x; dtype::DataType=Float32)
+    x = dtype.(MMI.matrix(x))
     return numpy.array(x)
 end
 
-function RAPIDS.prepare_input(x::AbstractVector{<:Real})
-    x = numpy.array(Float32.(x))
-    return numpy.array(x)
+function to_numpy(x::AbstractVector{<:Real}; dtype=Float32)
+    return numpy.array(dtype.(x))
 end
 
 function mlj_to_kwargs(model)

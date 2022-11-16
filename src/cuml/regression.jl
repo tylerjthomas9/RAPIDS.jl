@@ -207,8 +207,8 @@ end
 
 # fit methods
 function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w = nothing)
-    X_numpy = prepare_input(X)
-    y_numpy = prepare_input(y)
+    X_numpy = to_numpy(X)
+    y_numpy = to_numpy(y)
 
     # fit the model
     model = model_init(mlj_model)
@@ -224,7 +224,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(prepare_input(Xnew))
+    py_preds = model.predict(to_numpy(Xnew))
     preds = pyconvert(Array, py_preds)
 
     return preds
