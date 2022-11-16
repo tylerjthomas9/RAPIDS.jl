@@ -85,7 +85,7 @@ end
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w = nothing)
-    X_numpy = prepare_input(X)
+    X_numpy = to_numpy(X)
 
     # fit the model
     model = model_init(mlj_model)
@@ -102,7 +102,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(prepare_input(Xnew))
+    py_preds = model.predict(to_numpy(Xnew))
     preds = MMI.categorical(pyconvert(Array, py_preds))
 
     return preds

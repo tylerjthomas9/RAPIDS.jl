@@ -149,7 +149,7 @@ end
 function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X)
     # fit model
     model = model_init(mlj_model)
-    model.fit(prepare_input(X))
+    model.fit(to_numpy(X))
     fitresult = model
 
     # save result
@@ -172,7 +172,7 @@ function MMI.transform(
     Xnew,
 )
     model = fitresult
-    py_preds = model.transform(prepare_input(Xnew))
+    py_preds = model.transform(to_numpy(Xnew))
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -182,7 +182,7 @@ end
 # right now we have to refit the model when transforming
 function MMI.transform(mlj_model::TSNE, fitresult, Xnew)
     model = fitresult
-    py_preds = model.fit_transform(prepare_input(Xnew))
+    py_preds = model.fit_transform(to_numpy(Xnew))
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -190,7 +190,7 @@ end
 
 function MMI.inverse_transform(mlj_model::Union{PCA,TruncatedSVD}, fitresult, Xnew)
     model = fitresult
-    py_preds = model.inverse_transform(prepare_input(Xnew))
+    py_preds = model.inverse_transform(to_numpy(Xnew))
     preds = pyconvert(Array, py_preds)
 
     return preds

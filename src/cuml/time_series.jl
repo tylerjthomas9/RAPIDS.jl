@@ -45,7 +45,7 @@ end
 # fit methods
 function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w = nothing)
     # fit the model
-    model = model_init(prepare_input(X), mlj_model)
+    model = model_init(to_numpy(X), mlj_model)
     model.fit()
     fitresult = model
 

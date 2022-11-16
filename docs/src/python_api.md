@@ -26,6 +26,8 @@ model = cuml.LogisticRegression()
 model.fit(X_numpy, y_numpy)
 preds_numpy = model.predict(X_numpy)
 preds = pyconvert(Array, preds_numpy)
+
+println(model.coef_)
 ```
 
 # CUML Example - Regression
@@ -40,4 +42,6 @@ model = cuml.LinearRegression()
 model.fit(X_numpy, y_numpy)
 preds_numpy = model.predict(X_numpy)
 preds = pyconvert(Array, preds_numpy)
+
+println(model.coef_)
 ```

@@ -13,6 +13,8 @@ model = LogisticRegression()
 mach = machine(model, X, y)
 fit!(mach)
 preds = predict(mach, X)
+
+println(mach.fitresult.coef_)
 ```
 
 # MLJ Example - Regression
@@ -28,6 +30,8 @@ model = LinearRegression()
 mach = machine(model, X, y)
 fit!(mach)
 preds = predict(mach, X)
+
+println(mach.fitresult.coef_)
 ```
 
 
