@@ -122,7 +122,7 @@ MMI.load_path(::Type{<:LinearSVC}) = "$PKG.LinearSVC"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
 
 function MMI.input_scitype(::Type{<:CUML_CLASSIFICATION})
-    return Union{Table(Continuous),AbstractMatrix{<:Continuous}}
+    return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}
 end
 MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
@@ -164,13 +164,39 @@ function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w = nothing)
 end
 
 # predict methods
-function MMI.predict(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
+function MMI.predict(mlj_model::Union{LogisticRegression, RandomForestClassifier, KNeighborsClassifier}, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(to_numpy(Xnew))
-    preds = MMI.categorical(pyconvert(Array, py_preds))
+    py_preds = model.predict_proba(to_numpy(Xnew))
+    classes = pyconvert(Vector, model.classes_)
+    preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing)
 
     return preds
 end
+
+function MMI.predict(mlj_model::Union{SVC, LinearSVC}, fitresult, Xnew)
+    model = fitresult
+    classes = pyconvert(Vector, model.classes_)
+    if pyconvert(Bool, model.probability)
+        py_preds = model.predict_proba(to_numpy(Xnew))
+        preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing)
+    else
+        py_preds = model.predict(to_numpy(Xnew))
+        preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing, augment=true)
+    end
+
+    return preds
+end
+
+
+function MMI.predict(mlj_model::Union{MBSGDClassifier}, fitresult, Xnew)
+    model = fitresult
+    classes = pyconvert(Vector, model.classes_)
+    py_preds = model.predict(to_numpy(Xnew))
+    preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing, augment=true)
+
+    return preds
+end
+
 
 # Classification metadata
 MMI.metadata_pkg.(

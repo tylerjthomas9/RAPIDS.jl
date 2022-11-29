@@ -13,17 +13,12 @@ Restore the model with [`model`](@ref)
 
 """
 function persistent(model)
-
-    # this implemenation is not ideal; see
-    # https://github.com/dmlc/XGBoost.jl/issues/103
-
     model_file, io = mktemp()
     close(io)
 
     pickle.dump(model, @py open(model_file, "wb"))
-    XGBoost.save(booster, xgb_file)
-    persistent_booster = read(xgb_file)
-    rm(xgb_file)
+    persistent_booster = read(model_file)
+    rm(model_file)
     return persistent_booster
 end
 

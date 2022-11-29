@@ -170,9 +170,9 @@ MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
 MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
 
 function MMI.input_scitype(::Type{<:CUML_REGRESSION})
-    return Union{Table(Continuous),AbstractMatrix{<:Continuous}}
+    return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}
 end
-MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:Continuous}
+MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:MMI.Continuous}
 
 function MMI.docstring(::Type{<:LinearRegression})
     return "cuML's LinearRegression: https://docs.rapids.ai/api/cuml/stable/api.html#linear-regression"

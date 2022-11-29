@@ -33,7 +33,7 @@ MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.ExponentialSmoothing"
 MMI.load_path(::Type{<:ARIMA}) = "$PKG.ARIMA"
 
 function MMI.input_scitype(::Type{<:CUML_TIME_SERIES})
-    return Union{AbstractMatrix{<:Continuous},Table(Continuous)}
+    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
 end
 function MMI.docstring(::Type{<:ExponentialSmoothing})
     return "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"

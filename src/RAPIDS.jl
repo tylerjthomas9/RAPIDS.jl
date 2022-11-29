@@ -6,11 +6,8 @@ A Julia interface to the RAPIDS AI ecosystem
 module RAPIDS
 
 using CUDA
-using MLJBase
-using MLJModelInterface
-using Tables
+using Reexport
 
-const MMI = MLJModelInterface
 const PKG = "RAPIDS"
 const VERSION = VersionNumber(0, 2, 0)
 
@@ -71,18 +68,13 @@ else
     end
 end
 
-include("./mlj_interface.jl")
-
 export VERSION,
     # PythonCall
     pycopy!,
     pyimport,
     pynew,
-    
-    # helper functions
-    to_numpy,
 
-    # RAPIDS Python API
+    # Python API
     cudf,
     cugraph,
     cuml,
@@ -93,42 +85,9 @@ export VERSION,
     dask,
     dask_cuda,
     dask_cudf,
-    numpy,
+    numpy
 
-    # clustering
-    KMeans,
-    DBSCAN,
-    AgglomerativeClustering,
-    HDBSCAN,
-    # regression
-    LinearRegression,
-    Ridge,
-    Lasso,
-    ElasticNet,
-    MBSGDRegressor,
-    RandomForestRegressor,
-    CD,
-    SVR,
-    LinearSVR,
-    KNeighborsRegressor,
-    # classification
-    LogisticRegression,
-    MBSGDClassifier,
-    RandomForestClassifier,
-    SVC,
-    LinearSVC,
-    KNeighborsClassifier,
-    # dimensionality reduction
-    PCA,
-    IncrementalPCA,
-    TruncatedSVD,
-    UMAP,
-    GaussianRandomProjection,
-    SparseRandomProjection,
-    TSNE,
-    # time series
-    ExponentialSmoothing,
-    ARIMA,
-    forecast
+    include("CUML/CUML.jl")
+    @reexport using RAPIDS.CUML
 
 end

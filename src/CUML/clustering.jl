@@ -67,7 +67,7 @@ MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.AgglomerativeClustering
 MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
 
 function MMI.input_scitype(::Type{<:CUML_CLUSTERING})
-    return Union{AbstractMatrix{<:Continuous},Table(Continuous)}
+    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
 end
 
 function MMI.docstring(::Type{<:KMeans})

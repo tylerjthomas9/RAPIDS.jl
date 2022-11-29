@@ -121,7 +121,7 @@ MMI.load_path(::Type{<:SparseRandomProjection}) = "$PKG.SparseRandomProjection"
 MMI.load_path(::Type{<:TSNE}) = "$PKG.TSNE"
 
 function MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION})
-    return Union{AbstractMatrix{<:Continuous},Table(Continuous)}
+    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
 end
 
 function MMI.docstring(::Type{<:PCA})
