@@ -41,6 +41,13 @@ MMI.supports_weights(::Type{<:CUML_MODELS}) = false #TODO: add weights support
 
 include("mlj_serialization.jl")
 
+# docstrings
+include("./cuml/classification_docstrings.jl")
+include("./cuml/clustering_docstrings.jl")
+include("./cuml/dimensionality_reduction_docstrings.jl")
+include("./cuml/regression_docstrings.jl")
+include("./cuml/time_series_docstrings.jl")
+
 export 
 # helper functions
 to_numpy,
