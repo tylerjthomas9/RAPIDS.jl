@@ -6,10 +6,8 @@ A Julia interface to the RAPIDS AI ecosystem
 module RAPIDS
 
 using CUDA
-using Reexport
 
 const PKG = "RAPIDS"
-const VERSION = VersionNumber(0, 2, 1)
 
 # Temp warning for 
 if Base.VERSION <= v"1.8.3"
@@ -87,9 +85,7 @@ export VERSION,
     dask_cudf,
     numpy
 
-    include("CuML/CuML.jl")
-    @reexport using RAPIDS.CuML
-
     include("CuDF/CuDF.jl")
+    include("CuML/CuML.jl")
 
 end

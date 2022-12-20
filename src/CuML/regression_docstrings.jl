@@ -52,7 +52,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -118,7 +118,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -189,7 +189,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -262,7 +262,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -336,7 +336,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -428,7 +428,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -491,7 +491,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -558,7 +558,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -627,7 +627,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -686,7 +686,7 @@ The fields of `report(mach)` are:
 
 # Examples
 ```
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)

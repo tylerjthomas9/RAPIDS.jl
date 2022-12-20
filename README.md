@@ -58,7 +58,7 @@ You can access the following python libraries with their standard syntax:
 Here is an example of using `LogisticRegression`, `make_classification` via the Python API. 
 
 ```julia
-using RAPIDS
+using RAPIDS.CuML
 const make_classification = cuml.datasets.classification.make_classification
 
 X_py, y_py = make_classification(n_samples=200, n_features=4,
@@ -76,7 +76,7 @@ A MLJ interface is also available for supported models. The model hyperparameter
 
 ```julia
 using MLJBase
-using RAPIDS
+using RAPIDS.CuML
 const make_classification = cuml.datasets.classification.make_classification
 
 X_py, y_py = make_classification(n_samples=200, n_features=4,
