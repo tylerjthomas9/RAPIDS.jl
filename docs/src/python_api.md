@@ -14,7 +14,7 @@ You can directly interface with the Python API for all RAPIDS packages. By defau
 - `numpy`
 - `pickle`
 
-# CUML Example - Classification
+# CuML Example - Classification
 ```julia
 using RAPIDS
 using PythonCall
@@ -30,7 +30,7 @@ preds = pyconvert(Array, preds_numpy)
 println(model.coef_)
 ```
 
-# CUML Example - Regression
+# CuML Example - Regression
 ```julia
 using RAPIDS
 using PythonCall

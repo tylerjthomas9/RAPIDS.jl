@@ -1,10 +1,9 @@
 
-module CUML
+module CuML
 
 using MLJBase
 using MLJModelInterface
 using RAPIDS: numpy, pickle, cuml
-using Reexport
 using PythonCall
 using Tables
 
@@ -42,11 +41,11 @@ MMI.supports_weights(::Type{<:CUML_MODELS}) = false #TODO: add weights support
 include("mlj_serialization.jl")
 
 # docstrings
-include("./cuml/classification_docstrings.jl")
-include("./cuml/clustering_docstrings.jl")
-include("./cuml/dimensionality_reduction_docstrings.jl")
-include("./cuml/regression_docstrings.jl")
-include("./cuml/time_series_docstrings.jl")
+include("classification_docstrings.jl")
+include("clustering_docstrings.jl")
+include("dimensionality_reduction_docstrings.jl")
+include("regression_docstrings.jl")
+include("time_series_docstrings.jl")
 
 export 
 # helper functions
