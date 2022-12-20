@@ -1,7 +1,7 @@
 name = "RAPIDS"
 uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13"
 authors = ["tylerjthomas9 <tylerjthomas9@gmail.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
@@ -19,7 +19,7 @@ MLJBase = ">=0.17"
 MLJModelInterface = "1"
 PythonCall = ">=0.9.10"
 Tables = "1"
-julia = "1.6"
+julia = ">=1.8.4"
 
 [extras]
 MLJBase = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
