@@ -3,7 +3,7 @@ module CuML
 
 using MLJBase
 using MLJModelInterface
-using RAPIDS: numpy, pickle, cuml
+using RAPIDS: numpy, pickle, cuml, PKG
 using PythonCall
 using Tables
 

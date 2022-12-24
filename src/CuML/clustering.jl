@@ -61,10 +61,10 @@ model_init(mlj_model::HDBSCAN) = cuml.HDBSCAN(; mlj_to_kwargs(mlj_model)...)
 const CUML_CLUSTERING = Union{KMeans,DBSCAN,AgglomerativeClustering,HDBSCAN}
 
 # add metadata
-MMI.load_path(::Type{<:KMeans}) = "$PKG.KMeans"
-MMI.load_path(::Type{<:DBSCAN}) = "$PKG.DBSCAN"
-MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.AgglomerativeClustering"
-MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.HDBSCAN"
+MMI.load_path(::Type{<:KMeans}) = "$PKG.CuML.KMeans"
+MMI.load_path(::Type{<:DBSCAN}) = "$PKG.CuML.DBSCAN"
+MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.CuML.AgglomerativeClustering"
+MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.CuML.HDBSCAN"
 
 function MMI.input_scitype(::Type{<:CUML_CLUSTERING})
     return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}

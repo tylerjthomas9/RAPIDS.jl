@@ -112,13 +112,13 @@ const CUML_DIMENSIONALITY_REDUCTION = Union{
 }
 
 # add metadata
-MMI.load_path(::Type{<:PCA}) = "$PKG.PCA"
-MMI.load_path(::Type{<:IncrementalPCA}) = "$PKG.IncrementalPCA"
-MMI.load_path(::Type{<:TruncatedSVD}) = "$PKG.TruncatedSVD"
-MMI.load_path(::Type{<:UMAP}) = "$PKG.UMAP"
-MMI.load_path(::Type{<:GaussianRandomProjection}) = "$PKG.GaussianRandomProjection"
-MMI.load_path(::Type{<:SparseRandomProjection}) = "$PKG.SparseRandomProjection"
-MMI.load_path(::Type{<:TSNE}) = "$PKG.TSNE"
+MMI.load_path(::Type{<:PCA}) = "$PKG.CuML.PCA"
+MMI.load_path(::Type{<:IncrementalPCA}) = "$PKG.CuML.IncrementalPCA"
+MMI.load_path(::Type{<:TruncatedSVD}) = "$PKG.CuML.TruncatedSVD"
+MMI.load_path(::Type{<:UMAP}) = "$PKG.CuML.UMAP"
+MMI.load_path(::Type{<:GaussianRandomProjection}) = "$PKG.CuML.GaussianRandomProjection"
+MMI.load_path(::Type{<:SparseRandomProjection}) = "$PKG.CuML.SparseRandomProjection"
+MMI.load_path(::Type{<:TSNE}) = "$PKG.CuML.TSNE"
 
 function MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION})
     return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}

@@ -114,12 +114,12 @@ const CUML_CLASSIFICATION = Union{
 }
 
 # add metadata
-MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.LogisticRegression"
-MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.MBSGDClassifier"
-MMI.load_path(::Type{<:RandomForestClassifier}) = "$PKG.RandomForestClassifier"
-MMI.load_path(::Type{<:SVC}) = "$PKG.SVC"
-MMI.load_path(::Type{<:LinearSVC}) = "$PKG.LinearSVC"
-MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.KNeighborsClassifier"
+MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.CuML.LogisticRegression"
+MMI.load_path(::Type{<:MBSGDClassifier}) = "$PKG.CuML.MBSGDClassifier"
+MMI.load_path(::Type{<:RandomForestClassifier}) = "$PKG.CuML.RandomForestClassifier"
+MMI.load_path(::Type{<:SVC}) = "$PKG.CuML.SVC"
+MMI.load_path(::Type{<:LinearSVC}) = "$PKG.CuML.LinearSVC"
+MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.CuML.KNeighborsClassifier"
 
 function MMI.input_scitype(::Type{<:CUML_CLASSIFICATION})
     return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}

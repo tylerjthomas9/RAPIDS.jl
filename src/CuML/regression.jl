@@ -158,16 +158,16 @@ const CUML_REGRESSION = Union{
 }
 
 # add metadata
-MMI.load_path(::Type{<:LinearRegression}) = "$PKG.LinearRegression"
-MMI.load_path(::Type{<:Ridge}) = "$PKG.Ridge"
-MMI.load_path(::Type{<:Lasso}) = "$PKG.Lasso"
-MMI.load_path(::Type{<:ElasticNet}) = "$PKG.ElasticNet"
-MMI.load_path(::Type{<:MBSGDRegressor}) = "$PKG.MBSGDRegressor"
-MMI.load_path(::Type{<:RandomForestRegressor}) = "$PKG.RandomForestRegressor"
-MMI.load_path(::Type{<:CD}) = "$PKG.CD"
-MMI.load_path(::Type{<:SVR}) = "$PKG.SVR"
-MMI.load_path(::Type{<:LinearSVR}) = "$PKG.LinearSVR"
-MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.KNeighborsRegressor"
+MMI.load_path(::Type{<:LinearRegression}) = "$PKG.CuML.LinearRegression"
+MMI.load_path(::Type{<:Ridge}) = "$PKG.CuML.Ridge"
+MMI.load_path(::Type{<:Lasso}) = "$PKG.CuML.Lasso"
+MMI.load_path(::Type{<:ElasticNet}) = "$PKG.CuML.ElasticNet"
+MMI.load_path(::Type{<:MBSGDRegressor}) = "$PKG.CuML.MBSGDRegressor"
+MMI.load_path(::Type{<:RandomForestRegressor}) = "$PKG.CuML.RandomForestRegressor"
+MMI.load_path(::Type{<:CD}) = "$PKG.CuML.CD"
+MMI.load_path(::Type{<:SVR}) = "$PKG.CuML.SVR"
+MMI.load_path(::Type{<:LinearSVR}) = "$PKG.CuML.LinearSVR"
+MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.CuML.KNeighborsRegressor"
 
 function MMI.input_scitype(::Type{<:CUML_REGRESSION})
     return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}

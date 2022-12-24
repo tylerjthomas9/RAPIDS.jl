@@ -29,8 +29,8 @@ model_init(X, mlj_model::ARIMA) = cuml.tsa.ARIMA(X; mlj_to_kwargs(mlj_model)...)
 const CUML_TIME_SERIES = Union{ExponentialSmoothing,ARIMA}
 
 # add metadata
-MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.ExponentialSmoothing"
-MMI.load_path(::Type{<:ARIMA}) = "$PKG.ARIMA"
+MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.CuML.ExponentialSmoothing"
+MMI.load_path(::Type{<:ARIMA}) = "$PKG.CuML.ARIMA"
 
 function MMI.input_scitype(::Type{<:CUML_TIME_SERIES})
     return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
