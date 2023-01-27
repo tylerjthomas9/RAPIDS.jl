@@ -2,5 +2,10 @@ channels = ["rapidsai", "nvidia", "conda-forge"]
 
 [deps]
 cudatoolkit = ">=11.2,<=11.5"
-rapids = "=22.12"
+cudf = "=22.12"
+cugraph = "=22.12"
+cuml = "=22.12"
+cusignal = "=22.12"
+cuspatial = "=22.12"
+cuxfilter = "=22.12"
 python = ">=3.8,<=3.9"
