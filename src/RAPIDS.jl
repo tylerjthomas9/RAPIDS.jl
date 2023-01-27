@@ -67,10 +67,6 @@ else
 end
 
 export VERSION,
-    # PythonCall
-    pycopy!,
-    pyimport,
-    pynew,
 
     # Python API
     cudf,
