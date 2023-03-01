@@ -4,7 +4,7 @@
  [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 
 
-:warning: RAPIDS.jl is only supported on Julia 1.9 nightly builds. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. This issue will hopefully be resolved in the near future when the upgrades are backported to older Julia versions.
+:warning: RAPIDS.jl is only supported on Julia 1.8.5+. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. 
 
 # RAPIDS.jl
 Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosystem.
