@@ -37,10 +37,10 @@ println(mach.fitresult.coef_)
 
 ## Clustering
 ```@docs
-KMeans
-DBSCAN
-AgglomerativeClustering
-HDBSCAN
+CuML.KMeans
+CuML.DBSCAN
+CuML.AgglomerativeClustering
+CuML.HDBSCAN
 ```
 
 ## Classification
