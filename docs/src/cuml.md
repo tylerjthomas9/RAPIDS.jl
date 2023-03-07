@@ -3,7 +3,7 @@
 # MLJ Example - Classification
 
 ```julia
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -20,7 +20,7 @@ println(mach.fitresult.coef_)
 # MLJ Example - Regression
 
 ```julia
-using RAPIDS
+using RAPIDS.CuML
 using MLJBase
 
 X = rand(100, 5)
@@ -45,40 +45,40 @@ HDBSCAN
 
 ## Classification
 ```@docs
-LogisticRegression
-MBSGDClassifier
-RandomForestClassifier
-SVC
-LinearSVC
-KNeighborsClassifier
+CuML.LogisticRegression
+CuML.MBSGDClassifier
+CuML.RandomForestClassifier
+CuML.SVC
+CuML.LinearSVC
+CuML.KNeighborsClassifier
 ```
 
 ## Regression
 ```@docs
-LinearRegression
-Ridge
-Lasso
-ElasticNet
-MBSGDRegressor
-RandomForestRegressor
-CD
-SVR
-LinearSVR
-KNeighborsRegressor
+CuML.LinearRegression
+CuML.Ridge
+CuML.Lasso
+CuML.ElasticNet
+CuML.MBSGDRegressor
+CuML.RandomForestRegressor
+CuML.CD
+CuML.SVR
+CuML.LinearSVR
+CuML.KNeighborsRegressor
 ```
 
 ## Dimensionality Reduction
 ```@docs
-PCA
-IncrementalPCA
-TruncatedSVD
-UMAP
-TSNE
-GaussianRandomProjection
+CuML.PCA
+CuML.IncrementalPCA
+CuML.TruncatedSVD
+CuML.UMAP
+CuML.TSNE
+CuML.GaussianRandomProjection
 ```
 
 ## Time Series
 ```@docs
-ExponentialSmoothing
-ARIMA
+CuML.ExponentialSmoothing
+CuML.ARIMA
 ```

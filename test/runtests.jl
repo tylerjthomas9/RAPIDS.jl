@@ -1,12 +1,16 @@
 using CUDA
-using RAPIDS
-using MLJBase
-using MLJTestIntegration
-using Test
 
 if CUDA.functional()
-    include("./cuml.jl")
-    include("./cuml_integration.jl")
+    using MLJBase
+    using MLJTestIntegration
+    using RAPIDS
+    using RAPIDS.CuML
+    using Tables
+    using Test
+
+    include("cudf.jl")
+    include("cuml.jl")
+    include("cuml_integration.jl")
 else
-    @warn "Skipping tests for CI, Docs."
+    @warn "Skipping tests because a CUDA compatible GPU was not detected."
 end

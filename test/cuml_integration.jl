@@ -21,4 +21,23 @@
         )
         @test isempty(failures)
     end
+
+    # @testset "Classification" begin
+    #     X, y = MLJTestIntegration.make_binary() .|> Table
+    #     failures, summary = MLJTestIntegration.test(
+    #         [
+    #             LogisticRegression,
+    #             MBSGDClassifier,
+    #             RandomForestClassifier,
+    #             # SVC,
+    #             # LinearSVC,
+    #             KNeighborsClassifier,
+    #         ],
+    #         X, y;
+    #         mod = @__MODULE__,
+    #         verbosity = 0, # bump to debug
+    #         throw = false,
+    #     )
+    #     @test isempty(failures)
+    # end
 end

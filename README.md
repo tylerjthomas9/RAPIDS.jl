@@ -4,14 +4,19 @@
  [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 
 
-:warning: RAPIDS.jl is only supported on Julia 1.9 nightly builds. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. This issue will hopefully be resolved in the near future when the upgrades are backported to older Julia versions.
+:warning: RAPIDS.jl is only supported on Julia 1.8.5+. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. 
 
 # RAPIDS.jl
-Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosystem. Support is limited to Linux and NVIDIA GPUs (Pascal or more recent) with at least 6 TFLOPS.
+Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosystem.
 
 The goal of this library is to provide a simple method for accessing the GPU accelerated models withing RAPIDS from Julia, and integrating the models into MLJ. This library relies on [PythonCall.jl](https://github.com/cjdoris/PythonCall.jl) and [CondaPkg.jl](https://github.com/cjdoris/CondaPkg.jl) for efficient installations of the Python dependencies. 
 
 This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
+
+# CUDA/GPU requirements
+- CUDA 11.0+
+- NVIDIA driver 450.80.02+
+- Pascal architecture or better (Compute Capability >=6.0)
 
 ## Installation
 
@@ -71,7 +76,7 @@ A MLJ interface is also available for supported models. The model hyperparameter
 
 ```julia
 using MLJBase
-using RAPIDS
+using RAPIDS.CuML
 const make_classification = cuml.datasets.classification.make_classification
 
 X_py, y_py = make_classification(n_samples=200, n_features=4,
