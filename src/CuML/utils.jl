@@ -30,7 +30,7 @@ end
 function _feature_names(X)
     schema = Tables.schema(X)
     if schema === nothing
-        features = [Symbol("x$j") for j = 1:size(X, 2)]
+        features = [Symbol("x$j") for j in 1:size(X, 2)]
     else
         features = collect(schema.names)
     end

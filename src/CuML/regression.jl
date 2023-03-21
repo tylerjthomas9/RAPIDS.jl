@@ -206,7 +206,7 @@ function MMI.docstring(::Type{<:KNeighborsRegressor})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w = nothing)
+function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w=nothing)
     X_numpy = to_numpy(X)
     y_numpy = to_numpy(y)
 
@@ -244,10 +244,10 @@ MMI.metadata_pkg.(
         LinearSVR,
         KNeighborsRegressor,
     ),
-    name = "cuML Regression Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Regression Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )

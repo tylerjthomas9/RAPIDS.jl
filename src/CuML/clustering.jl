@@ -84,7 +84,7 @@ function MMI.docstring(::Type{<:HDBSCAN})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w = nothing)
+function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)
     X_numpy = to_numpy(X)
 
     # fit the model
@@ -95,7 +95,7 @@ function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w = nothing)
     # save result
     cache = nothing
     labels = MMI.categorical(pyconvert(Vector, fitresult.labels_))
-    report = (features = _feature_names(X), labels = labels)
+    report = (features=_feature_names(X), labels=labels)
     return (fitresult, cache, report)
 end
 
@@ -123,10 +123,10 @@ end
 # Clustering metadata
 MMI.metadata_pkg.(
     (KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN),
-    name = "cuML Clustering Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Clustering Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )

@@ -182,8 +182,6 @@ println(mach.fitresult.components_)
 """
 TruncatedSVD
 
-
-
 """
 $(MMI.doc_header(UMAP))
 
@@ -256,7 +254,6 @@ println(mach.fitresult.embedding_)
 """
 UMAP
 
-
 """
 $(MMI.doc_header(GaussianRandomProjection))
 
@@ -309,7 +306,6 @@ X_trans = transform(mach, X)
 ```
 """
 GaussianRandomProjection
-
 
 """
 $(MMI.doc_header(SparseRandomProjection))

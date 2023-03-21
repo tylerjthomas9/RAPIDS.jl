@@ -18,7 +18,6 @@ if Base.VERSION <= v"1.8.3"
     @warn warning_msg
 end
 
-
 if !CUDA.functional()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
     const cudf = nothing
@@ -81,7 +80,7 @@ export VERSION,
     dask_cudf,
     numpy
 
-    include("CuDF/CuDF.jl")
-    include("CuML/CuML.jl")
+include("CuDF/CuDF.jl")
+include("CuML/CuML.jl")
 
 end

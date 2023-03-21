@@ -13,10 +13,14 @@ The goal of this library is to provide a simple method for accessing the GPU acc
 
 This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
 
+Long term, directly wrapping `libcudf`, `libcuml`... would greatly improve this library, but I don't have time to tackle that at this moment. 
+
 # CUDA/GPU requirements
-- CUDA 11.0+
-- NVIDIA driver 450.80.02+
+More information is available [here](https://docs.rapids.ai/install).
+- CUDA 11.2+
+- NVIDIA driver 460.27.03+
 - Pascal architecture or better (Compute Capability >=6.0)
+- Ubuntu 20.04/22.04 or CentOS 7 / Rocky Linux 8 with gcc/++ 9.0+
 
 ## Installation
 

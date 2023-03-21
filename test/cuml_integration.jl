@@ -15,9 +15,9 @@
                 KNeighborsRegressor,
             ],
             MLJTestIntegration.make_regression()...;
-            mod = @__MODULE__,
-            verbosity = 0, # bump to debug
-            throw = false,
+            mod=@__MODULE__,
+            verbosity=0, # bump to debug
+            throw=false,
         )
         @test isempty(failures)
     end

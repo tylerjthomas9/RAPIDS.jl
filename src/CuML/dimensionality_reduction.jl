@@ -161,12 +161,7 @@ end
 # transform methods
 function MMI.transform(
     mlj_model::Union{
-        PCA,
-        IncrementalPCA,
-        UMAP,
-        TruncatedSVD,
-        SparseRandomProjection,
-        GaussianRandomProjection,
+        PCA,IncrementalPCA,UMAP,TruncatedSVD,SparseRandomProjection,GaussianRandomProjection
     },
     fitresult,
     Xnew,
@@ -199,10 +194,10 @@ end
 # Clustering metadata
 MMI.metadata_pkg.(
     (PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjection, TSNE),
-    name = "cuML Dimensionality Reduction and Manifold Learning Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Dimensionality Reduction and Manifold Learning Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )

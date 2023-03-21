@@ -10,13 +10,11 @@ using Tables
 const MMI = MLJModelInterface
 
 include("utils.jl")
-
 include("classification.jl")
 include("clustering.jl")
 include("dimensionality_reduction.jl")
 include("regression.jl")
 include("time_series.jl")
-
 
 const CUML_MODELS = Union{
     CUML_CLASSIFICATION,
@@ -47,51 +45,51 @@ include("dimensionality_reduction_docstrings.jl")
 include("regression_docstrings.jl")
 include("time_series_docstrings.jl")
 
-export 
-# helper functions
-to_numpy,
+export
+    # helper functions
+    to_numpy,
 
-# Types
-CUML_CLASSIFICATION,
-CUML_CLUSTERING,
-CUML_DIMENSIONALITY_REDUCTION,
-CUML_REGRESSION,
-CUML_TIME_SERIES,
+    # Types
+    CUML_CLASSIFICATION,
+    CUML_CLUSTERING,
+    CUML_DIMENSIONALITY_REDUCTION,
+    CUML_REGRESSION,
+    CUML_TIME_SERIES,
 
-# clustering
-KMeans,
-DBSCAN,
-AgglomerativeClustering,
-HDBSCAN,
-# regression
-LinearRegression,
-Ridge,
-Lasso,
-ElasticNet,
-MBSGDRegressor,
-RandomForestRegressor,
-CD,
-SVR,
-LinearSVR,
-KNeighborsRegressor,
-# classification
-LogisticRegression,
-MBSGDClassifier,
-RandomForestClassifier,
-SVC,
-LinearSVC,
-KNeighborsClassifier,
-# dimensionality reduction
-PCA,
-IncrementalPCA,
-TruncatedSVD,
-UMAP,
-GaussianRandomProjection,
-SparseRandomProjection,
-TSNE,
-# time series
-ExponentialSmoothing,
-ARIMA,
-forecast
+    # clustering
+    KMeans,
+    DBSCAN,
+    AgglomerativeClustering,
+    HDBSCAN,
+    # regression
+    LinearRegression,
+    Ridge,
+    Lasso,
+    ElasticNet,
+    MBSGDRegressor,
+    RandomForestRegressor,
+    CD,
+    SVR,
+    LinearSVR,
+    KNeighborsRegressor,
+    # classification
+    LogisticRegression,
+    MBSGDClassifier,
+    RandomForestClassifier,
+    SVC,
+    LinearSVC,
+    KNeighborsClassifier,
+    # dimensionality reduction
+    PCA,
+    IncrementalPCA,
+    TruncatedSVD,
+    UMAP,
+    GaussianRandomProjection,
+    SparseRandomProjection,
+    TSNE,
+    # time series
+    ExponentialSmoothing,
+    ARIMA,
+    forecast
 
 end
