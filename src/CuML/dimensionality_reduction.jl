@@ -121,7 +121,10 @@ MMI.load_path(::Type{<:SparseRandomProjection}) = "$PKG.CuML.SparseRandomProject
 MMI.load_path(::Type{<:TSNE}) = "$PKG.CuML.TSNE"
 
 function MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION})
-    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 
 function MMI.docstring(::Type{<:PCA})
@@ -149,7 +152,7 @@ end
 function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X)
     # fit model
     model = model_init(mlj_model)
-    model.fit(to_numpy(X))
+    model.fit(X)
     fitresult = model
 
     # save result
@@ -167,7 +170,7 @@ function MMI.transform(
     Xnew,
 )
     model = fitresult
-    py_preds = model.transform(to_numpy(Xnew))
+    py_preds = model.transform(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -177,7 +180,7 @@ end
 # right now we have to refit the model when transforming
 function MMI.transform(mlj_model::TSNE, fitresult, Xnew)
     model = fitresult
-    py_preds = model.fit_transform(to_numpy(Xnew))
+    py_preds = model.fit_transform(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -185,7 +188,7 @@ end
 
 function MMI.inverse_transform(mlj_model::Union{PCA,TruncatedSVD}, fitresult, Xnew)
     model = fitresult
-    py_preds = model.inverse_transform(to_numpy(Xnew))
+    py_preds = model.inverse_transform(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds

@@ -24,6 +24,23 @@ const CUML_MODELS = Union{
     CUML_TIME_SERIES,
 }
 
+function MMI.reformat(::CUML_MODELS, X)
+    return (to_numpy(X),)
+end
+
+function MMI.reformat(::CUML_MODELS, X, y)
+    return to_numpy(X), to_numpy(y)
+end
+
+function MMI.selectrows(::CUML_MODELS, I, X)
+    py_I = numpy.array(I .- 1)
+    return (X[py_I,],)
+end
+
+function MMI.selectrows(::CUML_MODELS, I::Colon, X)
+    return (X,)
+end
+
 MMI.clean!(model::CUML_MODELS) = ""
 
 # MLJ Package Metadata

@@ -122,7 +122,10 @@ MMI.load_path(::Type{<:LinearSVC}) = "$PKG.CuML.LinearSVC"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.CuML.KNeighborsClassifier"
 
 function MMI.input_scitype(::Type{<:CUML_CLASSIFICATION})
-    return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
@@ -147,17 +150,14 @@ end
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)
-    X_numpy = to_numpy(X)
-    y_numpy = to_numpy(y)
-
     # fit the model
     model = model_init(mlj_model)
-    model.fit(X_numpy, y_numpy)
+    model.fit(X, y)
     fitresult = model
 
     # save result
     cache = nothing
-    y_cat = MMI.categorical(y)
+    y_cat = MMI.categorical(pyconvert(Array, y))
     classes_seen = filter(in(unique(y_cat)), MMI.classes(y_cat))
     report = (classes_seen=classes_seen, features=_feature_names(X))
     return (fitresult, cache, report)
@@ -170,7 +170,7 @@ function MMI.predict(
     Xnew,
 )
     model = fitresult
-    py_preds = model.predict_proba(to_numpy(Xnew))
+    py_preds = model.predict_proba(Xnew)
     classes = pyconvert(Vector, model.classes_)
     preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds); pool=missing)
 
@@ -181,11 +181,11 @@ function MMI.predict(mlj_model::Union{SVC,LinearSVC}, fitresult, Xnew)
     model = fitresult
     classes = pyconvert(Vector, model.classes_)
     if pyconvert(Bool, model.probability)
-        py_preds = model.predict_proba(to_numpy(Xnew))
+        py_preds = model.predict_proba(Xnew)
         preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds); pool=missing)
     else
         @warn "SVC was not trained with `probability=true`. Using class predictions."
-        py_preds = model.predict(to_numpy(Xnew))
+        py_preds = model.predict(Xnew)
         preds = MMI.UnivariateFinite(
             classes, pyconvert(Array, py_preds); pool=missing, augment=true
         )
@@ -197,7 +197,7 @@ end
 function MMI.predict(mlj_model::Union{MBSGDClassifier}, fitresult, Xnew)
     model = fitresult
     classes = pyconvert(Vector, model.classes_)
-    py_preds = model.predict(to_numpy(Xnew))
+    py_preds = model.predict(Xnew)
     preds = MMI.UnivariateFinite(
         classes, pyconvert(Array, py_preds); pool=missing, augment=true
     )
@@ -207,7 +207,7 @@ end
 
 function MMI.predict_mean(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(to_numpy(Xnew))
+    py_preds = model.predict(Xnew)
     preds = MMI.categorical(pyconvert(Array, py_preds))
 
     return preds

@@ -67,7 +67,10 @@ MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.CuML.AgglomerativeClust
 MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.CuML.HDBSCAN"
 
 function MMI.input_scitype(::Type{<:CUML_CLUSTERING})
-    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 
 function MMI.docstring(::Type{<:KMeans})
@@ -85,11 +88,10 @@ end
 
 # fit methods
 function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)
-    X_numpy = to_numpy(X)
 
     # fit the model
     model = model_init(mlj_model)
-    model.fit(X_numpy)
+    model.fit(X)
     fitresult = model
 
     # save result
@@ -102,7 +104,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(to_numpy(Xnew))
+    py_preds = model.predict(Xnew)
     preds = MMI.categorical(pyconvert(Array, py_preds))
 
     return preds

@@ -33,7 +33,10 @@ MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.CuML.ExponentialSmoothing"
 MMI.load_path(::Type{<:ARIMA}) = "$PKG.CuML.ARIMA"
 
 function MMI.input_scitype(::Type{<:CUML_TIME_SERIES})
-    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 function MMI.docstring(::Type{<:ExponentialSmoothing})
     return "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
@@ -45,7 +48,7 @@ end
 # fit methods
 function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)
     # fit the model
-    model = model_init(to_numpy(X), mlj_model)
+    model = model_init(X, mlj_model)
     model.fit()
     fitresult = model
 

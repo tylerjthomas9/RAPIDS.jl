@@ -170,7 +170,10 @@ MMI.load_path(::Type{<:LinearSVR}) = "$PKG.CuML.LinearSVR"
 MMI.load_path(::Type{<:KNeighborsRegressor}) = "$PKG.CuML.KNeighborsRegressor"
 
 function MMI.input_scitype(::Type{<:CUML_REGRESSION})
-    return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 MMI.target_scitype(::Type{<:CUML_REGRESSION}) = AbstractVector{<:MMI.Continuous}
 
@@ -207,12 +210,9 @@ end
 
 # fit methods
 function MMI.fit(mlj_model::CUML_REGRESSION, verbosity, X, y, w=nothing)
-    X_numpy = to_numpy(X)
-    y_numpy = to_numpy(y)
-
     # fit the model
     model = model_init(mlj_model)
-    model.fit(X_numpy, y_numpy)
+    model.fit(X, y)
     fitresult = model
 
     # save result
@@ -224,7 +224,7 @@ end
 # predict methods
 function MMI.predict(mlj_model::CUML_REGRESSION, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(to_numpy(Xnew))
+    py_preds = model.predict(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds
