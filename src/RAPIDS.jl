@@ -20,6 +20,7 @@ end
 
 if !CUDA.functional()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
+    const cucim = nothing
     const cudf = nothing
     const cugraph = nothing
     const cuml = nothing
@@ -37,6 +38,7 @@ if !CUDA.functional()
 else
     @info "CUDA GPU Detected"
     using PythonCall
+    const cucim = PythonCall.pynew()
     const cudf = PythonCall.pynew()
     const cugraph = PythonCall.pynew()
     const cuml = PythonCall.pynew()
@@ -50,6 +52,7 @@ else
     const numpy = PythonCall.pynew()
     const pickle = PythonCall.pynew()
     function __init__()
+        PythonCall.pycopy!(cucim, pyimport("cucim"))
         PythonCall.pycopy!(cudf, pyimport("cudf"))
         PythonCall.pycopy!(cugraph, pyimport("cugraph"))
         PythonCall.pycopy!(cuml, pyimport("cuml"))
@@ -68,6 +71,7 @@ end
 export VERSION,
 
     # Python API
+    cucim,
     cudf,
     cugraph,
     cuml,

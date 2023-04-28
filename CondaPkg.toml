@@ -2,6 +2,7 @@ channels = ["rapidsai", "nvidia", "conda-forge"]
 
 [deps]
 cudatoolkit = ">=11.2,<=11.8"
+cucim = "=23.04"
 cudf = "=23.04"
 cugraph = "=23.04"
 cuml = "=23.04"
