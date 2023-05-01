@@ -24,8 +24,10 @@ end
 
 """
     booster(persistent)
+
 Private method.
-Return the XGBoost.jl model which has `persistent` as its persistent
+
+Return the RAPIDS.jl model which has `persistent` as its persistent
 (Julia-serializable) representation. See [`persistent`](@ref) method.
 """
 function booster(persistent)

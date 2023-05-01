@@ -2,7 +2,7 @@ using CUDA
 
 if CUDA.functional()
     using MLJBase
-    using MLJTestIntegration
+    using MLJTestInterface
     using RAPIDS
     using RAPIDS.CuML
     using Tables

@@ -122,7 +122,10 @@ MMI.load_path(::Type{<:LinearSVC}) = "$PKG.CuML.LinearSVC"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.CuML.KNeighborsClassifier"
 
 function MMI.input_scitype(::Type{<:CUML_CLASSIFICATION})
-    return Union{Table(MMI.Continuous),AbstractMatrix{<:MMI.Continuous}}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
 
@@ -146,67 +149,69 @@ function MMI.docstring(::Type{<:KNeighborsClassifier})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w = nothing)
-    X_numpy = to_numpy(X)
-    y_numpy = to_numpy(y)
-
+function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)
     # fit the model
     model = model_init(mlj_model)
-    model.fit(X_numpy, y_numpy)
+    model.fit(X, y)
     fitresult = model
 
     # save result
     cache = nothing
-    y_cat = MMI.categorical(y)
+    y_cat = MMI.categorical(pyconvert(Array, y))
     classes_seen = filter(in(unique(y_cat)), MMI.classes(y_cat))
-    report = (classes_seen = classes_seen, features = _feature_names(X))
+    report = (classes_seen=classes_seen, features=_feature_names(X))
     return (fitresult, cache, report)
 end
 
 # predict methods
-function MMI.predict(mlj_model::Union{LogisticRegression, RandomForestClassifier, KNeighborsClassifier}, fitresult, Xnew)
+function MMI.predict(
+    mlj_model::Union{LogisticRegression,RandomForestClassifier,KNeighborsClassifier},
+    fitresult,
+    Xnew,
+)
     model = fitresult
-    py_preds = model.predict_proba(to_numpy(Xnew))
+    py_preds = model.predict_proba(Xnew)
     classes = pyconvert(Vector, model.classes_)
-    preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing)
+    preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds); pool=missing)
 
     return preds
 end
 
-function MMI.predict(mlj_model::Union{SVC, LinearSVC}, fitresult, Xnew)
+function MMI.predict(mlj_model::Union{SVC,LinearSVC}, fitresult, Xnew)
     model = fitresult
     classes = pyconvert(Vector, model.classes_)
     if pyconvert(Bool, model.probability)
-        py_preds = model.predict_proba(to_numpy(Xnew))
-        preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing)
+        py_preds = model.predict_proba(Xnew)
+        preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds); pool=missing)
     else
         @warn "SVC was not trained with `probability=true`. Using class predictions."
-        py_preds = model.predict(to_numpy(Xnew))
-        preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing, augment=true)
+        py_preds = model.predict(Xnew)
+        preds = MMI.UnivariateFinite(
+            classes, pyconvert(Array, py_preds); pool=missing, augment=true
+        )
     end
 
     return preds
 end
 
-
 function MMI.predict(mlj_model::Union{MBSGDClassifier}, fitresult, Xnew)
     model = fitresult
     classes = pyconvert(Vector, model.classes_)
-    py_preds = model.predict(to_numpy(Xnew))
-    preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds), pool=missing, augment=true)
+    py_preds = model.predict(Xnew)
+    preds = MMI.UnivariateFinite(
+        classes, pyconvert(Array, py_preds); pool=missing, augment=true
+    )
 
     return preds
 end
 
 function MMI.predict_mean(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(to_numpy(Xnew))
+    py_preds = model.predict(Xnew)
     preds = MMI.categorical(pyconvert(Array, py_preds))
 
     return preds
 end
-
-
 
 # Classification metadata
 MMI.metadata_pkg.(
@@ -218,10 +223,10 @@ MMI.metadata_pkg.(
         LinearSVC,
         KNeighborsClassifier,
     ),
-    name = "cuML Classification Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Classification Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )

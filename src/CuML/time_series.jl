@@ -33,7 +33,10 @@ MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.CuML.ExponentialSmoothing"
 MMI.load_path(::Type{<:ARIMA}) = "$PKG.CuML.ARIMA"
 
 function MMI.input_scitype(::Type{<:CUML_TIME_SERIES})
-    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 function MMI.docstring(::Type{<:ExponentialSmoothing})
     return "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
@@ -43,9 +46,9 @@ function MMI.docstring(::Type{<:ARIMA})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w = nothing)
+function MMI.fit(mlj_model::CUML_TIME_SERIES, verbosity, X, w=nothing)
     # fit the model
-    model = model_init(to_numpy(X), mlj_model)
+    model = model_init(X, mlj_model)
     model.fit()
     fitresult = model
 
@@ -70,10 +73,10 @@ end
 # Classification metadata
 MMI.metadata_pkg.(
     (ExponentialSmoothing, ARIMA),
-    name = "cuML Time Series Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Time Series Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )

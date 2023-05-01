@@ -67,7 +67,10 @@ MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.CuML.AgglomerativeClust
 MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.CuML.HDBSCAN"
 
 function MMI.input_scitype(::Type{<:CUML_CLUSTERING})
-    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 
 function MMI.docstring(::Type{<:KMeans})
@@ -84,25 +87,24 @@ function MMI.docstring(::Type{<:HDBSCAN})
 end
 
 # fit methods
-function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w = nothing)
-    X_numpy = to_numpy(X)
+function MMI.fit(mlj_model::CUML_CLUSTERING, verbosity, X, w=nothing)
 
     # fit the model
     model = model_init(mlj_model)
-    model.fit(X_numpy)
+    model.fit(X)
     fitresult = model
 
     # save result
     cache = nothing
     labels = MMI.categorical(pyconvert(Vector, fitresult.labels_))
-    report = (features = _feature_names(X), labels = labels)
+    report = (features=_feature_names(X), labels=labels)
     return (fitresult, cache, report)
 end
 
 # predict methods
 function MMI.predict(mlj_model::KMeans, fitresult, Xnew)
     model = fitresult
-    py_preds = model.predict(to_numpy(Xnew))
+    py_preds = model.predict(Xnew)
     preds = MMI.categorical(pyconvert(Array, py_preds))
 
     return preds
@@ -123,10 +125,10 @@ end
 # Clustering metadata
 MMI.metadata_pkg.(
     (KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN),
-    name = "cuML Clustering Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Clustering Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )

@@ -121,7 +121,10 @@ MMI.load_path(::Type{<:SparseRandomProjection}) = "$PKG.CuML.SparseRandomProject
 MMI.load_path(::Type{<:TSNE}) = "$PKG.CuML.TSNE"
 
 function MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION})
-    return Union{AbstractMatrix{<:MMI.Continuous},Table(MMI.Continuous)}
+    return Union{
+        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        AbstractMatrix{MMI.Continuous},
+    }
 end
 
 function MMI.docstring(::Type{<:PCA})
@@ -149,7 +152,7 @@ end
 function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X)
     # fit model
     model = model_init(mlj_model)
-    model.fit(to_numpy(X))
+    model.fit(X)
     fitresult = model
 
     # save result
@@ -161,18 +164,13 @@ end
 # transform methods
 function MMI.transform(
     mlj_model::Union{
-        PCA,
-        IncrementalPCA,
-        UMAP,
-        TruncatedSVD,
-        SparseRandomProjection,
-        GaussianRandomProjection,
+        PCA,IncrementalPCA,UMAP,TruncatedSVD,SparseRandomProjection,GaussianRandomProjection
     },
     fitresult,
     Xnew,
 )
     model = fitresult
-    py_preds = model.transform(to_numpy(Xnew))
+    py_preds = model.transform(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -182,7 +180,7 @@ end
 # right now we have to refit the model when transforming
 function MMI.transform(mlj_model::TSNE, fitresult, Xnew)
     model = fitresult
-    py_preds = model.fit_transform(to_numpy(Xnew))
+    py_preds = model.fit_transform(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -190,7 +188,7 @@ end
 
 function MMI.inverse_transform(mlj_model::Union{PCA,TruncatedSVD}, fitresult, Xnew)
     model = fitresult
-    py_preds = model.inverse_transform(to_numpy(Xnew))
+    py_preds = model.inverse_transform(Xnew)
     preds = pyconvert(Array, py_preds)
 
     return preds
@@ -199,10 +197,10 @@ end
 # Clustering metadata
 MMI.metadata_pkg.(
     (PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjection, TSNE),
-    name = "cuML Dimensionality Reduction and Manifold Learning Methods",
-    uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url = "https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia = false,          # is it written entirely in Julia?
-    license = "MIT",        # your package license
-    is_wrapper = true,
+    name="cuML Dimensionality Reduction and Manifold Learning Methods",
+    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+    julia=false,          # is it written entirely in Julia?
+    license="MIT",        # your package license
+    is_wrapper=true,
 )
