@@ -97,13 +97,12 @@ end
         preds = predict(mach, X)
     end
 
-    #TODO: Figure out why LinearSVR fails
-    # @testset "LinearSVR" begin
-    #     model = LinearSVR()
-    #     mach = machine(model, X, y)
-    #     fit!(mach)
-    #     preds = predict(mach, X)
-    # end
+    @testset "LinearSVR" begin
+        model = LinearSVR()
+        mach = machine(model, X, y)
+        fit!(mach)
+        preds = predict(mach, X)
+    end
 
     @testset "KNeighborsRegressor" begin
         model = KNeighborsRegressor()
@@ -142,21 +141,19 @@ end
         preds = predict(mach, X)
     end
 
-    #TODO: Figure out why SVC fails
-    # @testset "SVC" begin
-    #     model = SVC()
-    #     mach = machine(model, X, y)
-    #     fit!(mach)
-    #     preds = predict(mach, X)
-    # end
+    @testset "SVC" begin
+        model = SVC()
+        mach = machine(model, X, y)
+        fit!(mach)
+        preds = predict(mach, X)
+    end
 
-    #TODO: Figure out why LinearSVC fails
-    # @testset "LinearSVC" begin
-    #     model = LinearSVC()
-    #     mach = machine(model, X, y)
-    #     fit!(mach)
-    #     preds = predict(mach, X)
-    # end
+    @testset "LinearSVC" begin
+        model = LinearSVC()
+        mach = machine(model, X, y)
+        fit!(mach)
+        preds = predict(mach, X)
+    end
 
     @testset "KNeighborsClassifier" begin
         model = KNeighborsClassifier()

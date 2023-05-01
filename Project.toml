@@ -22,8 +22,8 @@ julia = "1.8"
 
 [extras]
 MLJBase = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
-MLJTestIntegration = "697918b4-fdc1-4f9e-8ff9-929724cee270"
+MLJTestInterface = "72560011-54dd-4dc2-94f3-c5de45b75ecd"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "MLJBase", "MLJTestIntegration"]
+test = ["Test", "MLJBase", "MLJTestInterface"]
