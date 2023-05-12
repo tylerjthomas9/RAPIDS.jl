@@ -18,7 +18,7 @@ if Base.VERSION <= v"1.8.3"
     @warn warning_msg
 end
 
-if !CUDA.functional()
+if !CUDA.has_cuda_gpu()
     @warn "No CUDA GPU Detected. Unable to load RAPIDS."
     const cucim = nothing
     const cudf = nothing

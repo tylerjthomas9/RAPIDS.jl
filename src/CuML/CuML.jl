@@ -24,21 +24,29 @@ const CUML_MODELS = Union{
     CUML_TIME_SERIES,
 }
 
-function MMI.reformat(::CUML_MODELS, X)
-    return (to_numpy(X),)
+function MMI.reformat(::CUML_MODELS, X, y)
+    return (to_numpy(X), to_numpy(y))
 end
 
-function MMI.reformat(::CUML_MODELS, X, y)
-    return to_numpy(X), to_numpy(y)
+function MMI.reformat(::CUML_MODELS, X)
+    return (to_numpy(X), )
 end
 
 function MMI.selectrows(::CUML_MODELS, I, X)
-    py_I = numpy.array(I .- 1)
-    return (X[py_I,],)
+    py_I = numpy.array(numpy.array(I .- 1))
+    return (X[py_I,], )
 end
 
 function MMI.selectrows(::CUML_MODELS, I::Colon, X)
-    return (X,)
+    return (X, )
+end
+
+function MMI.selectrows(::CUML_MODELS, I, X, y)
+    py_I = numpy.array(numpy.array(I .- 1))
+    return (X[py_I,], y[py_I])
+end
+function MMI.selectrows(::CUML_MODELS, I::Colon, X, y)
+    return (X, y)
 end
 
 MMI.clean!(model::CUML_MODELS) = ""

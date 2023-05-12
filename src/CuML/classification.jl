@@ -127,7 +127,7 @@ function MMI.input_scitype(::Type{<:CUML_CLASSIFICATION})
         AbstractMatrix{MMI.Continuous},
     }
 end
-MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = AbstractVector{<:Finite}
+MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractVector{<:Finite}, AbstractVector{MMI.Continuous}}
 
 function MMI.docstring(::Type{<:LogisticRegression})
     return "cuML's LogisticRegression: https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression"
