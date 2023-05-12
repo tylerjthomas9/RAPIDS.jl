@@ -122,7 +122,7 @@ MMI.load_path(::Type{<:TSNE}) = "$PKG.CuML.TSNE"
 
 function MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION})
     return Union{
-        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+        Table{<:Union{AbstractVector{<:Continuous}, AbstractVector{<:Count}, AbstractVector{<:OrderedFactor}, AbstractVector{<:Multiclass}}},
         AbstractMatrix{MMI.Continuous},
     }
 end

@@ -142,14 +142,14 @@ end
     end
 
     @testset "SVC" begin
-        model = SVC()
+        model = SVC(probability=true)
         mach = machine(model, X, y)
         fit!(mach)
         preds = predict(mach, X)
     end
 
     @testset "LinearSVC" begin
-        model = LinearSVC()
+        model = LinearSVC(probability=true)
         mach = machine(model, X, y)
         fit!(mach)
         preds = predict(mach, X)
