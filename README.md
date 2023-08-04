@@ -1,6 +1,5 @@
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://docs.juliahub.com/RAPIDS/hxbio/0.2.0/)
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
-[![CI](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/tylerjthomas9/RAPIDS.jl/actions/workflows/CI.yml)
  [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 
 
