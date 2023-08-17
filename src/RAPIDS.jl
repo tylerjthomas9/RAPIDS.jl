@@ -9,7 +9,6 @@ using CUDA
 
 const PKG = "RAPIDS"
 
-# Temp warning for 
 if Base.VERSION <= v"1.8.3"
     warning_msg = """
     RAPIDS.jl does not work out of the box with Julia versions before v1.9.
@@ -37,6 +36,19 @@ if !CUDA.has_cuda_gpu()
     macro py(x...) end
 else
     @info "CUDA GPU Detected"
+
+    # verify that the cuda version is supported
+    cuda_version = CUDA.driver_version()
+    error_msg = """
+        Error: CUDA version $cuda_version is not supported. 
+        11.2 <= CUDA version <= 12.0
+    """
+    @assert (cuda_version >= v"11.2") && (cuda_version <= v"12.0")
+
+    # add cuda version to conda environment
+    using CondaPkg
+    CondaPkg.add("cuda-version"; version="=$cuda_version", resolve=false)
+
     using PythonCall
     const cucim = PythonCall.pynew()
     const cudf = PythonCall.pynew()
@@ -54,7 +66,7 @@ else
     function __init__()
         PythonCall.pycopy!(cucim, pyimport("cucim"))
         PythonCall.pycopy!(cudf, pyimport("cudf"))
-        # PythonCall.pycopy!(cugraph, pyimport("cugraph"))
+        # PythonCall.pycopy!(cugraph, pyimport("cugraph")) https://github.com/tylerjthomas9/RAPIDS.jl/issues/37
         PythonCall.pycopy!(cuml, pyimport("cuml"))
         PythonCall.pycopy!(cusignal, pyimport("cusignal"))
         PythonCall.pycopy!(cuspatial, pyimport("cuspatial"))
