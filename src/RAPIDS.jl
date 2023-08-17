@@ -66,7 +66,7 @@ else
     function __init__()
         PythonCall.pycopy!(cucim, pyimport("cucim"))
         PythonCall.pycopy!(cudf, pyimport("cudf"))
-        # PythonCall.pycopy!(cugraph, pyimport("cugraph"))
+        # PythonCall.pycopy!(cugraph, pyimport("cugraph")) https://github.com/tylerjthomas9/RAPIDS.jl/issues/37
         PythonCall.pycopy!(cuml, pyimport("cuml"))
         PythonCall.pycopy!(cusignal, pyimport("cusignal"))
         PythonCall.pycopy!(cuspatial, pyimport("cuspatial"))
