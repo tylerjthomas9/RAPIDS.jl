@@ -13,7 +13,7 @@ makedocs(;
         canonical="https://tylerjthomas9.github.io/RAPIDS.jl",
         assets=String[],
     ),
-    pages=["Home" => "index.md", "Python API" => "python_api.md", "cuMl" => "cuml.md"],
+    pages=["Home" => "index.md", "Python API" => "python_api.md", "CuML" => "cuml.md"],
 )
 
 deploydocs(; repo="github.com/tylerjthomas9/RAPIDS.jl.git")
