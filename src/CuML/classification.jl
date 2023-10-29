@@ -25,8 +25,8 @@ MMI.@mlj_model mutable struct MBSGDClassifier <: MMI.Probabilistic
     shuffle::Bool = true
     eta0::Float64 = 0.001::(_ > 0)
     power_t::Float64 = 0.5::(_ > 0)
-    learning_rate::String =
-        "constant"::(_ in ("adaptive", "constant", "invscaling", "optimal"))
+    learning_rate::String = "constant"::(_ in
+                                         ("adaptive", "constant", "invscaling", "optimal"))
     n_iter_no_change::Int = 5::(_ > 0)
     verbose::Bool = false
 end
@@ -104,14 +104,12 @@ function model_init(mlj_model::KNeighborsClassifier)
     return cuml.KNeighborsClassifier(; mlj_to_kwargs(mlj_model)...)
 end
 
-const CUML_CLASSIFICATION = Union{
-    LogisticRegression,
-    MBSGDClassifier,
-    RandomForestClassifier,
-    SVC,
-    LinearSVC,
-    KNeighborsClassifier,
-}
+const CUML_CLASSIFICATION = Union{LogisticRegression,
+                                  MBSGDClassifier,
+                                  RandomForestClassifier,
+                                  SVC,
+                                  LinearSVC,
+                                  KNeighborsClassifier}
 
 # add metadata
 MMI.load_path(::Type{<:LogisticRegression}) = "$PKG.CuML.LogisticRegression"
@@ -122,12 +120,12 @@ MMI.load_path(::Type{<:LinearSVC}) = "$PKG.CuML.LinearSVC"
 MMI.load_path(::Type{<:KNeighborsClassifier}) = "$PKG.CuML.KNeighborsClassifier"
 
 function MMI.input_scitype(::Type{<:CUML_CLASSIFICATION})
-    return Union{
-        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
-        AbstractMatrix{MMI.Continuous},
-    }
+    return Union{MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+                 AbstractMatrix{MMI.Continuous}}
 end
-MMI.target_scitype(::Type{<:CUML_CLASSIFICATION}) = Union{AbstractVector{<:Finite}, AbstractVector{MMI.Continuous}}
+function MMI.target_scitype(::Type{<:CUML_CLASSIFICATION})
+    return Union{AbstractVector{<:Finite},AbstractVector{MMI.Continuous}}
+end
 
 function MMI.docstring(::Type{<:LogisticRegression})
     return "cuML's LogisticRegression: https://docs.rapids.ai/api/cuml/stable/api.html#logistic-regression"
@@ -164,11 +162,10 @@ function MMI.fit(mlj_model::CUML_CLASSIFICATION, verbosity, X, y, w=nothing)
 end
 
 # predict methods
-function MMI.predict(
-    mlj_model::Union{LogisticRegression,RandomForestClassifier,KNeighborsClassifier},
-    fitresult,
-    Xnew,
-)
+function MMI.predict(mlj_model::Union{LogisticRegression,RandomForestClassifier,
+                                      KNeighborsClassifier},
+                     fitresult,
+                     Xnew)
     model = fitresult
     py_preds = model.predict_proba(Xnew)
     classes = pyconvert(Vector, model.classes_)
@@ -186,9 +183,8 @@ function MMI.predict(mlj_model::Union{SVC,LinearSVC}, fitresult, Xnew)
     else
         @warn "SVC was not trained with `probability=true`. Using class predictions."
         py_preds = model.predict(Xnew)
-        preds = MMI.UnivariateFinite(
-            classes, pyconvert(Array, py_preds); pool=missing, augment=true
-        )
+        preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds); pool=missing,
+                                     augment=true)
     end
 
     return preds
@@ -198,9 +194,8 @@ function MMI.predict(mlj_model::Union{MBSGDClassifier}, fitresult, Xnew)
     model = fitresult
     classes = pyconvert(Vector, model.classes_)
     py_preds = model.predict(Xnew)
-    preds = MMI.UnivariateFinite(
-        classes, pyconvert(Array, py_preds); pool=missing, augment=true
-    )
+    preds = MMI.UnivariateFinite(classes, pyconvert(Array, py_preds); pool=missing,
+                                 augment=true)
 
     return preds
 end
@@ -214,19 +209,15 @@ function MMI.predict_mean(mlj_model::CUML_CLASSIFICATION, fitresult, Xnew)
 end
 
 # Classification metadata
-MMI.metadata_pkg.(
-    (
-        LogisticRegression,
-        MBSGDClassifier,
-        RandomForestClassifier,
-        SVC,
-        LinearSVC,
-        KNeighborsClassifier,
-    ),
-    name="cuML Classification Methods",
-    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia=false,          # is it written entirely in Julia?
-    license="MIT",        # your package license
-    is_wrapper=true,
-)
+MMI.metadata_pkg.((LogisticRegression,
+                   MBSGDClassifier,
+                   RandomForestClassifier,
+                   SVC,
+                   LinearSVC,
+                   KNeighborsClassifier),
+                  name="cuML Classification Methods",
+                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+                  julia=false,          # is it written entirely in Julia?
+                  license="MIT",        # your package license
+                  is_wrapper=true)

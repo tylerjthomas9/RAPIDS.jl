@@ -36,8 +36,8 @@ end
 # Regression
 @testset "cuML Regression" begin
     X_py, y_py = make_regression(;
-        n_samples=200, n_features=5, n_informative=5, bias=0.0, noise=0.3
-    )
+                                 n_samples=200, n_features=5, n_informative=5, bias=0.0,
+                                 noise=0.3)
     X = RAPIDS.pyconvert(Matrix{Float32}, X_py.get())
     y = RAPIDS.pyconvert(Vector{Float32}, y_py.get().flatten())
 
@@ -115,8 +115,8 @@ end
 # Classification
 @testset "cuML Classification" begin
     X_py, y_py = make_classification(;
-        n_samples=200, n_features=4, n_informative=2, n_classes=2
-    )
+                                     n_samples=200, n_features=4, n_informative=2,
+                                     n_classes=2)
     X = RAPIDS.pyconvert(Matrix{Float32}, X_py.get())
     y = RAPIDS.pyconvert(Vector{Float32}, y_py.get().flatten())
 
@@ -142,14 +142,14 @@ end
     end
 
     @testset "SVC" begin
-        model = SVC(probability=true)
+        model = SVC(; probability=true)
         mach = machine(model, X, y)
         fit!(mach)
         preds = predict(mach, X)
     end
 
     @testset "LinearSVC" begin
-        model = LinearSVC(probability=true)
+        model = LinearSVC(; probability=true)
         mach = machine(model, X, y)
         fit!(mach)
         preds = predict(mach, X)
@@ -219,44 +219,42 @@ end
 end
 
 @testset "Time Series" begin
-    X = [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-    ]
+    X = [1,
+         2,
+         3,
+         4,
+         5,
+         6,
+         7,
+         8,
+         9,
+         10,
+         11,
+         12,
+         2,
+         3,
+         4,
+         5,
+         6,
+         7,
+         8,
+         9,
+         10,
+         11,
+         12,
+         13,
+         3,
+         4,
+         5,
+         6,
+         7,
+         8,
+         9,
+         10,
+         11,
+         12,
+         13,
+         14]
     @testset "ExponentialSmoothing" begin
         model = ExponentialSmoothing()
         mach = machine(model, X)

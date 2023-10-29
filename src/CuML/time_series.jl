@@ -33,10 +33,8 @@ MMI.load_path(::Type{<:ExponentialSmoothing}) = "$PKG.CuML.ExponentialSmoothing"
 MMI.load_path(::Type{<:ARIMA}) = "$PKG.CuML.ARIMA"
 
 function MMI.input_scitype(::Type{<:CUML_TIME_SERIES})
-    return Union{
-        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
-        AbstractMatrix{MMI.Continuous},
-    }
+    return Union{MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+                 AbstractMatrix{MMI.Continuous}}
 end
 function MMI.docstring(::Type{<:ExponentialSmoothing})
     return "cuML's ExponentialSmoothing: https://docs.rapids.ai/api/cuml/stable/api.html#holtwinters"
@@ -71,12 +69,10 @@ function forecast(mach, steps)
 end
 
 # Classification metadata
-MMI.metadata_pkg.(
-    (ExponentialSmoothing, ARIMA),
-    name="cuML Time Series Methods",
-    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia=false,          # is it written entirely in Julia?
-    license="MIT",        # your package license
-    is_wrapper=true,
-)
+MMI.metadata_pkg.((ExponentialSmoothing, ARIMA),
+                  name="cuML Time Series Methods",
+                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+                  julia=false,          # is it written entirely in Julia?
+                  license="MIT",        # your package license
+                  is_wrapper=true)

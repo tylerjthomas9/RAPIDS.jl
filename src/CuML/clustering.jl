@@ -7,8 +7,8 @@ MMI.@mlj_model mutable struct KMeans <: MMI.Unsupervised
     tol::Float64 = 1e-4::(_ > 0)
     verbose::Bool = false
     random_state::Int = 1::(_ > 0)
-    init::String =
-        "scalable-k-means++"::(_ in ("scalable-k-means++", "k-means||", "random"))
+    init::String = "scalable-k-means++"::(_ in
+                                          ("scalable-k-means++", "k-means||", "random"))
     n_init::Int = 1::(_ > 0)
     oversampling_factor::Float64 = 2.0::(_ > 0)
     max_samples_per_batch::Int64 = 32768::(_ > 0)
@@ -67,10 +67,8 @@ MMI.load_path(::Type{<:AgglomerativeClustering}) = "$PKG.CuML.AgglomerativeClust
 MMI.load_path(::Type{<:HDBSCAN}) = "$PKG.CuML.HDBSCAN"
 
 function MMI.input_scitype(::Type{<:CUML_CLUSTERING})
-    return Union{
-        MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
-        AbstractMatrix{MMI.Continuous},
-    }
+    return Union{MMI.Table(MMI.Continuous, MMI.Count, MMI.OrderedFactor, MMI.Multiclass),
+                 AbstractMatrix{MMI.Continuous}}
 end
 
 function MMI.docstring(::Type{<:KMeans})
@@ -123,12 +121,10 @@ function MMI.predict(mlj_model::HDBSCAN, fitresult, Xnew)
 end
 
 # Clustering metadata
-MMI.metadata_pkg.(
-    (KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN),
-    name="cuML Clustering Methods",
-    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia=false,          # is it written entirely in Julia?
-    license="MIT",        # your package license
-    is_wrapper=true,
-)
+MMI.metadata_pkg.((KMeans, DBSCAN, AgglomerativeClustering, HDBSCAN),
+                  name="cuML Clustering Methods",
+                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+                  julia=false,          # is it written entirely in Julia?
+                  license="MIT",        # your package license
+                  is_wrapper=true)
