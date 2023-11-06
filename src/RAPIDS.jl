@@ -30,6 +30,7 @@ if !CUDA.has_cuda_gpu()
     const dask_cuda = nothing
     const dask_cudf = nothing
     const numpy = nothing
+    const pandas = nothing
     const pickle = nothing
     abstract type Py end
     macro py(x...) end
@@ -65,7 +66,8 @@ else
         PythonCall.pycopy!(dask, pyimport("dask"))
         PythonCall.pycopy!(dask_cuda, pyimport("dask_cuda"))
         PythonCall.pycopy!(dask_cudf, pyimport("dask_cudf"))
-        PythonCall.pycopy!(numpy, pyimport("numpy"))
+        PythonCall.pycopy!(pandas, pyimport("numpy"))
+        PythonCall.pycopy!(numpy, pyimport("pandas"))
         return PythonCall.pycopy!(pickle, pyimport("pickle"))
     end
 end
@@ -83,7 +85,8 @@ export VERSION,
        dask,
        dask_cuda,
        dask_cudf,
-       numpy
+       numpy,
+       pandas
 
 include("CuDF/CuDF.jl")
 include("CuML/CuML.jl")
