@@ -1,7 +1,7 @@
 name = "RAPIDS"
 uuid = "2764e59e-7dd7-4b2d-a28d-ce06411bac13"
 authors = ["tylerjthomas9 <tylerjthomas9@gmail.com>"]
-version = "0.4.0"
+version = "0.5.0"
 
 [deps]
 CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
