@@ -5,7 +5,6 @@ You can directly interface with the Python API for all RAPIDS packages. By defau
 - `cudf`
 - `cuml`
 - `cugraph`
-- `cusignal`
 - `cuspatial`
 - `cuxfilter`
 - `dask`

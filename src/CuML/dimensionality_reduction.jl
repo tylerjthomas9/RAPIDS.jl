@@ -101,15 +101,13 @@ function model_init(mlj_model::SparseRandomProjection)
 end
 model_init(mlj_model::TSNE) = cuml.TSNE(; mlj_to_kwargs(mlj_model)...)
 
-const CUML_DIMENSIONALITY_REDUCTION = Union{
-    PCA,
-    IncrementalPCA,
-    TruncatedSVD,
-    UMAP,
-    SparseRandomProjection,
-    GaussianRandomProjection,
-    TSNE,
-}
+const CUML_DIMENSIONALITY_REDUCTION = Union{PCA,
+                                            IncrementalPCA,
+                                            TruncatedSVD,
+                                            UMAP,
+                                            SparseRandomProjection,
+                                            GaussianRandomProjection,
+                                            TSNE}
 
 # add metadata
 MMI.load_path(::Type{<:PCA}) = "$PKG.CuML.PCA"
@@ -121,10 +119,10 @@ MMI.load_path(::Type{<:SparseRandomProjection}) = "$PKG.CuML.SparseRandomProject
 MMI.load_path(::Type{<:TSNE}) = "$PKG.CuML.TSNE"
 
 function MMI.input_scitype(::Type{<:CUML_DIMENSIONALITY_REDUCTION})
-    return Union{
-        Table{<:Union{AbstractVector{<:Continuous}, AbstractVector{<:Count}, AbstractVector{<:OrderedFactor}, AbstractVector{<:Multiclass}}},
-        AbstractMatrix{MMI.Continuous},
-    }
+    return Union{Table{<:Union{AbstractVector{<:Continuous},AbstractVector{<:Count},
+                               AbstractVector{<:OrderedFactor},
+                               AbstractVector{<:Multiclass}}},
+                 AbstractMatrix{MMI.Continuous}}
 end
 
 function MMI.docstring(::Type{<:PCA})
@@ -162,13 +160,10 @@ function MMI.fit(mlj_model::CUML_DIMENSIONALITY_REDUCTION, verbosity, X)
 end
 
 # transform methods
-function MMI.transform(
-    mlj_model::Union{
-        PCA,IncrementalPCA,UMAP,TruncatedSVD,SparseRandomProjection,GaussianRandomProjection
-    },
-    fitresult,
-    Xnew,
-)
+function MMI.transform(mlj_model::Union{PCA,IncrementalPCA,UMAP,TruncatedSVD,
+                                        SparseRandomProjection,GaussianRandomProjection},
+                       fitresult,
+                       Xnew)
     model = fitresult
     py_preds = model.transform(Xnew)
     preds = pyconvert(Array, py_preds)
@@ -195,12 +190,10 @@ function MMI.inverse_transform(mlj_model::Union{PCA,TruncatedSVD}, fitresult, Xn
 end
 
 # Clustering metadata
-MMI.metadata_pkg.(
-    (PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjection, TSNE),
-    name="cuML Dimensionality Reduction and Manifold Learning Methods",
-    uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
-    url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
-    julia=false,          # is it written entirely in Julia?
-    license="MIT",        # your package license
-    is_wrapper=true,
-)
+MMI.metadata_pkg.((PCA, IncrementalPCA, TruncatedSVD, UMAP, GaussianRandomProjection, TSNE),
+                  name="cuML Dimensionality Reduction and Manifold Learning Methods",
+                  uuid="2764e59e-7dd7-4b2d-a28d-ce06411bac13", # see your Project.toml
+                  url="https://github.com/tylerjthomas9/RAPIDS.jl",  # URL to your package repo
+                  julia=false,          # is it written entirely in Julia?
+                  license="MIT",        # your package license
+                  is_wrapper=true)

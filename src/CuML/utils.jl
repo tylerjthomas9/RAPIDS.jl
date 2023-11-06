@@ -22,9 +22,8 @@ function to_numpy(x::AbstractVector{<:Real}; dtype=Float32)
 end
 
 function mlj_to_kwargs(model)
-    return Dict{Symbol,Any}(
-        name => getfield(model, name) for name in fieldnames(typeof(model))
-    )
+    return Dict{Symbol,Any}(name => getfield(model, name)
+                            for name in fieldnames(typeof(model)))
 end
 
 function _feature_names(X)

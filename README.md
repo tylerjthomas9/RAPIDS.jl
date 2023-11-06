@@ -1,6 +1,6 @@
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://docs.juliahub.com/RAPIDS/hxbio/0.2.0/)
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
- [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
+[![Code Style: YASGuide](https://img.shields.io/badge/code%20style-yas-violet.svg)](https://github.com/jrevels/YASGuide)
 
 
 :warning: RAPIDS.jl is only supported on Julia 1.8.5+. For previous Julia versions, you have to manually upgrade to libraries from GCC 12. 
@@ -10,14 +10,14 @@ Unofficial Julia wrapper for the [RAPIDS.ai](https://rapids.ai/index.html) ecosy
 
 The goal of this library is to provide a simple method for accessing the GPU accelerated models withing RAPIDS from Julia, and integrating the models into MLJ. This library relies on [PythonCall.jl](https://github.com/cjdoris/PythonCall.jl) and [CondaPkg.jl](https://github.com/cjdoris/CondaPkg.jl) for efficient installations of the Python dependencies. 
 
-This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSignal`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
+This wrapper could be broken up into several libraries (`cuDF`, `cuML`, `cuGraph`, `cuSpatial`), but there would be significant overlap between these libraries. Large dependencies such as `cudatoolkit` would be repeated.
 
 Long term, directly wrapping `libcudf`, `libcuml`... would greatly improve this library, but I don't have time to tackle that at this moment. 
 
 # CUDA/GPU requirements
 More information is available [here](https://docs.rapids.ai/install).
 - CUDA 11.2+
-- NVIDIA driver 460.27.03+
+- NVIDIA driver 470.42.01+
 - Pascal architecture or better (Compute Capability >=6.0)
 - Ubuntu 20.04/22.04 or CentOS 7 / Rocky Linux 8 with gcc/++ 9.0+
 
@@ -49,7 +49,6 @@ You can access the following python libraries with their standard syntax:
 - `cudf`
 - `cuml`
 - `cugraph`
-- `cusignal`
 - `cuspatial`
 - `cuxfilter`
 - `dask`
