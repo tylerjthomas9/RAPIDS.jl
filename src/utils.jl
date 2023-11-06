@@ -25,9 +25,9 @@ function set_conda_cuda_version!()
 
     if haskey(cur_deps, "cuda-version")
         if cur_deps["cuda-version"] != "=$closest_version"
-            CondaPkg.add("cuda-version"; version="=$closest_version", channel="nvidia")
+            CondaPkg.add("cuda-version"; version="=$closest_version", channel="conda-forge")
         end
     else
-        CondaPkg.add("cuda-version"; version="=$closest_version", channel="nvidia")
+        CondaPkg.add("cuda-version"; version="=$closest_version", channel="conda-forge")
     end
 end
