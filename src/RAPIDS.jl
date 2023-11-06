@@ -54,6 +54,7 @@ else
     const dask_cuda = PythonCall.pynew()
     const dask_cudf = PythonCall.pynew()
     const numpy = PythonCall.pynew()
+    const pandas = PythonCall.pynew()
     const pickle = PythonCall.pynew()
     function __init__()
         PythonCall.pycopy!(cucim, pyimport("cucim"))
