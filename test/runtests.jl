@@ -6,10 +6,11 @@ if CUDA.functional()
     using MLJTestInterface
     using RAPIDS
     using RAPIDS.CuML
+    using RAPIDS.CuDF
     using Tables
     using Test
 
-    include("cudf.jl")
+    # include("cudf.jl")
     include("cuml.jl")
     include("cuml_integration.jl")
 

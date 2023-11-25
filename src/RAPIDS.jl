@@ -30,6 +30,7 @@ if !CUDA.has_cuda_gpu()
     const dask_cuda = nothing
     const dask_cudf = nothing
     const numpy = nothing
+    const pandas = nothing
     const pickle = nothing
     abstract type Py end
     macro py(x...) end
@@ -53,10 +54,13 @@ else
     const dask_cuda = PythonCall.pynew()
     const dask_cudf = PythonCall.pynew()
     const numpy = PythonCall.pynew()
+    const pandas = PythonCall.pynew()
     const pickle = PythonCall.pynew()
     function __init__()
         PythonCall.pycopy!(cucim, pyimport("cucim"))
         PythonCall.pycopy!(cudf, pyimport("cudf"))
+        cudf_pandas = pyimport("cudf.pandas")
+        cudf_pandas.install()
         # PythonCall.pycopy!(cugraph, pyimport("cugraph")) https://github.com/tylerjthomas9/RAPIDS.jl/issues/37
         PythonCall.pycopy!(cuml, pyimport("cuml"))
         PythonCall.pycopy!(cuspatial, pyimport("cuspatial"))
@@ -66,6 +70,7 @@ else
         PythonCall.pycopy!(dask_cuda, pyimport("dask_cuda"))
         PythonCall.pycopy!(dask_cudf, pyimport("dask_cudf"))
         PythonCall.pycopy!(numpy, pyimport("numpy"))
+        PythonCall.pycopy!(pandas, pyimport("pandas"))
         return PythonCall.pycopy!(pickle, pyimport("pickle"))
     end
 end
@@ -83,7 +88,8 @@ export VERSION,
        dask,
        dask_cuda,
        dask_cudf,
-       numpy
+       numpy,
+       pandas
 
 include("CuDF/CuDF.jl")
 include("CuML/CuML.jl")
