@@ -7,7 +7,7 @@ cucim = "=23.10"
 cuspatial = "=23.10"
 cugraph = "=23.10"
 cuml = "=23.10"
-python = ">=3.9,<=3.10"
+python = ">=3.9,<3.11"
 
     [deps.cuda-version]
     channel = "conda-forge"

@@ -1,7 +1,17 @@
+using Revise
+using MLJBase
+using MLJTestInterface
+using RAPIDS
+using RAPIDS.CuML
+using RAPIDS.CuDF
+using Tables
+using Test
+
 using Test
 import DataFrames
 using PythonCall
 using Dates
+
 
 df = DataFrame(Dict(:name=>["a", "b"], :age=>[27, 30]))
 age = values(df.age)
@@ -15,9 +25,9 @@ text = repr(MIME("text/html"), df)
 @test occursin("<table", text)
 @test occursin("age", text)
 
-df = read_csv(joinpath(dirname(@__FILE__), "test.csv"))
+df = read_csv(joinpath(dirname(@__FILE__), "./test/test.csv"))
 typeof(df)
-@test isa(df, Pandas.DataFrame)
+@test isa(df, CuDF.DataFrame)
 
 include("test_tabletraits.jl")
 include("test_tables.jl")

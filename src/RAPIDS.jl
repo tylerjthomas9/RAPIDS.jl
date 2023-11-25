@@ -59,6 +59,8 @@ else
     function __init__()
         PythonCall.pycopy!(cucim, pyimport("cucim"))
         PythonCall.pycopy!(cudf, pyimport("cudf"))
+        cudf_pandas = pyimport("cudf.pandas")
+        cudf_pandas.install()
         # PythonCall.pycopy!(cugraph, pyimport("cugraph")) https://github.com/tylerjthomas9/RAPIDS.jl/issues/37
         PythonCall.pycopy!(cuml, pyimport("cuml"))
         PythonCall.pycopy!(cuspatial, pyimport("cuspatial"))
@@ -67,8 +69,8 @@ else
         PythonCall.pycopy!(dask, pyimport("dask"))
         PythonCall.pycopy!(dask_cuda, pyimport("dask_cuda"))
         PythonCall.pycopy!(dask_cudf, pyimport("dask_cudf"))
-        PythonCall.pycopy!(pandas, pyimport("numpy"))
-        PythonCall.pycopy!(numpy, pyimport("pandas"))
+        PythonCall.pycopy!(numpy, pyimport("numpy"))
+        PythonCall.pycopy!(pandas, pyimport("pandas"))
         return PythonCall.pycopy!(pickle, pyimport("pickle"))
     end
 end
